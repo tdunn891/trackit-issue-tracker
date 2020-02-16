@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load bootstrap_tags %}
+{% block content %}
+<h1>Add Ticket</h1>
+<form method="post" enctype="multipart/form-data">
+   {% csrf_token %}
+   {{ form | as_bootstrap }}
+   <!-- <select type="range" id="ticket-type">
+      <option disabled>Choose Type</option>
+      <option value="bug">Bug</option>
+      <option value="feature">Feature</option>
+   </select>
+   <textarea type="text" id="summary" placeholder="Summary"></textarea> -->
+   <button type="submit">Submit</button>
+</form>
+{% endblock %}
