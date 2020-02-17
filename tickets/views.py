@@ -7,9 +7,15 @@ from .forms import AddTicketForm
 # Create your views here.
 def view_tickets(request):
     """Display All Tickets"""
-    tickets = Ticket.objects.filter()
+    tickets = Ticket.objects.filter().order_by('-id')
     return render(request, 'tickets.html', {'tickets': tickets})
     # return HttpResponse('Hello from tickets app')
+
+def view_ticket(request, pk):
+    """Display single ticket"""
+    # ticket = get_object_or_404(Ticket, pk=pk)
+    ticket = Ticket.objects.filter(id=pk).values()[0]
+    return render(request, 'view_ticket.html', {'ticket': ticket})
 
 def add_ticket(request, pk=None):
     """Add Ticket"""

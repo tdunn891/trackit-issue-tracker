@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}
+View Ticket | {{ ticket.id }}
+{% endblock %}
+
+{% block content %}
+<h1>View Ticket</h1>
+<div class="row">
+   <div class="col col-6">
+      <h4>Details</h4>
+      <table class="table table-sm">
+         <thead>
+            <tr>
+               {% comment %} <th scope="col">Field</th> {% endcomment %}
+               {% comment %} <th scope="col">Value</th> {% endcomment %}
+            </tr>
+         </thead>
+         <tbody>
+            {% for key, value in ticket.items %}
+            <tr>
+               <th scope="row">{{ key }}</th>
+               <td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+      <a class="btn btn-primary" href="#">Edit</a>
+      <a class="btn btn-danger" href="#">Delete</a>
+   </div>
+   <div class="col col-6">
+
+      {% comment %} History {% endcomment %}
+      <h4>Change History</h4>
+      <table class="table table-sm">
+         <thead>
+            <tr>
+               <th scope="col">Field</th>
+               <th scope="col">New Value</th>
+               <th scope="col">Old Value</th>
+               <th scope="col">Date Changed</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td>Status</td>
+               <td>High</td>
+               <td>Medium</td>
+               <td>20/02/2020</td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+</div>
+<div class="row">
+   <div class="div col-12">
+      {% comment %} Comments {% endcomment %}
+      <h4>Comments</h4>
+      <ul class="list-group">
+         <li class="list-group-item">I agree</li>
+         <li class="list-group-item">Same</li>
+      </ul>
+      <br>
+      <a class="btn btn-primary" href="#">Add Comment</a>
+   </div>
+</div>
+{% endblock %}

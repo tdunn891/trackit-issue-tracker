@@ -1,9 +1,36 @@
 {% extends "base.html" %}
+{% block title %}
+Tickets
+{% endblock %}
 {% block content %}
+
 <h1>Tickets</h1>
-<ul>
-{% for ticket in tickets %}
-<li>{{ ticket.ticket_type }} | {{ ticket.summary }}</li>
-{% endfor %}
-</ul>
+<table class="table">
+   <thead>
+      <tr>
+         <th scope="col">ID</th>
+         <th scope="col">Summary</th>
+         <th scope="col">Type</th>
+         <th scope="col">Reporter</th>
+         <th scope="col">Assignee</th>
+         <th scope="col">Status</th>
+         <th scope="col">Priority</th>
+         <th scope="col">Created</th>
+      </tr>
+   </thead>
+   <tbody>
+      {% for ticket in tickets %}
+      <tr>
+         <td scope="row">{{ ticket.id }}</td>
+         <td><a href="{% url 'view_ticket' ticket.id %}">{{ ticket.summary }}</a></td>
+         <td>{{ ticket.ticket_type }}</td>
+         <td>placeholder</td>
+         <td>placeholder</td>
+         <td>{{ ticket.status }}</td>
+         <td>{{ ticket.priority }}</td>
+         <td>{{ ticket.created_date }}</td>
+      </tr>
+      {% endfor %}
+   </tbody>
+</table>
 {% endblock %}
