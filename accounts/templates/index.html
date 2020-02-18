@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block page_heading %}
+<h1>Home</h1>
+{% endblock %}
+{% block content %}
+<br>
+<hr>
+{% if messages %}
+<div>
+   {% for message in messages %}
+   {{ message }}
+   {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

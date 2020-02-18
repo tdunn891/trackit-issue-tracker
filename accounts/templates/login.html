@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load bootstrap_tags %}
+{% block title %}
+Login
+{% endblock %}
+{% block page_heading %}
+<h1>Login</h1>
+{% endblock %}
+{% block content %}
+<br>
+<form method="POST">
+   {% csrf_token %}
+   {{ login_form | as_bootstrap }}
+   <button type="submit" class="btn btn-primary">Log In</button>
+</form>
+<hr>
+<p>Don't have an account yet? <a href="{% url 'registration' %}">Register</a></p>
+{% if messages %}
+<div>
+   {% for message in messages %}
+   {{ message }}
+   {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

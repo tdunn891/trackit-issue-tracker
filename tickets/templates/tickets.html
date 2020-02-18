@@ -2,10 +2,12 @@
 {% block title %}
 Tickets
 {% endblock %}
+{% block page_heading %}
+<h1>Tickets</h1>
+{% endblock %}
 {% block content %}
 
-<h1>Tickets</h1>
-<table class="table">
+<table class="table table-sm">
    <thead>
       <tr>
          <th scope="col">ID</th>
@@ -27,10 +29,11 @@ Tickets
          <td>placeholder</td>
          <td>placeholder</td>
          <td>{{ ticket.status }}</td>
-         <td>{{ ticket.priority }}</td>
+         <td><span class="badge badge-pill badge-warning">{{ ticket.priority }}</span></td>
          <td>{{ ticket.created_date }}</td>
       </tr>
       {% endfor %}
    </tbody>
 </table>
+<a class="btn btn-success" href="{% url 'add_ticket' %}">Raise Ticket</a>
 {% endblock %}

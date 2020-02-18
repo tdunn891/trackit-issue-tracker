@@ -29,3 +29,8 @@ def add_ticket(request, pk=None):
     else:
         form = AddTicketForm(instance=ticket)
     return render(request, 'add_ticket.html', {'form': form})
+
+def edit_ticket(request):
+#     """Edit Ticket"""
+    return render(request, 'edit_ticket.html')
+

@@ -3,9 +3,11 @@
 {% block title %}
 Add Ticket
 {% endblock %}
+{% block page_heading %}
+<h1>Add Ticket</h1>
+{% endblock %}
 {% block content %}
 
-<h1>Add Ticket</h1>
 <div class="row">
    <div class="col col-8">
       <form method="post" enctype="multipart/form-data">
@@ -17,9 +19,9 @@ Add Ticket
       <option value="feature">Feature</option>
    </select>
    <textarea type="text" id="summary" placeholder="Summary"></textarea> -->
-         <button type="submit">Submit</button>
+         <button class="btn btn-primary" type="submit">Submit</button>
       </form>
-      <a href="{% url 'tickets' %}">Cancel</a>
+      <a class="btn" href="{% url 'tickets' %}">Cancel</a>
    </div>
 </div>
 {% endblock %}
