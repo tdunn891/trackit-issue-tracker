@@ -1,6 +1,21 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load bootstrap_tags %}
+{% block title %}
+Edit Ticket | {{ ticket.id }}
+{% endblock %}
 {% block page_heading %}
-<h1>Edit Ticket</h1>
+<h2>Edit Ticket | {{ ticket.id }}</h2>
+<hr>
 {% endblock %}
 {% block content %}
+<div class="row">
+   <div class="col col-8">
+      <form method="post" enctype="multipart/form-data">
+         {% csrf_token %}
+         {{ form | as_bootstrap }}
+         <button class="btn btn-primary" type="submit">Submit</button>
+      </form>
+      <a class="btn" href="{% url 'tickets' %}">Cancel</a>
+   </div>
+</div>
 {% endblock %}

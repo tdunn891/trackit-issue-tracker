@@ -1,9 +1,10 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block title %}
 View Ticket | {{ ticket.id }}
 {% endblock %}
 {% block page_heading %}
-<h1>View Ticket</h1>
+<h2>View Ticket | {{ ticket.id}} </h2>
+<hr>
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -17,16 +18,46 @@ View Ticket | {{ ticket.id }}
             </tr>
          </thead>
          <tbody>
-            {% for key, value in ticket.items %}
+            <!-- {% for key, value in ticket.items %}
             <tr>
                <th scope="row">{{ key }}</th>
                <td>{{ value }}</td>
             </tr>
-            {% endfor %}
+            {% endfor %} -->
+            <!-- <tr>
+               <th>Ticket ID</th>
+               <td>{{ ticket.id }}</td>
+            </tr> -->
+            <tr>
+               <th>Ticket Type</th>
+               <td>{{ ticket.ticket_type }}</td>
+            </tr>
+            <tr>
+               <th>Submitted By </th>
+               <td>{{ ticket.submitted_by }}</td>
+            </tr>
+            <tr>
+               <th>Assigned To</th>
+               <td>{{ ticket.assigned_to }}</td>
+            </tr>
+            <tr>
+               <th>Status</th>
+               <td>{{ ticket.status }}</td>
+            </tr>
+            <tr>
+               <th>Priority</th>
+               <td><span class="badge badge-pill badge-warning">{{ ticket.priority }}</span></td>
+            </tr>
+            <tr>
+               <th>Created Date</th>
+               <td>{{ ticket.created_date }}</td>
+            </tr>
          </tbody>
       </table>
-      <a class="btn btn-primary" href="{% url 'edit_ticket' %}">Edit</a>
-      {% comment %} <a class="btn btn-danger" href="#">Cancel</a> {% endcomment %}
+      <a class="btn btn-primary" href="{% url 'edit_ticket' ticket.id %}">Edit</a>
+      {% if ticket.status != 'Cancelled' %}
+      <a class="btn btn-danger" href="{% url 'cancel_ticket' ticket.id %}">Cancel</a>
+      {% endif %}
    </div>
    <div class="col col-6">
       {% comment %} History {% endcomment %}
@@ -51,6 +82,8 @@ View Ticket | {{ ticket.id }}
       </table>
    </div>
 </div>
+
+<hr>
 <div class="row">
    <div class="col col-12">
       {% comment %} Comments {% endcomment %}

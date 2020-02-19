@@ -3,18 +3,18 @@
 Tickets
 {% endblock %}
 {% block page_heading %}
-<h1>Tickets</h1>
+<h2>Tickets</h2>
+<hr>
 {% endblock %}
 {% block content %}
-
 <table class="table table-sm">
    <thead>
       <tr>
          <th scope="col">ID</th>
          <th scope="col">Summary</th>
          <th scope="col">Type</th>
-         <th scope="col">Reporter</th>
-         <th scope="col">Assignee</th>
+         <th scope="col">Submitted By</th>
+         <th scope="col">Assigned To</th>
          <th scope="col">Status</th>
          <th scope="col">Priority</th>
          <th scope="col">Created</th>
@@ -26,8 +26,8 @@ Tickets
          <td scope="row">{{ ticket.id }}</td>
          <td><a href="{% url 'view_ticket' ticket.id %}">{{ ticket.summary }}</a></td>
          <td>{{ ticket.ticket_type }}</td>
-         <td>placeholder</td>
-         <td>placeholder</td>
+         <td>{{ ticket.submitted_by }}</td>
+         <td>{{ ticket.assigned_to }}</td>
          <td>{{ ticket.status }}</td>
          <td><span class="badge badge-pill badge-warning">{{ ticket.priority }}</span></td>
          <td>{{ ticket.created_date }}</td>
