@@ -52,9 +52,17 @@ View Ticket | {{ ticket.id }}
                <th>Created Date</th>
                <td>{{ ticket.created_date }}</td>
             </tr>
+            <tr>
+               <th>Tags</th>
+               <td>{{ticket.tags.all|join:", "}}</td>
+            </tr>
+            <tr>
+               <th>Upvotes</th>
+               <td>{{ ticket.upvotes }} <a href="#" class="btn btn-outline-primary btn-sm">+1</a></td>
+            </tr>
          </tbody>
       </table>
-      <a class="btn btn-primary" href="{% url 'edit_ticket' ticket.id %}">Edit</a>
+      <a class="btn btn-outline-primary" href="{% url 'edit_ticket' ticket.id %}">Edit</a>
       {% if ticket.status != 'Cancelled' %}
       <a class="btn btn-danger" href="{% url 'cancel_ticket' ticket.id %}">Cancel</a>
       {% endif %}

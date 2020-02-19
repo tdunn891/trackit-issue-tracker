@@ -71,3 +71,9 @@ def user_profile(request):
     """User's profile page"""
     user = User.objects.get(email=request.user.email)
     return render(request, 'profile.html', {"profile": user})
+
+
+def user_list(request):
+    """Shows all users"""
+    users = User.objects.filter()
+    return render(request, 'user_list.html', {"users": users})

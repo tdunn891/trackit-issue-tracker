@@ -1,7 +1,11 @@
 {% extends "base.html" %}
+{% load static from staticfiles %}
 {% load bootstrap_tags %}
 {% block title %}
 Add Ticket
+{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/bootstrap-tagsinput.css' %}">
 {% endblock %}
 {% block page_heading %}
 <h2>Add Ticket</h2>
@@ -18,4 +22,8 @@ Add Ticket
       <a class="btn" href="{% url 'tickets' %}">Cancel</a>
    </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'js/bootstrap-tagsinput.js' %}"></script>
 {% endblock %}

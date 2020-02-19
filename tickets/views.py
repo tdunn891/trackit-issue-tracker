@@ -28,6 +28,7 @@ def add_ticket(request, pk=None):
             ticket = form.save(commit=False)
             ticket.submitted_by = request.user
             ticket.save()
+            form.save_m2m()
             return redirect(view_tickets)
     else:
         form = AddTicketForm(instance=ticket)

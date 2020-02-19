@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}User List{% endblock %}
+{% block page_heading %}
+<h2>User List</h2>
+<hr>
+{% endblock %}
+{% block content %}
+<table class="table table-sm">
+   <thead>
+      <tr>
+         <th scope="col">ID</th>
+         <th scope="col">User</th>
+         <th scope="col">Role</th>
+         <th scope="col">Email</th>
+      </tr>
+   </thead>
+   <tbody>
+      {% for user in users %}
+      <tr>
+         <td scope="row">{{ user.id }}</td>
+         <td>{{ user.username }}</td>
+         <td>placeholder</td>
+         <td>{{ user.email }}</td>
+      </tr>
+      {% endfor %}
+   </tbody>
+</table>
+{% endblock %}

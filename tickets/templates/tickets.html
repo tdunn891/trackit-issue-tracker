@@ -7,6 +7,9 @@ Tickets
 <hr>
 {% endblock %}
 {% block content %}
+<input type="text" placeholder="Search"><button class="btn btn-info">Go</button></input>
+<br>
+<br>
 <table class="table table-sm">
    <thead>
       <tr>
@@ -29,7 +32,15 @@ Tickets
          <td>{{ ticket.submitted_by }}</td>
          <td>{{ ticket.assigned_to }}</td>
          <td>{{ ticket.status }}</td>
+         {% if ticket.priority == "Low" %}
+         <td><span class="badge badge-pill badge-success">{{ ticket.priority }}</span></td>
+         {% elif ticket.priority == "Medium" %}
          <td><span class="badge badge-pill badge-warning">{{ ticket.priority }}</span></td>
+         {% elif ticket.priority == "High" %}
+         <td><span class="badge badge-pill badge-danger">{{ ticket.priority }}</span></td>
+         {% else  %}
+         <td><span class="badge badge-pill badge-light">{{ ticket.priority }}</span></td>
+         {% endif %}
          <td>{{ ticket.created_date }}</td>
       </tr>
       {% endfor %}

@@ -15,15 +15,18 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from accounts.views import index, logout, login, registration, user_profile
+from accounts.views import index, logout, login, registration, user_profile, user_list
 
 urlpatterns = [
     # url(r'^$', admin.site.urls),
+    url(r'^$', index, name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^tickets/', include('tickets.urls')),
-    url(r'^$', index, name='index'),
-    url(r'^accounts/logout/$', logout, name='logout'),
-    url(r'^accounts/login/$', login, name='login'),
-    url(r'^accounts/register/$', registration, name='registration'),
-    url(r'^accounts/profile/$', user_profile, name='profile'),
+    # move the below into accounts?
+    url(r'^accounts/', include('accounts.urls')),
+    # url(r'^accounts/logout/$', logout, name='logout'),
+    # url(r'^accounts/login/$', login, name='login'),
+    # url(r'^accounts/register/$', registration, name='registration'),
+    # url(r'^accounts/profile/$', user_profile, name='profile'),
+    # url(r'^accounts/user_list/$', user_list, name='user_list'),
 ]
