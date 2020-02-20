@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from .models import Ticket
-from .forms import AddTicketForm
+from .models import Ticket, Comment
+from .forms import AddTicketForm, AddCommentForm
 
 
 # Create your views here.
@@ -15,7 +15,17 @@ def view_tickets(request):
 def view_ticket(request, pk):
     """Display single ticket"""
     ticket = Ticket.objects.filter(id=pk)[0]
-    return render(request, 'view_ticket.html', {'ticket': ticket})
+    comments = Comment.objects.filter(ticket_id=pk)
+    # If post (add comment button click)
+    form = AddCommentForm(request.POST, request.FILES, instance=None)
+    if (request.method == "POST"):
+        if form.is_valid():
+            comment_body = form.cleaned_data.get("comment_body")
+            comment = Comment(
+                ticket_id=pk, comment_body=comment_body, user_id=request.user.id)
+            comment.save()
+            return redirect(view_ticket, pk)
+    return render(request, 'view_ticket.html', {'ticket': ticket, 'comments': comments, 'form': form})
 
 
 def add_ticket(request, pk=None):
@@ -56,6 +66,28 @@ def cancel_ticket(request, pk=None):
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
     ticket.status = "Cancelled"
     ticket.priority = "N/A"
-    # set priorty to NA?
     ticket.save()
     return redirect(view_tickets)
+
+
+def delete_ticket(request, pk=None):
+    ticket = get_object_or_404(Ticket, pk=pk) if pk else None
+    ticket.delete()
+    return redirect(view_tickets)
+
+
+# def add_comment(request):
+#     """TESTAdd Ticket"""
+#     print('test')
+#     # On Submit
+#     if (request.method == "POST"):
+#         form = AddCommentForm(request.POST, request.FILES, instance=None)
+#         if form.is_valid():
+#             comment = form.save(commit=False)
+#             # ticket.submitted_by = request.user
+#             comment.save()
+#             form.save_m2m()
+#             return redirect(view_tickets)
+#     else:
+#         form = AddCommentForm(instance=None)
+#         return render(request, 'view_ticket.html', {'form': form})

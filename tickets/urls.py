@@ -8,4 +8,8 @@ urlpatterns = [
     url(r'^edit_ticket/(?P<pk>\d+)/$', views.edit_ticket, name='edit_ticket'),
     url(r'^cancel_ticket/(?P<pk>\d+)/$',
         views.cancel_ticket, name='cancel_ticket'),
+    url(r'^delete_ticket/(?P<pk>\d+)/$',
+        views.delete_ticket, name='delete_ticket'),
+    # url(r'^add_comment/$', views.add_comment, name='add_comment'),
+    # url(r'^add_comment/(?P<pk>\d+)/$', views.add_comment, name='add_comment'),
 ]

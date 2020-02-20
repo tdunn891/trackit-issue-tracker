@@ -7,6 +7,7 @@ Tickets
 <hr>
 {% endblock %}
 {% block content %}
+<a class="btn btn-success" href="{% url 'add_ticket' %}">Raise Ticket</a>
 <input type="text" placeholder="Search"><button class="btn btn-info">Go</button></input>
 <br>
 <br>
@@ -46,5 +47,4 @@ Tickets
       {% endfor %}
    </tbody>
 </table>
-<a class="btn btn-success" href="{% url 'add_ticket' %}">Raise Ticket</a>
 {% endblock %}

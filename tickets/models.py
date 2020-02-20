@@ -15,7 +15,7 @@ class Ticket(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=50, default='New')
     priority = models.CharField(max_length=50, default='Medium')
-    submitted_by = models.ForeignKey(User)
+    submitted_by = models.ForeignKey(User, on_delete=models.CASCADE)
     assigned_to = models.CharField(max_length=200, default='Unassigned')
     description = models.TextField()
     tags = TaggableManager(blank=True)
@@ -27,3 +27,16 @@ class Ticket(models.Model):
     class Meta:
         verbose_name_plural = "Tickets"
     # attachments = models.CharField(maximum_length=200)
+
+
+class Comment(models.Model):
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment_body = models.CharField(max_length=300)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.comment_body
+
+    class Meta:
+        verbose_name_plural = "Comments"

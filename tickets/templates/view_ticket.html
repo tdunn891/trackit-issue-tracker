@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load bootstrap_tags %}
 {% block title %}
 View Ticket | {{ ticket.id }}
 {% endblock %}
@@ -18,16 +19,10 @@ View Ticket | {{ ticket.id }}
             </tr>
          </thead>
          <tbody>
-            <!-- {% for key, value in ticket.items %}
             <tr>
-               <th scope="row">{{ key }}</th>
-               <td>{{ value }}</td>
+               <th>Summary</th>
+               <td>{{ ticket.summary }}</td>
             </tr>
-            {% endfor %} -->
-            <!-- <tr>
-               <th>Ticket ID</th>
-               <td>{{ ticket.id }}</td>
-            </tr> -->
             <tr>
                <th>Ticket Type</th>
                <td>{{ ticket.ticket_type }}</td>
@@ -64,11 +59,11 @@ View Ticket | {{ ticket.id }}
       </table>
       <a class="btn btn-outline-primary" href="{% url 'edit_ticket' ticket.id %}">Edit</a>
       {% if ticket.status != 'Cancelled' %}
-      <a class="btn btn-danger" href="{% url 'cancel_ticket' ticket.id %}">Cancel</a>
+      <a class="btn btn-outline-warning" href="{% url 'cancel_ticket' ticket.id %}">Cancel</a>
       {% endif %}
+      <a class="btn btn-outline-danger" href="{% url 'delete_ticket' ticket.id %}">Delete</a>
    </div>
    <div class="col col-6">
-      {% comment %} History {% endcomment %}
       <h4>Change History</h4>
       <table class="table table-sm">
          <thead>
@@ -90,20 +85,21 @@ View Ticket | {{ ticket.id }}
       </table>
    </div>
 </div>
-
 <hr>
 <div class="row">
-   <div class="col col-12">
-      {% comment %} Comments {% endcomment %}
+   <div class="col col-8">
       <h4>Comments</h4>
       <ul class="list-group">
-         <li class="list-group-item">I agree</li>
-         <li class="list-group-item">Same</li>
+         {% for comment in comments %}
+         <li class="list-group-item"><b>@{{ comment.user }}</b><span class="float-right">{{ comment.date }}</span>
+            <br>{{ comment.comment_body }}
+         </li>
+         {% endfor %}
       </ul>
-      <br>
-      <form method="POST">
-         <input type="text" class="form-control" placeholder="Leave Comment">
-         <a class="btn btn-primary" href="#">Submit</a>
+      <form method="post" enctype="multipart/form-data">
+         {% csrf_token %}
+         {{ form | as_bootstrap }}
+         <button class="btn btn-outline-primary" type="submit">Submit</button>
       </form>
    </div>
 </div>
