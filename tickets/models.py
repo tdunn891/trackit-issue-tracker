@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from datetime import datetime
 from taggit.managers import TaggableManager
+from simple_history.models import HistoricalRecords
 
 # Create your models here.
 
@@ -20,6 +21,7 @@ class Ticket(models.Model):
     description = models.TextField()
     tags = TaggableManager(blank=True)
     upvotes = models.IntegerField(default=0)
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.summary
@@ -40,3 +42,10 @@ class Comment(models.Model):
 
     class Meta:
         verbose_name_plural = "Comments"
+
+
+# class ChangeHistory(models.Model):
+#     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     date = models.DateTimeField(auto_now_add=True)
+    # field?

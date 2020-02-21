@@ -7,44 +7,56 @@ Tickets
 <hr>
 {% endblock %}
 {% block content %}
-<a class="btn btn-success" href="{% url 'add_ticket' %}">Raise Ticket</a>
-<input type="text" placeholder="Search"><button class="btn btn-info">Go</button></input>
-<br>
-<br>
-<table class="table table-sm">
-   <thead>
-      <tr>
-         <th scope="col">ID</th>
-         <th scope="col">Summary</th>
-         <th scope="col">Type</th>
-         <th scope="col">Submitted By</th>
-         <th scope="col">Assigned To</th>
-         <th scope="col">Status</th>
-         <th scope="col">Priority</th>
-         <th scope="col">Created</th>
-      </tr>
-   </thead>
-   <tbody>
-      {% for ticket in tickets %}
-      <tr>
-         <td scope="row">{{ ticket.id }}</td>
-         <td><a href="{% url 'view_ticket' ticket.id %}">{{ ticket.summary }}</a></td>
-         <td>{{ ticket.ticket_type }}</td>
-         <td>{{ ticket.submitted_by }}</td>
-         <td>{{ ticket.assigned_to }}</td>
-         <td>{{ ticket.status }}</td>
-         {% if ticket.priority == "Low" %}
-         <td><span class="badge badge-pill badge-success">{{ ticket.priority }}</span></td>
-         {% elif ticket.priority == "Medium" %}
-         <td><span class="badge badge-pill badge-warning">{{ ticket.priority }}</span></td>
-         {% elif ticket.priority == "High" %}
-         <td><span class="badge badge-pill badge-danger">{{ ticket.priority }}</span></td>
-         {% else  %}
-         <td><span class="badge badge-pill badge-light">{{ ticket.priority }}</span></td>
-         {% endif %}
-         <td>{{ ticket.created_date }}</td>
-      </tr>
-      {% endfor %}
-   </tbody>
-</table>
+<div class="row">
+   <div class="col col-2">
+      <div class="checkbox">
+         <label><input type="checkbox" value="bug">Bug</label>
+      </div>
+      <div class="checkbox">
+         <label><input type="checkbox" value="feature">Feature</label>
+      </div>
+   </div>
+   <div class="col col-10">
+      <a class="btn btn-success" href="{% url 'add_ticket' %}">Raise Ticket</a>
+      <input type="text" placeholder="Search"><button class="btn btn-info">Go</button></input>
+      <br>
+      <br>
+      <table class="table table-sm">
+         <thead>
+            <tr>
+               <th scope="col"><a href="?order=id">ID</th>
+               <th scope="col"><a href="?order=summary">Summary</th>
+               <th scope="col"><a href="?order=ticket_type">Type</a></th>
+               <th scope="col"><a href="?order=submitted_by">Submitted By</th>
+               <th scope="col"><a href="?order=assigned_to">Assigned To</th>
+               <th scope="col"><a href="?order=status">Status</th>
+               <th scope="col"><a href="?order=priority">Priority</th>
+               <th scope="col"><a href="?order=created_date">Created</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for ticket in tickets %}
+            <tr>
+               <td scope="row">{{ ticket.id }}</td>
+               <td><a href="{% url 'view_ticket' ticket.id %}">{{ ticket.summary }}</a></td>
+               <td>{{ ticket.ticket_type }}</td>
+               <td>{{ ticket.submitted_by }}</td>
+               <td>{{ ticket.assigned_to }}</td>
+               <td>{{ ticket.status }}</td>
+               {% if ticket.priority == "Low" %}
+               <td><span class="badge badge-pill badge-success">{{ ticket.priority }}</span></td>
+               {% elif ticket.priority == "Medium" %}
+               <td><span class="badge badge-pill badge-warning">{{ ticket.priority }}</span></td>
+               {% elif ticket.priority == "High" %}
+               <td><span class="badge badge-pill badge-danger">{{ ticket.priority }}</span></td>
+               {% else  %}
+               <td><span class="badge badge-pill badge-light">{{ ticket.priority }}</span></td>
+               {% endif %}
+               <td>{{ ticket.created_date }}</td>
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+</div>
 {% endblock %}

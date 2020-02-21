@@ -1,23 +1,41 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from .models import Ticket, Comment
+from .models import Ticket, Comment, HistoricalTicket
 from .forms import AddTicketForm, AddCommentForm
 
 
 # Create your views here.
 def view_tickets(request):
     """Display All Tickets"""
-    tickets = Ticket.objects.filter().order_by('-id')
+    sort_field = request.GET['order'] if 'order' in request.GET else '-id'
+    # tickets = Ticket.objects.filter().order_by('-id')
+    tickets = Ticket.objects.filter().order_by(sort_field)
     return render(request, 'tickets.html', {'tickets': tickets})
-    # return HttpResponse('Hello from tickets app')
 
 
 def view_ticket(request, pk):
     """Display single ticket"""
     ticket = Ticket.objects.filter(id=pk)[0]
     comments = Comment.objects.filter(ticket_id=pk)
-    # If post (add comment button click)
+    historical_changes = HistoricalTicket.objects.filter(id=pk)
+    all_deltas = []
+    for x in range(historical_changes.count()-1):
+        new_record = ticket.history.all()[x]
+        old_record = ticket.history.all()[x+1]
+        delta = new_record.diff_against(old_record)
+        for change in delta.changes:
+            test_change = {
+                'field': change.field,
+                'new_value': change.new,
+                'old_value': change.old,
+                'changed_by': new_record.history_user,
+                'date_changed': new_record.history_date
+            }
+            all_deltas.append(test_change)
+
+    # * Display comment box
     form = AddCommentForm(request.POST, request.FILES, instance=None)
+    # * On submit comment
     if (request.method == "POST"):
         if form.is_valid():
             comment_body = form.cleaned_data.get("comment_body")
@@ -25,7 +43,7 @@ def view_ticket(request, pk):
                 ticket_id=pk, comment_body=comment_body, user_id=request.user.id)
             comment.save()
             return redirect(view_ticket, pk)
-    return render(request, 'view_ticket.html', {'ticket': ticket, 'comments': comments, 'form': form})
+    return render(request, 'view_ticket.html', {'ticket': ticket, 'comments': comments, 'form': form, 'all_deltas': all_deltas})
 
 
 def add_ticket(request, pk=None):
@@ -55,6 +73,7 @@ def edit_ticket(request, pk=None):
             # request.user should be recorded in an "updated by column"
             # modifieddate should also be recorded in an "modified column"
             ticket = form.save()
+
             return redirect(view_tickets)
     else:
         form = AddTicketForm(instance=ticket)
@@ -74,20 +93,3 @@ def delete_ticket(request, pk=None):
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
     ticket.delete()
     return redirect(view_tickets)
-
-
-# def add_comment(request):
-#     """TESTAdd Ticket"""
-#     print('test')
-#     # On Submit
-#     if (request.method == "POST"):
-#         form = AddCommentForm(request.POST, request.FILES, instance=None)
-#         if form.is_valid():
-#             comment = form.save(commit=False)
-#             # ticket.submitted_by = request.user
-#             comment.save()
-#             form.save_m2m()
-#             return redirect(view_tickets)
-#     else:
-#         form = AddCommentForm(instance=None)
-#         return render(request, 'view_ticket.html', {'form': form})

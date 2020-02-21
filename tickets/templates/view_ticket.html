@@ -9,15 +9,15 @@ View Ticket | {{ ticket.id }}
 {% endblock %}
 {% block content %}
 <div class="row">
-   <div class="col col-6">
+   <div class="col col-5">
       <h4>Details</h4>
       <table class="table table-sm">
-         <thead>
-            <tr>
+         {% comment %} <thead> {% endcomment %}
+            {% comment %} <tr> {% endcomment %}
                {% comment %} <th scope="col">Field</th> {% endcomment %}
                {% comment %} <th scope="col">Value</th> {% endcomment %}
-            </tr>
-         </thead>
+               {% comment %} </tr> {% endcomment %}
+            {% comment %} </thead> {% endcomment %}
          <tbody>
             <tr>
                <th>Summary</th>
@@ -57,41 +57,56 @@ View Ticket | {{ ticket.id }}
             </tr>
          </tbody>
       </table>
-      <a class="btn btn-outline-primary" href="{% url 'edit_ticket' ticket.id %}">Edit</a>
+      <a class="btn btn-primary" href="{% url 'edit_ticket' ticket.id %}">Edit</a>
       {% if ticket.status != 'Cancelled' %}
-      <a class="btn btn-outline-warning" href="{% url 'cancel_ticket' ticket.id %}">Cancel</a>
+      <a class="btn btn-warning" href="{% url 'cancel_ticket' ticket.id %}">Cancel</a>
       {% endif %}
-      <a class="btn btn-outline-danger" href="{% url 'delete_ticket' ticket.id %}">Delete</a>
+      <a class="btn btn-danger" href="{% url 'delete_ticket' ticket.id %}">Delete</a>
    </div>
-   <div class="col col-6">
+   <div class="col col-7">
       <h4>Change History</h4>
       <table class="table table-sm">
          <thead>
             <tr>
-               <th scope="col">Field</th>
+               <th scope="col">Property</th>
                <th scope="col">New Value</th>
                <th scope="col">Old Value</th>
-               <th scope="col">Date Changed</th>
+               <th scope="col">User</th>
+               <th scope="col">Date</th>
             </tr>
          </thead>
          <tbody>
+            {% if all_deltas %}
+            {% for delta in all_deltas %}
             <tr>
-               <td>Status</td>
-               <td>High</td>
-               <td>Medium</td>
-               <td>20/02/2020</td>
+               <td>{{ delta.field }}</td>
+               <td>{{ delta.new_value }}</td>
+               <td>{{ delta.old_value }}</td>
+               <td>{{ delta.changed_by }}</td>
+               <td>{{ delta.date_changed }}</td>
             </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+               <td>-</td>
+               <td>-</td>
+               <td>-</td>
+               <td>-</td>
+               <td>-</td>
+            </tr>
+            {% endif %}
          </tbody>
       </table>
    </div>
 </div>
 <hr>
 <div class="row">
-   <div class="col col-8">
+   <div class="col col-12">
       <h4>Comments</h4>
       <ul class="list-group">
          {% for comment in comments %}
-         <li class="list-group-item"><b>@{{ comment.user }}</b><span class="float-right">{{ comment.date }}</span>
+         <li class="list-group-item"><b>@{{ comment.user }}</b><span class="float-right">
+         <i>{{ comment.date }}</i></span>
             <br>{{ comment.comment_body }}
          </li>
          {% endfor %}
