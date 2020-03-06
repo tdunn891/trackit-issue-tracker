@@ -1,121 +1,205 @@
 {% extends "base.html" %}
 {% load bootstrap_tags %}
 {% block title %}
-View Ticket | {{ ticket.id }}
+View Ticket (ID: {{ ticket.id }})
 {% endblock %}
 {% block page_heading %}
-<h2>View Ticket | {{ ticket.id}} </h2>
-<hr>
+View Ticket: ({{ticket.id}})
 {% endblock %}
 {% block content %}
-<div class="row">
-   <div class="col col-5">
-      <h4>Details</h4>
-      <table class="table table-sm">
-         {% comment %} <thead> {% endcomment %}
-            {% comment %} <tr> {% endcomment %}
-               {% comment %} <th scope="col">Field</th> {% endcomment %}
-               {% comment %} <th scope="col">Value</th> {% endcomment %}
-               {% comment %} </tr> {% endcomment %}
-            {% comment %} </thead> {% endcomment %}
-         <tbody>
-            <tr>
-               <th>Summary</th>
-               <td>{{ ticket.summary }}</td>
-            </tr>
-            <tr>
-               <th>Ticket Type</th>
-               <td>{{ ticket.ticket_type }}</td>
-            </tr>
-            <tr>
-               <th>Submitted By </th>
-               <td>{{ ticket.submitted_by }}</td>
-            </tr>
-            <tr>
-               <th>Assigned To</th>
-               <td>{{ ticket.assigned_to }}</td>
-            </tr>
-            <tr>
-               <th>Status</th>
-               <td>{{ ticket.status }}</td>
-            </tr>
-            <tr>
-               <th>Priority</th>
-               <td><span class="badge badge-pill badge-warning">{{ ticket.priority }}</span></td>
-            </tr>
-            <tr>
-               <th>Created Date</th>
-               <td>{{ ticket.created_date }}</td>
-            </tr>
-            <tr>
-               <th>Tags</th>
-               <td>{{ticket.tags.all|join:", "}}</td>
-            </tr>
-            <tr>
-               <th>Upvotes</th>
-               <td>{{ ticket.upvotes }} <a href="#" class="btn btn-outline-primary btn-sm">+1</a></td>
-            </tr>
-         </tbody>
-      </table>
-      <a class="btn btn-primary" href="{% url 'edit_ticket' ticket.id %}">Edit</a>
-      {% if ticket.status != 'Cancelled' %}
-      <a class="btn btn-warning" href="{% url 'cancel_ticket' ticket.id %}">Cancel</a>
-      {% endif %}
-      <a class="btn btn-danger" href="{% url 'delete_ticket' ticket.id %}">Delete</a>
+<nav>
+   <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+         aria-controls="nav-home" aria-selected="true">Details</a>
+      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+         aria-controls="nav-profile" aria-selected="false">Change History</a>
    </div>
-   <div class="col col-7">
-      <h4>Change History</h4>
-      <table class="table table-sm">
-         <thead>
-            <tr>
-               <th scope="col">Property</th>
-               <th scope="col">New Value</th>
-               <th scope="col">Old Value</th>
-               <th scope="col">User</th>
-               <th scope="col">Date</th>
-            </tr>
-         </thead>
-         <tbody>
-            {% if all_deltas %}
-            {% for delta in all_deltas %}
-            <tr>
-               <td>{{ delta.field }}</td>
-               <td>{{ delta.new_value }}</td>
-               <td>{{ delta.old_value }}</td>
-               <td>{{ delta.changed_by }}</td>
-               <td>{{ delta.date_changed }}</td>
-            </tr>
-            {% endfor %}
-            {% else %}
-            <tr>
-               <td>-</td>
-               <td>-</td>
-               <td>-</td>
-               <td>-</td>
-               <td>-</td>
-            </tr>
-            {% endif %}
-         </tbody>
-      </table>
+</nav>
+
+<!-- Internal Tabs -->
+<div class="tab-content" id="nav-tabContent">
+   <!-- Details Pane -->
+   <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+      <div class="jumbotron">
+         <div class="row">
+            <div class="col col-8">
+               <h4 class="display-5">{{ ticket.summary}}
+                  {% if ticket.ticket_type == "Bug" %}
+                  <i class="material-icons">bug_report</i>
+                  {% elif ticket.ticket_type == "Feature" %}
+                  <i class="material-icons">build</i>
+                  {% endif %}
+               </h4>
+               <p class="lead">{{ ticket.description }}</p>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col col-7">
+               <table class="table table-sm">
+                  <tbody>
+                     <tr>
+                        <th>Priority</th>
+                        <td>
+                           {% if ticket.priority == "Low" %}
+                           <span class="badge badge-info">
+                              {% elif ticket.priority == "Medium" %}
+                              <span class="badge badge-warning">
+                                 {% elif ticket.priority == "High" %}
+                                 <span class="badge badge-danger">
+                                    {% endif %}
+                                    {{ ticket.priority }}
+                                 </span>
+                        </td>
+                     </tr>
+                     <tr>
+                        <th>Status</th>
+                        <td>{{ ticket.status }}</td>
+                     </tr>
+                     <tr>
+                        <th>Submitter</th>
+                        <td>{{ ticket.submitted_by }}</td>
+                     </tr>
+                     <tr>
+                        <th>Assignee</th>
+                        <td>{{ ticket.assigned_to }}</td>
+                     </tr>
+                     <tr>
+                        <th>Created</th>
+                        <td>{{ ticket.created_date }}</td>
+                     </tr>
+                     <tr>
+                        <th>Resolved</th>
+                        {% if ticket.est_resolved_date == None %}
+                        <td>--</td>
+                        {% else %}
+                        <td>{{ ticket.est_resolved_date }}</td>
+                        {% endif %}
+                     </tr>
+                     <tr>
+                        <th>Age (days)</th>
+                        <td>{{ ticket.age }}</td>
+                     </tr>
+                     <tr>
+                        <th>Tags</th>
+                        <td>{{ticket.tags.all|join:", "}}</td>
+                     </tr>
+                  </tbody>
+               </table>
+               <hr>
+               <a href="{% url 'upvote' ticket.id %}"
+                  class="btn btn-outline-primary btn-sm float-right">{{ ticket.upvotes }}
+                  Upvote<i class="material-icons">arrow_upward</i></a>
+               <a class="btn btn-primary" href="{% url 'edit_ticket' ticket.id %}">Edit</a>
+               {% if ticket.status != 'Cancelled' %}
+               <a class="btn btn-warning" href="{% url 'cancel_ticket' ticket.id %}">Cancel</a>
+               {% endif %}
+               <a class="btn btn-danger" href="{% url 'delete_ticket' ticket.id %}">Delete</a>
+            </div>
+
+            <div class="col col-5">
+               {% if all_deltas %}
+               <h5><i class="material-icons">timeline</i> Activity</h5>
+               <ul>
+                  {% for delta in all_deltas %}
+                  <li>
+                     <!-- {{ delta.date_changed }}<br> -->
+                     <b>{{ delta.changed_by }}</b> set <b>{{ delta.field }}</b> to
+                     <b>{{ delta.new_value }}</b>
+                  </li>
+                  {% endfor %}
+               </ul>
+               {% endif %}
+            </div>
+         </div>
+         <div class="row">
+            <div class="col col-6">
+               {% if ticket.screenshot %}
+               <b>Screenshot:</b>
+               <a href="{{ ticket.screenshot.url }}" target="_blank">
+                  <img src="{{ ticket.screenshot.url }}" alt="{{ ticket.screenshot }}" />
+               </a>
+               {% endif %}
+            </div>
+         </div>
+      </div>
+      <hr>
+      <div class="row">
+         <div class="col col-12">
+            <h4><i class="material-icons">insert_comment</i> Comments ({{ comments.count }})</h4>
+            <ul class="list-group">
+               {% for comment in comments %}
+               <li class="list-group-item">
+                  <i class="material-icons rounded-circle float-left">account_circle</i>
+                  <b>&nbsp;&nbsp;{{ comment.user }}</b><span class="text-muted">
+                     <small>&nbsp;{{ comment.date }}</small></span>
+                  <br>&nbsp;&nbsp;{{ comment.comment_body }}
+               </li>
+               {% endfor %}
+            </ul>
+            <form method="post" enctype="multipart/form-data">
+               {% csrf_token %}
+               {{ form | as_bootstrap }}
+               <button class="btn btn-outline-primary" type="submit">Submit</button>
+            </form>
+         </div>
+      </div>
    </div>
-</div>
-<hr>
-<div class="row">
-   <div class="col col-12">
-      <h4>Comments</h4>
-      <ul class="list-group">
-         {% for comment in comments %}
-         <li class="list-group-item"><b>@{{ comment.user }}</b><span class="float-right">
-         <i>{{ comment.date }}</i></span>
-            <br>{{ comment.comment_body }}
-         </li>
+   <!-- Change History Pane -->
+   <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+      <div class="jumbotron">
+         <div class="row">
+            <div class="col col-12">
+               <h4 class="display-5">{{ ticket.summary}}
+                  {% if ticket.ticket_type == "Bug" %}
+                  <i class="material-icons">bug_report</i>
+                  {% elif ticket.ticket_type == "Feature" %}
+                  <i class="material-icons">build</i>
+                  {% endif %}
+               </h4>
+               <p class="lead">{{ ticket.description }}</p>
+               <br>
+               <table class="table table-sm">
+                  <thead>
+                     <tr>
+                        <th scope="col">Property</th>
+                        <th scope="col">New Value</th>
+                        <th scope="col">Old Value</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Date</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {% if all_deltas %}
+                     {% for delta in all_deltas %}
+                     <!-- Exclude 'upvotes' -->
+                     <tr>
+                        <td>{{ delta.field }}</td>
+                        <td>{{ delta.new_value }}</td>
+                        <td>{{ delta.old_value }}</td>
+                        <td>{{ delta.changed_by }}</td>
+                        <td>{{ delta.date_changed }}</td>
+                     </tr>
+                     {% endfor %}
+                     {% else %}
+                     <tr>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                     </tr>
+                     {% endif %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+      <!-- <h4>Activity</h4>
+      <ul>
+         {% for delta in all_deltas %}
+         <li>{{ delta.changed_by}} updated <b>{{ delta.field }}</b> to <b>{{ delta.new_value }}</b></li>
          {% endfor %}
-      </ul>
-      <form method="post" enctype="multipart/form-data">
-         {% csrf_token %}
-         {{ form | as_bootstrap }}
-         <button class="btn btn-outline-primary" type="submit">Submit</button>
-      </form>
+      </ul> -->
    </div>
 </div>
 {% endblock %}
