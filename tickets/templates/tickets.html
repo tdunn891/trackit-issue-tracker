@@ -1,62 +1,127 @@
 {% extends "base.html" %}
 {% block title %}
-Tickets
+TrackIt | Tickets
+{% endblock %}
+{% block head %}
+<!-- <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"> -->
+<link rel="stylesheet" type="text/css"
+   href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-html5-1.6.1/cr-1.5.2/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.css" />
 {% endblock %}
 {% block page_heading %}
-<h2>Tickets</h2>
-<hr>
+<i class="material-icons-outlined">confirmation_number</i> Tickets ({{ tickets.count }})
+<a class="btn btn-primary float-right" href="{% url 'add_ticket' %}">Raise Ticket
+   <i class="material-icons align-bottom">add</i></a>
 {% endblock %}
 {% block content %}
 <div class="row">
-   <div class="col col-2">
-      <div class="checkbox">
-         <label><input type="checkbox" value="bug">Bug</label>
-      </div>
-      <div class="checkbox">
-         <label><input type="checkbox" value="feature">Feature</label>
-      </div>
-   </div>
-   <div class="col col-10">
-      <a class="btn btn-success" href="{% url 'add_ticket' %}">Raise Ticket</a>
-      <input type="text" placeholder="Search"><button class="btn btn-info">Go</button></input>
+   <div class="col col-12">
       <br>
-      <br>
-      <table class="table table-sm">
+      <table class="table table-hover table-responsive display" id="tickets-table">
          <thead>
             <tr>
-               <th scope="col"><a href="?order=id">ID</th>
-               <th scope="col"><a href="?order=summary">Summary</th>
-               <th scope="col"><a href="?order=ticket_type">Type</a></th>
-               <th scope="col"><a href="?order=submitted_by">Submitted By</th>
-               <th scope="col"><a href="?order=assigned_to">Assigned To</th>
-               <th scope="col"><a href="?order=status">Status</th>
-               <th scope="col"><a href="?order=priority">Priority</th>
-               <th scope="col"><a href="?order=created_date">Created</th>
+               <th>ID</th>
+               <th>Summary</th>
+               <th>Type</th>
+               <th>Submitter</th>
+               <th>Assignee</th>
+               <th>Priority</th>
+               <th>Status</th>
+               <th>Created</th>
+               <th>Age (days)</th>
+               <th>Upvotes</th>
             </tr>
          </thead>
          <tbody>
             {% for ticket in tickets %}
-            <tr>
-               <td scope="row">{{ ticket.id }}</td>
-               <td><a href="{% url 'view_ticket' ticket.id %}">{{ ticket.summary }}</a></td>
-               <td>{{ ticket.ticket_type }}</td>
+            {% if ticket.status == "New" %}
+            <tr data-url="{% url 'view_ticket' ticket.id %}" class="table-light clickable-row">
+               {% elif ticket.status == "In Progress" %}
+            <tr data-url="{% url 'view_ticket' ticket.id %}" class="table-warning clickable-row">
+               {% elif ticket.status == "Resolved" %}
+            <tr data-url="{% url 'view_ticket' ticket.id %}" class="table-success clickable-row">
+               {% endif %}
+               <td>{{ ticket.id }}</td>
+               <td><a href="{% url 'view_ticket' ticket.id %}" data-toggle="tooltip" data-placement="bottom"
+                     title="{{ ticket.description }}">{{ ticket.summary }}</a></td>
+               {% if ticket.ticket_type == "Bug" %}
+               <td><i class="material-icons-outlined" data-toggle="tooltip" title="Bug"
+                     data-placement="left">bug_report</i>
+               </td>
+               {% else %}
+               <td><i class="material-icons-outlined" data-toggle="tooltip" title="Feature"
+                     data-placement="left">build</i><span class="d-none">Feature</span>
+               </td>
+               {% endif %}
                <td>{{ ticket.submitted_by }}</td>
                <td>{{ ticket.assigned_to }}</td>
-               <td>{{ ticket.status }}</td>
                {% if ticket.priority == "Low" %}
-               <td><span class="badge badge-pill badge-success">{{ ticket.priority }}</span></td>
+               <td><span class="badge badge badge-light">{{ ticket.priority }}</span></td>
                {% elif ticket.priority == "Medium" %}
-               <td><span class="badge badge-pill badge-warning">{{ ticket.priority }}</span></td>
+               <td><span class="badge badge badge-warning">{{ ticket.priority }}</span></td>
                {% elif ticket.priority == "High" %}
-               <td><span class="badge badge-pill badge-danger">{{ ticket.priority }}</span></td>
+               <td><span class="badge badge badge-danger">{{ ticket.priority }}</span></td>
                {% else  %}
-               <td><span class="badge badge-pill badge-light">{{ ticket.priority }}</span></td>
+               <td><span class="badge badge badge-light">{{ ticket.priority }}</span></td>
                {% endif %}
-               <td>{{ ticket.created_date }}</td>
+               <!-- Ticket Status Icon -->
+               {% if ticket.status == "New" %}
+               <td><i class="material-icons-outlined" data-toggle="tooltip" title="New"
+                     data-placement="right">local_activity</i><span class="d-none">New</span></td>
+               {% elif ticket.status == "In Progress" %}
+               <td><i class="material-icons" data-toggle="tooltip" title="In Progress"
+                     data-placement="right">access_time</i><span class="d-none">In
+                     Progress</span></td>
+               {% elif ticket.status == "Resolved" %}
+               <td><i class="material-icons" data-toggle="tooltip" title="Resolved" data-placement="right">done</i><span
+                     class="d-none">Resolved</span></td>
+               {% elif ticket.status == "Cancelled" %}
+               <td><i class="material-icons" data-toggle="tooltip" title="Cancelled"
+                     data-placement="right">cancel</i><span class="d-none">Cancelled</span></td>
+               {% endif %}
+               <td>{{ ticket.created_date.date }}</td>
+               <!-- {% if ticket.resolved_date == None %}
+               <td>--</td>
+               {% else %}
+               <td>{{ ticket.resolved_date }}</td>
+               {% endif %} -->
+               <td>{{ ticket.age }}</td>
+               <td>{{ ticket.upvotes }}</td>
             </tr>
             {% endfor %}
          </tbody>
       </table>
    </div>
 </div>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript"
+   src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-html5-1.6.1/cr-1.5.2/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.js"></script>
+<script>
+   $(document).ready(function () {
+      $('#tickets-table').DataTable({
+         /*
+         dom: 'Prftip',
+         layout: 'columns-1',
+                  searchPanes: {
+                     orderable: false,
+                  },
+         columns: [2]
+         dom: '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"frtip>>'
+         dataLength: 20,
+         dom: 'Brftip',
+         pageLength: 20,
+         responsive: true,
+         colReorder: true,
+         "scrollX": true,
+         buttons: ['copy', 'excel', 'pdf']
+         */
+      });
+      $('.clickable-row').on("click", function () {
+         window.location = $(this).data("url");
+      });
+   });
+</script>
 {% endblock %}
