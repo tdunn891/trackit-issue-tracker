@@ -1,10 +1,84 @@
 {% extends 'base.html' %}
 {% block title %}{{ user }}'s Profile{% endblock %}
-{% block page_heading %}
-<h2>Profile</h2>
-<hr>
-{% endblock %}
+{% block page_heading %} <i class="material-icons">account_circle</i> My Account{% endblock %}
 {% block content %}
-{{ user }}
-<p>{{ profile.email }}</p>
+<div class="row">
+   <div class="col-sm-2">
+      <p><i class="material-icons">account_circle</i></p>
+      <p><a href="#">Add Avatar</a></p>
+   </div>
+   <div class="col-sm-10">
+      <br>
+      <table class="table table-sm">
+         <tbody>
+            <tr>
+               <th>Username</th>
+               <td>{{ user.username }} </td>
+            </tr>
+            <tr>
+               <th>First Name</th>
+               <td>{{ user.first_name }} </td>
+            </tr>
+            <tr>
+               <th>Last Name</th>
+               <td>{{ user.last_name }}</td>
+            </tr>
+            <tr>
+               <th>Email</th>
+               <td>{{ user.email }} <a href="#" class="float-right">Update</a></td>
+            </tr>
+            <tr>
+               <th>Member Since</th>
+               <td>{{ user.date_joined.date }}</td>
+            </tr>
+            <tr>
+               <th>Staff</th>
+               <td>{{ user.is_staff }}</td>
+            </tr>
+            <tr>
+               <th>Current Plan</th>
+               {% if user.profile.is_pro_user %}
+               <td><span class="badge badge-primary">PRO</span></td>
+               {% else %}
+               <td>Basic</td>
+               {% endif %}
+            </tr>
+         </tbody>
+      </table>
+   </div>
+</div>
+<div class="row">
+   <div class="col-sm-12 text-center">
+      <h3>Plans</h3>
+      <br>
+   </div>
+</div>
+<div class="row">
+   <div class="col-sm-6 text-center">
+      <div class="jumbotron">
+         {% if user.profile.is_pro_user %}
+         <h5>BASIC</h5>
+         <p>Max Tickets/Month: 10/month</p>
+         {% else %}
+         <h5>BASIC <span class="badge badge-secondary">Current</span></h5>
+         <p>Max Tickets/Month: 10/month</p>
+         <p>Tickets Remaining This Month: placeholder</p>
+         {% endif %}
+      </div>
+   </div>
+   <div class="col-sm-6 text-center">
+      <div class="jumbotron">
+         {% if user.profile.is_pro_user %}
+         <h5>PRO <span class="badge badge-primary align-top">Current Plan</span></h5>
+         <p>Max Tickets/Month: Unlimited</p>
+         <p>Kanban View: Available</p>
+         {% else %}
+         <h5>PRO</h5>
+         Unlock <a href="#">Kanban View</a></p>
+         <p>9.90 EUR / month</p>
+         <p><a href="{% url 'checkout' %}" class="btn btn-primary">Go PRO</a></p>
+         {% endif %}
+      </div>
+   </div>
+</div>
 {% endblock %}

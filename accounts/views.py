@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from .models import Profile
 from accounts.forms import UserLoginForm, UserRegistrationForm
 
 # Create your views here.
@@ -67,13 +68,23 @@ def registration(request):
         "registration_form": registration_form})
 
 
+@login_required()
 def user_profile(request):
     """User's profile page"""
     user = User.objects.get(email=request.user.email)
-    return render(request, 'profile.html', {"profile": user})
+    return render(request, 'profile.html', {"user": user})
 
 
+@login_required()
 def user_list(request):
-    """Shows all users"""
-    users = User.objects.filter()
-    return render(request, 'user_list.html', {"users": users})
+    """Shows list of all users"""
+    # users = User.objects.filter()
+    sort_field = request.GET['sort_by'] if 'sort_by' in request.GET else 'id'
+    users = User.objects.filter().order_by(sort_field)
+    # Staff
+    staff = User.objects.filter(is_staff=1).order_by(sort_field)
+    # Submitters
+    submitters = User.objects.filter(is_staff=0).order_by(sort_field)
+    return render(request, 'user_list.html', {"users": users,
+                                              "staff": staff,
+                                              "submitters": submitters})
