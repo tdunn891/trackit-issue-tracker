@@ -1,18 +1,34 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q, Sum, Count
 from .models import Ticket, Comment, HistoricalTicket
 from .forms import AddTicketForm, AddCommentForm
+from rest_framework import viewsets
+from .serializers import TicketSerializer
 
 
 # Create your views here.
+
+# REST api
+class RestView(viewsets.ModelViewSet):
+    queryset = Ticket.objects.all()
+    serializer_class = TicketSerializer
+
+# Dashboard
+@login_required()
+def dashboard(request):
+    return render(request, 'dashboard.html')
+
+# View Tickets
+@login_required()
 def view_tickets(request):
     """Display All Tickets"""
-    sort_field = request.GET['order'] if 'order' in request.GET else '-id'
-    # tickets = Ticket.objects.filter().order_by('-id')
-    tickets = Ticket.objects.filter().order_by(sort_field)
+    tickets = Ticket.objects.filter()
     return render(request, 'tickets.html', {'tickets': tickets})
 
-
+# View Single Ticket
+@login_required()
 def view_ticket(request, pk):
     """Display single ticket"""
     ticket = Ticket.objects.filter(id=pk)[0]
@@ -24,14 +40,15 @@ def view_ticket(request, pk):
         old_record = ticket.history.all()[x+1]
         delta = new_record.diff_against(old_record)
         for change in delta.changes:
-            test_change = {
-                'field': change.field,
-                'new_value': change.new,
-                'old_value': change.old,
-                'changed_by': new_record.history_user,
-                'date_changed': new_record.history_date
-            }
-            all_deltas.append(test_change)
+            if (change.field != 'upvotes'):
+                test_change = {
+                    'field': change.field,
+                    'new_value': change.new,
+                    'old_value': change.old,
+                    'changed_by': new_record.history_user,
+                    'date_changed': new_record.history_date
+                }
+                all_deltas.append(test_change)
 
     # * Display comment box
     form = AddCommentForm(request.POST, request.FILES, instance=None)
@@ -46,6 +63,7 @@ def view_ticket(request, pk):
     return render(request, 'view_ticket.html', {'ticket': ticket, 'comments': comments, 'form': form, 'all_deltas': all_deltas})
 
 
+@login_required()
 def add_ticket(request, pk=None):
     """Add Ticket"""
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
@@ -63,6 +81,15 @@ def add_ticket(request, pk=None):
         return render(request, 'add_ticket.html', {'form': form})
 
 
+@login_required()
+def upvote(request, pk=None):
+    ticket = get_object_or_404(Ticket, pk=pk) if pk else None
+    ticket.upvotes += 1
+    ticket.save()
+    return redirect(view_ticket, pk)
+
+
+@login_required()
 def edit_ticket(request, pk=None):
     """Edits Ticket"""
     # gets ticket
@@ -70,16 +97,15 @@ def edit_ticket(request, pk=None):
     if (request.method == "POST"):
         form = AddTicketForm(request.POST, request.FILES, instance=ticket)
         if form.is_valid():
-            # request.user should be recorded in an "updated by column"
             # modifieddate should also be recorded in an "modified column"
             ticket = form.save()
-
             return redirect(view_tickets)
     else:
         form = AddTicketForm(instance=ticket)
         return render(request, 'edit_ticket.html', {'form': form, 'ticket': ticket})
 
 
+@login_required()
 def cancel_ticket(request, pk=None):
     """Sets Ticket Status to Cancelled"""
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
@@ -89,7 +115,41 @@ def cancel_ticket(request, pk=None):
     return redirect(view_tickets)
 
 
+@login_required()
 def delete_ticket(request, pk=None):
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
     ticket.delete()
     return redirect(view_tickets)
+
+
+@login_required()
+def kanban(request):
+    sort_field = request.GET.get(
+        'sort_by') if 'sort_by' in request.GET else '-id'
+    tickets = Ticket.objects.filter()
+    # New tickets count
+    new_tickets_count = Ticket.objects.filter(
+        status='New').count()
+    # In Progress tickets count
+    in_progress_tickets_count = Ticket.objects.filter(
+        status='In Progress').count()
+    # Resolved tickets count
+    resolved_tickets_count = Ticket.objects.filter(
+        status='Resolved').count()
+    return render(request, 'kanban.html', {'tickets': tickets,
+                                           'new_tickets_count': new_tickets_count,
+                                           'in_progress_tickets_count': in_progress_tickets_count,
+                                           'resolved_tickets_count': resolved_tickets_count
+                                           })
+
+
+@login_required()
+def change_status(request, pk=None, new_status=None):
+    # get ticket
+    ticket = get_object_or_404(Ticket, pk=pk) if pk else None
+    # change status
+    print('New Status: ' + new_status)
+    # ticket.status = 'In Progress'
+    ticket.status = new_status
+    ticket.save()
+    return redirect(kanban)
