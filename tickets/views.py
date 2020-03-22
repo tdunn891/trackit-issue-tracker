@@ -1,16 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, JsonResponse
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Sum, Count
 from .models import Ticket, Comment, HistoricalTicket
-from .forms import AddTicketForm, AddCommentForm
+from .forms import AddTicketForm, AddCommentForm, EditTicketForm
 from rest_framework import viewsets
 from .serializers import TicketSerializer
+import datetime
 
 
-# Create your views here.
-
-# REST api
+# Django REST API
 class RestView(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
@@ -75,6 +75,8 @@ def add_ticket(request, pk=None):
             ticket.submitted_by = request.user
             ticket.save()
             form.save_m2m()
+            messages.success(
+                request, "Your ticket has been submitted | " + str(ticket.id))
             return redirect(view_tickets)
     else:
         form = AddTicketForm(instance=ticket)
@@ -83,40 +85,39 @@ def add_ticket(request, pk=None):
 
 @login_required()
 def upvote(request, pk=None):
+    """Upvote a Ticket"""
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
     ticket.upvotes += 1
     ticket.save()
+    messages.info(request, "Ticket Upvoted | " + str(ticket.id))
     return redirect(view_ticket, pk)
 
 
 @login_required()
 def edit_ticket(request, pk=None):
-    """Edits Ticket"""
-    # gets ticket
+    """Get and Edit a Ticket"""
+    # Get ticket
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
     if (request.method == "POST"):
-        form = AddTicketForm(request.POST, request.FILES, instance=ticket)
+        form = EditTicketForm(request.POST, request.FILES, instance=ticket)
         if form.is_valid():
-            # modifieddate should also be recorded in an "modified column"
+            if ticket.status == 'Resolved' and ticket.resolved_date != None:
+                # If ticket is set to resolved for the first time
+                # Set resolved date to now
+                ticket.resolved_date = datetime.datetime.now()
             ticket = form.save()
+            messages.info(
+                request, "Ticket Updated | " + str(ticket.id))
             return redirect(view_tickets)
     else:
-        form = AddTicketForm(instance=ticket)
+        form = EditTicketForm(instance=ticket)
         return render(request, 'edit_ticket.html', {'form': form, 'ticket': ticket})
 
 
-@login_required()
-def cancel_ticket(request, pk=None):
-    """Sets Ticket Status to Cancelled"""
-    ticket = get_object_or_404(Ticket, pk=pk) if pk else None
-    ticket.status = "Cancelled"
-    ticket.priority = "N/A"
-    ticket.save()
-    return redirect(view_tickets)
-
-
+# Not currently used
 @login_required()
 def delete_ticket(request, pk=None):
+    """Deletes a ticket"""
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
     ticket.delete()
     return redirect(view_tickets)
@@ -124,6 +125,7 @@ def delete_ticket(request, pk=None):
 
 @login_required()
 def kanban(request):
+    """Show KANBAN View"""
     sort_field = request.GET.get(
         'sort_by') if 'sort_by' in request.GET else '-id'
     tickets = Ticket.objects.filter()
@@ -136,20 +138,30 @@ def kanban(request):
     # Resolved tickets count
     resolved_tickets_count = Ticket.objects.filter(
         status='Resolved').count()
+    # Cancelled tickets count
+    cancelled_tickets_count = Ticket.objects.filter(
+        status='Cancelled').count()
+    # My tickets count
+    my_tickets_count = Ticket.objects.filter(
+        submitted_by=request.user.id).count()
     return render(request, 'kanban.html', {'tickets': tickets,
                                            'new_tickets_count': new_tickets_count,
                                            'in_progress_tickets_count': in_progress_tickets_count,
-                                           'resolved_tickets_count': resolved_tickets_count
+                                           'resolved_tickets_count': resolved_tickets_count,
+                                           'cancelled_tickets_count': cancelled_tickets_count,
+                                           'my_tickets_count': my_tickets_count
                                            })
 
 
 @login_required()
 def change_status(request, pk=None, new_status=None):
-    # get ticket
+    """Quick Update ticket status from dropdown"""
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
-    # change status
-    print('New Status: ' + new_status)
-    # ticket.status = 'In Progress'
     ticket.status = new_status
+    if ticket.status == 'Resolved':
+        # If existing status is Resolved, set resolved date to now.
+        ticket.resolved_date = datetime.datetime.now()
     ticket.save()
-    return redirect(kanban)
+    messages.info(request, "Ticket Status Updated | " +
+                  str(ticket.id) + " | " + ticket.status)
+    return redirect(view_tickets)
