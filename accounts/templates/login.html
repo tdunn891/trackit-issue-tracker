@@ -1,25 +1,25 @@
 {% extends 'base.html' %}
-{% load bootstrap_tags %}
-{% block title %}
-Login
-{% endblock %}
-{% block page_heading %}
-<h1>Login</h1>
-{% endblock %}
+{% load crispy_forms_tags %}
+{% block title %}TrackIt | Login{% endblock %}
+{% block container-class %}{% endblock %}
 {% block content %}
-<br>
-<form method="POST">
-   {% csrf_token %}
-   {{ login_form | as_bootstrap }}
-   <button type="submit" class="btn btn-primary">Log In</button>
-</form>
-<hr>
-<p>Don't have an account yet? <a href="{% url 'registration' %}">Register</a></p>
-{% if messages %}
-<div>
-   {% for message in messages %}
-   {{ message }}
-   {% endfor %}
+<div class="row">
+   <div class="col">
+      <br>
+      <div class="jumbotron mx-auto shadow p-3 mb-5 bg-white" style="max-width: 500px;">
+         <h4 class="display-6 text-center">Log in to your account</h4>
+         <br>
+         <form method="POST">
+            {% csrf_token %}
+            {{ login_form | crispy }}
+            <button type="submit" class="btn btn-primary" style="width: 100%;"> Log In</button>
+         </form>
+         <hr>
+         <a href="#" class="float-right">Forgot Password?</a>
+         <p>Don't have an account? <a href="{% url 'registration' %}">Create Account</a></p>
+         <p>Assessors: <a href="#"><i class="material-icons align-middle">person</i>Log in as Demo User</a>
+         </p>
+      </div>
+   </div>
 </div>
-{% endif %}
 {% endblock %}

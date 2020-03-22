@@ -1,16 +1,21 @@
 {% extends 'base.html' %}
-{% load bootstrap_tags %}
-{% block title %}
-Registration
-{% endblock %}
+{% load crispy_forms_tags %}
+{% block title %}Sign Up{% endblock %}
 {% block content %}
-<h1>Registration</h1>
-<br>
-<form method="POST">
-   {% csrf_token %}
-   {{ registration_form | as_bootstrap }}
-   <button type="submit" class="btn btn-primary">Register</button>
-</form>
-<hr>
-<p>If you already have an account, <a href="{% url 'login' %}">Log In</a></p>
+<div class="row">
+   <div class="col">
+      <br>
+      <div class="jumbotron mx-auto shadow p-3 mb-5 bg-white" style="max-width: 500px;">
+         <h4 class="display-6 text-center">Create Account</h4>
+         <br>
+         <form method="POST">
+            {% csrf_token %}
+            {{ registration_form |crispy }}
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+         </form>
+         <hr>
+         <p class="text-center">Already registered? <a href="{% url 'login' %}">Log In</a></p>
+      </div>
+   </div>
+</div>
 {% endblock %}
