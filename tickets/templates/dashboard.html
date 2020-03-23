@@ -2,52 +2,102 @@
 {% load static from staticfiles %}
 {% load bootstrap_tags %}
 {% block head %}
-<!-- Datatables -->
-<!-- <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"> -->
-<!-- dc.css -->
+<!-- d3 time -->
+<script src="https://d3js.org/d3-time.v1.min.js"></script>
+<script src="https://d3js.org/d3-time-format.v2.min.js"></script>
+<!-- dc.min.css -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dc/3.1.9/dc.min.css"
    integrity="sha256-uq/xxnkXyjSgp47vyRtSvBEwWuxTFbtxbKwOxkmWIJM=" crossorigin="anonymous" />
-<!-- dashboard.css -->
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
 {% endblock %}
+{% block container-class %}dashboard-container{% endblock %}
 {% block title %}TrackIt | Dashboard{% endblock %}
-{% block page_heading %}<i class="material-icons-outlined">assessment</i> Dashboard
-<button class="btn btn-primary float-right reset"><i class="material-icons align-bottom">restore</i> Reset</button>
+{% block page_heading %}
+<i class="material-icons-outlined">assessment</i> Dashboard
+<div id="filtered-count" class="float-right"></div>
+<hr>
 {% endblock %}
 {% block content %}
-<div class="row">
-   <div class="col col-4">
-      <h5>Features vs Bug</h5>
-      <div id="ticketTypePieChart"></div>
+
+<!-- Internal Panes Nav Items -->
+<nav>
+   <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" id="nav-tickets-tab" data-toggle="tab" href="#nav-tickets" role="tab"
+         aria-controls="nav-tickets" aria-selected="true">All Tickets</a>
+      <a class="nav-item nav-link" id="nav-ph-tab" data-toggle="tab" href="#nav-ph" role="tab" aria-controls="nav-ph"
+         aria-selected="false">Aged Tickets (>14days)</a>
    </div>
-   <div class="col col-4">
-      <h5>Priority</h5>
-      <div id="priorityPieChart"></div>
+</nav>
+
+<!-- Internal Panes  -->
+<div class="tab-content" id="nav-tabContent">
+   <!-- Tickets Pane -->
+   <div class="tab-pane fade show active" id="nav-tickets" role="tabpanel" aria-labelledby="nav-tickets-tab">
+      <br>
+      <div class="row">
+         <div class="col col-md-8">
+            <div class="jumbotron text-center">
+               <h5 class="lead">Ticket Status by Date Submitted</h5>
+               <div id="statusByMonthBarChart"></div>
+            </div>
+         </div>
+         <div class="col-md-4 text-center">
+            <div class="jumbotron">
+               <h5 class="lead">Open Tickets Count</h5>
+               <div id="open-closed-tickets-pie-chart"></div>
+            </div>
+            <div class="jumbotron">
+               <h5 class="lead">Status</h5>
+               <div id="statusRowChart"></div>
+            </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-md-4">
+            <div class="jumbotron text-center">
+               <h5 class="lead">Type</h5>
+               <div id="ticketTypeRowChart"></div>
+            </div>
+         </div>
+         <div class="col-md-4">
+            <div class="jumbotron text-center">
+               <h5 class="lead">Priority</h5>
+               <div id="priorityRowChart"></div>
+            </div>
+         </div>
+         <div class="col-md-4">
+            <div class="jumbotron text-center">
+               <h5 class="lead">In-Demand Tickets</h5>
+               <div id="upvotesRowChart"></div>
+            </div>
+         </div>
+      </div>
+      <hr>
+      <div class="row">
+         <div class="col-12">
+            <div class="jumbotron text-center">
+               <h5 class="lead">Age vs Priority Scatter</h5>
+               <div id="age-priority-scatter-plot"></div>
+            </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-12">
+            <div class="jumbotron text-center">
+               <h5 class="lead">Average Days to Resolve</h5>
+               <div id="average-days-to-resolve"></div>
+            </div>
+         </div>
+      </div>
    </div>
-   <div class="col col-4">
-      <h5>Status</h5>
-      <div id="statusPieChart"></div>
-   </div>
-</div>
-<hr>
-<div class="row">
-   <div class="col col-4">
-      <h5>Assignee (Top 5)</h5>
-      <div id="assignedToRowChart"></div>
-   </div>
-   <div class="col col-4">
-      <h5>Popular Tickets (Top 5)</h5>
-      <div id="upvotesRowChart"></div>
-   </div>
-   <div class="col col-4">
-      <h5>Status by Date</h5>
-      <div id="statusByMonthBarChart"></div>
-   </div>
-</div>
-<div class="row">
-   <div class="col col-12">
-      <!-- <h5>DataTable</h5>
-      <div id="datatabletest"></div> -->
+   <!-- placeholder Pane -->
+   <div class="tab-pane fade show" id="nav-ph" role="tabpanel" aria-labelledby="nav-ph-tab">
+      <br>
+      <div class="row">
+         <div class="col">
+            <h5 class="lead">Aged Tickets</h5>
+            <div id="agedRowChart"></div>
+         </div>
+      </div>
    </div>
 </div>
 {% endblock %}
@@ -62,10 +112,8 @@
 <!-- dc.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dc/3.1.9/dc.min.js"
    integrity="sha256-unWojco2TOb01l2JB43J27kr4UQIkHk+PWce5A2eq8Y=" crossorigin="anonymous"></script>
-<!-- dataTables.js -->
-<!-- <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script> -->
-<!-- dc-tableview-light.js-->
-<script src="{% static 'js/dc-tableview-light.min.js' %}"></script>
+<!-- dc-tableview-light.js NOT USED-->
+<!-- <script src="{% static 'js/dc-tableview-light.min.js' %}"></script> -->
 <!-- main.js -->
 <script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}
