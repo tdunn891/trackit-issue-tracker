@@ -30,14 +30,14 @@ def view_tickets(request):
 # View Single Ticket
 @login_required()
 def view_ticket(request, pk):
-    """Display single ticket"""
-    ticket = Ticket.objects.filter(id=pk)[0]
-    comments = Comment.objects.filter(ticket_id=pk)
+    """Display single ticket details, change history and comments"""
+    ticket = get_object_or_404(Ticket, pk=pk) if pk else None
+    # Change History
     historical_changes = HistoricalTicket.objects.filter(id=pk)
     all_deltas = []
-    for x in range(historical_changes.count()-1):
-        new_record = ticket.history.all()[x]
-        old_record = ticket.history.all()[x+1]
+    for i in range(historical_changes.count()-1):
+        new_record = ticket.history.all()[i]
+        old_record = ticket.history.all()[i+1]
         delta = new_record.diff_against(old_record)
         for change in delta.changes:
             if (change.field != 'upvotes'):
@@ -50,17 +50,22 @@ def view_ticket(request, pk):
                 }
                 all_deltas.append(test_change)
 
-    # * Display comment box
+    # Comments
+    comments = Comment.objects.filter(ticket_id=pk)
     form = AddCommentForm(request.POST, request.FILES, instance=None)
-    # * On submit comment
+    # On submit comment
     if (request.method == "POST"):
         if form.is_valid():
             comment_body = form.cleaned_data.get("comment_body")
             comment = Comment(
                 ticket_id=pk, comment_body=comment_body, user_id=request.user.id)
             comment.save()
+            messages.info(request, "Comment submitted.")
             return redirect(view_ticket, pk)
-    return render(request, 'view_ticket.html', {'ticket': ticket, 'comments': comments, 'form': form, 'all_deltas': all_deltas})
+    return render(request, 'view_ticket.html', {'ticket': ticket,
+                                                'comments': comments,
+                                                'form': form,
+                                                'all_deltas': all_deltas})
 
 
 @login_required()
@@ -87,9 +92,11 @@ def add_ticket(request, pk=None):
 def upvote(request, pk=None):
     """Upvote a Ticket"""
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
-    ticket.upvotes += 1
-    ticket.save()
-    messages.info(request, "Ticket Upvoted | " + str(ticket.id))
+    if (request.method == "POST"):
+        # Increment upvotes by 1
+        ticket.upvotes += 1
+        ticket.save()
+        messages.info(request, "Ticket Upvoted | " + str(ticket.id))
     return redirect(view_ticket, pk)
 
 
@@ -102,8 +109,7 @@ def edit_ticket(request, pk=None):
         form = EditTicketForm(request.POST, request.FILES, instance=ticket)
         if form.is_valid():
             if ticket.status == 'Resolved' and ticket.resolved_date != None:
-                # If ticket is set to resolved for the first time
-                # Set resolved date to now
+                # If ticket is set to resolved for the first time, set resolved date to now
                 ticket.resolved_date = datetime.datetime.now()
             ticket = form.save()
             messages.info(
@@ -157,11 +163,12 @@ def kanban(request):
 def change_status(request, pk=None, new_status=None):
     """Quick Update ticket status from dropdown"""
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
-    ticket.status = new_status
-    if ticket.status == 'Resolved':
-        # If existing status is Resolved, set resolved date to now.
-        ticket.resolved_date = datetime.datetime.now()
-    ticket.save()
-    messages.info(request, "Ticket Status Updated | " +
-                  str(ticket.id) + " | " + ticket.status)
+    if (request.method == 'POST'):
+        ticket.status = new_status
+        if ticket.status == 'Resolved':
+            # If existing status is Resolved, set resolved date to now.
+            ticket.resolved_date = datetime.datetime.now()
+        ticket.save()
+        messages.info(request, "Ticket Status Updated | " +
+                      str(ticket.id) + " | " + ticket.status)
     return redirect(view_tickets)
