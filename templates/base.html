@@ -5,76 +5,12 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>{% block title %}{% endblock %}</title>
+   <!-- Bootstrap.css -->
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
    <!-- Material Icons -->
    <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
-   <!-- Roboto -->
-   <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-   <!-- Open Sans -->
-   <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
-   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-   {% block head %}
-   {% endblock %}
-   <title>{% block title %}{% endblock %}</title>
-</head>
-
-<body>
-   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="{% url 'tickets' %}"><i class="material-icons align-top">track_changes</i>
-         TrackIt</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-         aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-         <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
-         <div class="navbar-nav">
-            {% if user.is_authenticated %}
-            <a class="nav-item nav-link active" href="{% url 'tickets' %}">Tickets <i
-                  class="material-icons-outlined align-bottom">confirmation_number</i><span
-                  class="sr-only">(current)</span></a>
-            <!-- <a class="nav-item nav-link" href="{% url 'add_ticket' %}">Raise Ticket <i
-                  class="material-icons align-bottom">add</i></a> -->
-            <a class="nav-item nav-link" href="{% url 'dashboard' %}">Dashboard <i
-                  class="material-icons-outlined align-bottom">assessment</i>
-            </a>
-            <a class="nav-item nav-link" href="{% url 'kanban' %}">Kanban <i
-                  class="material-icons-outlined align-bottom">view_week</i>
-            </a>
-            <a class="nav-item nav-link" href="{% url 'user_list' %}">Team <i
-                  class="material-icons-outlined align-bottom">people</i></a>
-            <a class="nav-item nav-link" href="{% url 'profile' %}">Profile: {{ user }}</a>
-            <a class="nav-item nav-link" href="{% url 'logout' %}">Logout <i
-                  class="material-icons-outlined align-bottom">exit_to_app</i></a>
-            {% else %}
-            <a class="nav-item nav-link" href="{% url 'login' %}">Log In</a>
-            <a class="nav-item nav-link" href="{% url 'registration' %}">Register</a>
-            {% endif %}
-         </div>
-      </div>
-   </nav>
-   <div class="container">
-      <div class="row">
-         <div class="col col-12">
-            <br>
-            <h2>{% block page_heading %}{% endblock %}</h2>
-            <hr>
-         </div>
-      </div>
-      {% block content %}
-      {% endblock %}
-   </div>
-   <!-- footer -->
-   <hr>
-   <footer class="container-fluid" style="height: 120px;">
-      <div class="row">
-         <div class="col col-12 text-center">
-            <p>TrackIt</p>
-            <!-- <p>Developed by Thomas Dunn</p> -->
-         </div>
-      </div>
-   </footer>
    <!-- jQuery -->
    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
       integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -82,16 +18,110 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
       integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
       crossorigin="anonymous"></script>
-   <!-- bootstrap -->
+   <!-- Bootstrap.js -->
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"></script>
-   <!-- initialize tooltips -->
-   <script>
-      $(function () {
-         $('[data-toggle="tooltip"]').tooltip()
-      })
-   </script>
+   <!-- Favicon -->
+   <!-- <link rel="icon" 
+      type="image/png" 
+      href="/somewhere/myicon.png" /> -->
+   {% block head %}
+   {% endblock %}
+   <!-- style.css -->
+   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+
+<body>
+   <nav class="navbar navbar-expand-lg bg-light">
+      <a class="navbar-brand" href="{% url 'index' %}">
+         <i class="material-icons align-top">track_changes</i> <b>TrackIt</b>
+      </a>
+      <span class="navbar-text">Focus on what matters</span>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+         aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+         <div class="navbar-nav">
+            {% if user.is_authenticated %}
+            <a class="nav-item nav-link active" data-toggle="tooltip" href="{% url 'tickets' %}" title="Tickets"><i
+                  class="material-icons-outlined align-bottom">confirmation_number</i><span
+                  class="sr-only">(current)</span>
+            </a>
+            <a class="nav-item nav-link" data-toggle="tooltip" title="Dashboard" href="{% url 'dashboard' %}"><i
+                  class="material-icons-outlined align-bottom">assessment</i>
+            </a>
+            <a class="nav-item nav-link" data-toggle="tooltip" title="Kanban" href="{% url 'kanban' %}"><i
+                  class="material-icons-outlined align-bottom">view_week</i>
+            </a>
+            <a class="nav-item nav-link" data-toggle="tooltip" title="Team" href="{% url 'user_list' %}"><i
+                  class="material-icons-outlined align-bottom">people</i>
+            </a>
+            <a class="nav-item nav-link" data-toggle="tooltip" title="Account" href="{% url 'profile' %}"><i
+                  class="material-icons align-top">
+                  account_circle</i> {{ user }}
+            </a>
+            {% if not user.profile.is_pro_user %}
+            <a href="{% url 'checkout' %}" class="btn btn-outline-primary nav-item nav-link">Go PRO</a>
+            {% endif %}
+            <a class="nav-item nav-link" data-toggle="tooltip" title="Logout" href="{% url 'logout' %}"><i
+                  class="material-icons-outlined align-bottom">exit_to_app</i></a>
+            {% else %}
+            <!-- User not authenticated -->
+            <a class="nav-item nav-link" href="{% url 'login' %}">
+               <i class="material-icons align-middle">input</i>
+               Log In
+            </a>
+            <a class="nav-item nav-link btn btn-primary" href="{% url 'registration' %}">
+               <i class="material-icons align-middle">person_add</i>Create Free Account
+            </a>
+            {% endif %}
+         </div>
+      </div>
+   </nav>
+
+   <div class="container-fluid {% block container-class %}{% endblock %}">
+      <div class="row">
+         <div class="col">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+               {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+         </div>
+      </div>
+      <div class="row">
+         <div class="col col-12">
+            <br>
+            <h3>{% block page_heading %}{% endblock %}</h3>
+         </div>
+      </div>
+      {% block content %}
+      {% endblock %}
+   </div>
+   <!-- footer -->
+   <div class="container-fluid bg-light">
+      <footer style="min-height: 140px;">
+         <hr>
+         <div class="row">
+            <div class="col-12 text-center">
+               <p><a href="mailto:thomas.brian.dunn@gmail.com"><i class="material-icons-outlined align-top">
+                        email
+                     </i> Contact Developer
+                  </a>
+               </p>
+            </div>
+         </div>
+      </footer>
+   </div>
+   <!-- base.js -->
+   <script src="{% static 'js/base.js' %}"></script>
    {% block scripts %}
    {% endblock %}
 </body>
