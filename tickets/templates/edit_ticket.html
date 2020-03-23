@@ -1,21 +1,77 @@
 {% extends "base.html" %}
-{% load bootstrap_tags %}
-{% block title %}
-Edit Ticket | {{ ticket.id }}
+{% load static from staticfiles %}
+{% load crispy_forms_tags %}
+{% block title %}TrackIt | Edit Ticket | {{ ticket.id }}{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/bootstrap-tagsinput.css' %}">
 {% endblock %}
 {% block page_heading %}
-<h2>Edit Ticket | {{ ticket.id }}</h2>
+<i class="material-icons">edit</i> Edit Ticket | {{ ticket.id }}
 <hr>
 {% endblock %}
+{% block container-class %}edit-ticket-container{% endblock %}
 {% block content %}
-<div class="row">
-   <div class="col col-8">
-      <form method="post" enctype="multipart/form-data">
-         {% csrf_token %}
-         {{ form | as_bootstrap }}
-         <button class="btn btn-primary" type="submit">Submit</button>
-      </form>
-      <a class="btn" href="{% url 'tickets' %}">Cancel</a>
+<div class="jumbotron mx-auto" style="max-width: 1400px;">
+   <div class="row">
+      <div class="col-12">
+         <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+               <div class="col-md-12 col-lg-6">
+                  {{ form.summary | as_crispy_field }}
+               </div>
+               <div class="col-12">
+                  {{ form.description | as_crispy_field }}
+               </div>
+               <div class="col-sm-12 col-md-4 col-lg-3">
+                  {{ form.ticket_type | as_crispy_field }}
+               </div>
+               <div class="col-sm-12 col-md-4 col-lg-3">
+                  {{ form.priority | as_crispy_field }}
+               </div>
+               <div class="col-sm-12 col-md-4 col-lg-3">
+                  {{ form.status | as_crispy_field }}
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-12 col-md-8 col-lg-6">
+                  {{ form.tags | as_crispy_field }}
+               </div>
+               <div class="col-12 col-md-4 col-lg-3">
+                  {% if user.is_staff %}
+                  <!-- If user is Staff, Assigned To field is enabled -->
+                  {{ form.assigned_to | as_crispy_field }}
+                  {% else %}
+                  <!-- Assigned To field Disabled -->
+                  <div class="form-group" id="div_id_summary" data-toggle="tooltip"
+                     title="Only staff can reassign tickets." data-placement="right">
+                     <label for="id_assigned">
+                        Assigned To
+                     </label>
+                     <div class="">
+                        <input class="textinput textInput form-control" id="id_assigned" maxlength="300" name="assigned"
+                           placeholder="{{ ticket.assigned_to }}" type="text" disabled>
+                     </div>
+                  </div>
+                  {% endif %}
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-12">
+                  {{ form.screenshot | as_crispy_field }}
+               </div>
+            </div>
+            <hr>
+            <button class="btn btn-primary" type="submit"><span class="material-icons align-bottom">send</span> Submit
+               Changes</button>
+            <a class="float-right" href="{% url 'tickets' %}">Cancel</a>
+         </form>
+      </div>
    </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Bootstrap tags input js -->
+<script type="text/javascript" src="{% static 'js/bootstrap-tagsinput.js' %}"></script>
 {% endblock %}
