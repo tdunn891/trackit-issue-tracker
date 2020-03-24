@@ -1,0 +1,198 @@
+html {
+	height: 100%;
+	scroll-behavior: smooth;
+}
+
+/* Title */
+.navbar-brand {
+	font-size: 26px !important;
+}
+
+.body {
+	font-size: 14px;
+}
+
+.tickets-container {
+	max-width: 1564px;
+}
+
+.view-ticket-container,
+.edit-ticket-container,
+.checkout-container,
+.add-ticket-container {
+	max-width: 1300px;
+}
+
+.kanban-container {
+	max-width: 1400px;
+}
+
+.user-list-container,
+.profile-container {
+	max-width: 1200px;
+}
+
+.dashboard-container {
+	max-width: 1700px;
+}
+
+/* Pie Chart and Row Chart labels */
+.pie-label-group text,
+g .row {
+	font-size: 16px !important;
+}
+
+/* Dashboard Filtered Count */
+#filtered-count {
+	font-size: 16px;
+}
+/* footer */
+footer {
+	width: 100%;
+	bottom: 0;
+}
+
+.clickable-row:hover {
+	cursor: pointer;
+}
+
+.jumbotron {
+	padding-top: 32px;
+	padding-bottom: 32px;
+}
+
+.kanban-col {
+	margin: 0px;
+	padding: 0px;
+}
+
+.kanban-col .jumbotron {
+	padding: 6px;
+}
+
+.kanban-todo {
+	background-color: white;
+}
+.kanban-resolved {
+	background-color: white;
+}
+
+.kanban-in-progress {
+	background-color: white;
+}
+
+.kanban-cancelled {
+	background-color: white;
+}
+
+/* From  https://github.com/masagameplay/light-bootstrap-colors/blob/master/lightBSColors.css */
+/* Background colors */
+.bg-primary-light {
+	background: #e3e4e6;
+}
+.bg-success-light {
+	background: #c3e6cb;
+}
+.bg-info-light {
+	background: #6bc6e1;
+}
+.bg-warning-light {
+	background: #ffeeba;
+}
+.bg-danger-light {
+	background: #dc6460;
+}
+
+.text-royal-blue {
+	background: #0052cc;
+	color: #0052cc;
+}
+
+/* Text colors */
+.text-primary-light {
+	background: #3490df;
+}
+.text-success-light {
+	background: #6cbf6c;
+}
+.text-info-light {
+	background: #6bc6e1;
+}
+.text-warning-light {
+	background: #f1b55f;
+}
+.text-danger-light {
+	background: #dc6460;
+}
+
+/* Custom background colors */
+.bg-cyan-light {
+	background-color: lightcyan;
+}
+.bg-grey-light {
+	background-color: lightgrey;
+}
+
+/* Kanban headers */
+.kanban-col .jumbotron h5 {
+	padding: 8px;
+	margin-bottom: 0;
+}
+
+/* Tickets Search input boxes */
+#ticket-search-boxes th input {
+	width: 100%;
+	padding: 0px;
+	box-sizing: border-box;
+}
+
+#ticket-search-boxes th {
+	padding: 0 1px 0 0;
+}
+
+/* Ticket page Feature and Bug icons  */
+.ticket-type-icon {
+	font-size: 22px;
+}
+
+/* Parallax Effect */
+body {
+	height: 100%;
+}
+
+.parallax {
+	/* The image used */
+	/* background-image: url('https://www.imgacademy.com/themes/custom/imgacademy/images/helpbox-contact.jpg'); */
+	/* background-color: gainsboro; */
+
+	/* Full height */
+	height: 100%;
+
+	/* Create the parallax scrolling effect */
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+/* nav icon size */
+.nav-item i {
+	font-size: 30px;
+}
+
+/* nav-item hover */
+.nav-item:hover {
+	background-color: #0052cc;
+	color: whitesmoke;
+	transition: all 0.3s ease-in-out;
+}
+
+/* index page section headings */
+h4 {
+	color: #0052cc;
+}
+
+* {
+	/* outline: 1px solid lightcoral;
+	outline-offset: -1px; */
+}
