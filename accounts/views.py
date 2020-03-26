@@ -31,7 +31,8 @@ def login(request):
             user = auth.authenticate(username=request.POST['username'],
                                      password=request.POST['password'])
             if user:
-                messages.success(request, "You have successfully logged in.")
+                messages.success(
+                    request, "Welcome, " + user.username + ". You have been successfully logged in.")
                 auth.login(user=user, request=request)
                 return redirect(reverse('tickets'))
             else:
@@ -88,3 +89,7 @@ def user_list(request):
     return render(request, 'user_list.html', {"users": users,
                                               "staff": staff,
                                               "submitters": submitters})
+
+# @login_required()
+# def update_email(request):
+#     """Updates User Email"""
