@@ -132,30 +132,30 @@ def delete_ticket(request, pk=None):
 @login_required()
 def kanban(request):
     """Show KANBAN View"""
-    sort_field = request.GET.get(
-        'sort_by') if 'sort_by' in request.GET else '-id'
+    # my_tickets_only = request.GET.get('my_tickets_only')
+    # if my_tickets_only == 'true':
+    #     tickets = Ticket.objects.filter(
+    #         Q(assigned_to=request.user.id) | Q(submitted_by=request.user.id))
+    # else:
     tickets = Ticket.objects.filter()
-    # New tickets count
-    new_tickets_count = Ticket.objects.filter(
-        status='New').count()
-    # In Progress tickets count
-    in_progress_tickets_count = Ticket.objects.filter(
-        status='In Progress').count()
-    # Resolved tickets count
-    resolved_tickets_count = Ticket.objects.filter(
-        status='Resolved').count()
-    # Cancelled tickets count
-    cancelled_tickets_count = Ticket.objects.filter(
-        status='Cancelled').count()
-    # My tickets count
-    my_tickets_count = Ticket.objects.filter(
-        submitted_by=request.user.id).count()
+
+    new_tickets = tickets.filter(
+        status='New')
+
+    in_progress_tickets = tickets.filter(
+        status='In Progress')
+
+    resolved_tickets = tickets.filter(
+        status='Resolved')
+
+    cancelled_tickets = tickets.filter(
+        status='Cancelled')
+
     return render(request, 'kanban.html', {'tickets': tickets,
-                                           'new_tickets_count': new_tickets_count,
-                                           'in_progress_tickets_count': in_progress_tickets_count,
-                                           'resolved_tickets_count': resolved_tickets_count,
-                                           'cancelled_tickets_count': cancelled_tickets_count,
-                                           'my_tickets_count': my_tickets_count
+                                           'new_tickets': new_tickets,
+                                           'in_progress_tickets': in_progress_tickets,
+                                           'resolved_tickets': resolved_tickets,
+                                           'cancelled_tickets': cancelled_tickets,
                                            })
 
 
