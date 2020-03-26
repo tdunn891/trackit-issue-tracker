@@ -23,14 +23,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'r81y2+3y=qlb(=0-77rx3k07-8kqdqum5*rn@5a@j8ww194%5f'
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY', 'r81y2+3y=qlb(=0-77rx3k07-8kqdqum5*rn@5a@j8ww194%5f')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['http://localhost:8000/',
-                 'https://django-issue-tracker-1.herokuapp.com']
-
+                 os.environ.get('HOSTNAME'),
+                 ]
 
 # Application definition
 
@@ -98,7 +99,7 @@ WSGI_APPLICATION = 'issue_tracker.wsgi.application'
 
 # postgresql
 DATABASES = {
-    'default': dj_database_url.parse("postgres://hduoshlpgoxoyi:fa43c8f4059c34a7cbe4d45c3443200db5fbe8b956f313816e75a9c9d7668d50@ec2-54-195-247-108.eu-west-1.compute.amazonaws.com:5432/d7orbajbrr4b8i")
+    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
 }
 
 # Password validation
