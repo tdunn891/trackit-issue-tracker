@@ -28,7 +28,8 @@ SECRET_KEY = 'r81y2+3y=qlb(=0-77rx3k07-8kqdqum5*rn@5a@j8ww194%5f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://localhost:8000/',
+                 'https://django-issue-tracker-1.herokuapp.com']
 
 
 # Application definition
