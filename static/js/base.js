@@ -5,7 +5,7 @@ $(document).ready(function() {
 	});
 
 	// KANBAN JS
-	if (window.location.pathname == '/kanban/') {
+	if (window.location.pathname == '/tickets/kanban/') {
 		// Toggle Cancelled column display
 		$('#cancelled-checkbox').click(function() {
 			$('.kanban-cancelled')
