@@ -1,50 +1,95 @@
 {% extends 'base.html' %}
-{% block title %}User List{% endblock %}
-{% block page_heading %}<i class="material-icons">people</i> User List{% endblock %}
+{% block title %}Trackit | Team{% endblock %}
+{% block page_heading %}<i class="material-icons">people</i> Users ({{ users.count }})
+<hr>
+{% endblock %}
 {% block head %}
-<!-- <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"> -->
 <link rel="stylesheet" type="text/css"
    href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-html5-1.6.1/cr-1.5.2/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.css" />
 {% endblock %}
+{% block container-class %}user-list-container{% endblock %}
 {% block content %}
-<div class="row">
-   <div class="col col-12">
-      <table id="user-table" class="table display">
-         <thead>
-            <tr>
-               <th>ID</th>
-               <th>User</th>
-               <th>First Name</th>
-               <th>Last Name</th>
-               <th>Role</th>
-               <th>SuperUser</th>
-               <th>Email</th>
-            </tr>
-         </thead>
-         <tbody>
-            {% for user in users %}
-            <tr>
-               <td>{{ user.id }}</td>
-               <td>{{ user.username }}</td>
-               <td>{{ user.first_name }}</td>
-               <td>{{ user.last_name }}</td>
-               <td>placeholder</td>
-               <td>{{ user.is_superuser }}</td>
-               <td>{{ user.email }}</td>
-            </tr>
-            {% endfor %}
-         </tbody>
-      </table>
+<!-- Internal Panes Nav Items -->
+<nav>
+   <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" id="nav-submitters-tab" data-toggle="tab" href="#nav-submitters" role="tab"
+         aria-controls="nav-submitters" aria-selected="true">Submitters ({{ submitters.count }})</a>
+      <a class="nav-item nav-link" id="nav-assignees-tab" data-toggle="tab" href="#nav-assignees" role="tab"
+         aria-controls="nav-assignees" aria-selected="false">Assignees ({{ staff.count }})</a>
+   </div>
+</nav>
+
+<!-- Internal Panes -->
+<div class="tab-content" id="nav-tabContent">
+   <!-- Submitters Pane Here -->
+   <div class="tab-pane fade show active" id="nav-submitters" role="tabpanel" aria-labelledby="nav-submitters-tab">
+      <br>
+      <div class="row">
+         <div class="col col-12">
+            <table id="submitters-table" class="table display">
+               <thead>
+                  <tr>
+                     <th>ID</th>
+                     <th>User</th>
+                     <th>First Name</th>
+                     <th>Last Name</th>
+                     <th>Email</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for submitter in submitters %}
+                  <tr>
+                     <td>{{ submitter.id }}</td>
+                     <td>{{ submitter.username }}</td>
+                     <td>{{ submitter.first_name }}</td>
+                     <td>{{ submitter.last_name }}</td>
+                     <td><a href="mailto:{{ submitter.email }}" data-toggle="tooltip" title="Mail to:"
+                           data-placement="left">
+                           {{ submitter.email }}</td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+   <!-- Assignees Pane -->
+   <div class="tab-pane fade" id="nav-assignees" role="tabpanel" aria-labelledby="nav-assignees-tab">
+      <!-- Table -->
+      <br>
+      <div class="row">
+         <div class="col col-12">
+            <table id="assignees-table" class="table display">
+               <thead>
+                  <tr>
+                     <th>ID</th>
+                     <th>User</th>
+                     <th>First Name</th>
+                     <th>Last Name</th>
+                     <th>Email</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for staff_member in staff %}
+                  <tr>
+                     <td>{{ staff_member.id }}</td>
+                     <td>{{ staff_member.username }}</td>
+                     <td>{{ staff_member.first_name }}</td>
+                     <td>{{ staff_member.last_name }}</td>
+                     <td><a href="mailto:{{ staff_member.email }}" data-toggle="tooltip" title="Mail to:"
+                           data-placement="left">
+                           {{ staff_member.email }}</td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         </div>
+      </div>
    </div>
 </div>
 {% endblock %}
 {% block scripts %}
-<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<!-- DataTables.js -->
 <script type="text/javascript"
    src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-html5-1.6.1/cr-1.5.2/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.js"></script>
-<script>
-   $(document).ready(() => {
-      $('#user-table').DataTable();
-   });
-</script>
 {% endblock %}

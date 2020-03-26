@@ -32,6 +32,9 @@
       <br>
       <p>Logged in as: <b>{{ user.username }}</b></p>
       <p><a href="{% url 'profile' %}">My Account</a></p>
+      {% if user.is_authenticated and not user.profile.is_pro_user %}
+      <p><a href="{% url 'checkout' %}" class="btn btn-sm btn-primary">Go PRO</a></p>
+      {% endif %}
       {% endif %}
    </div>
 </div>
@@ -93,7 +96,8 @@
       <div class="row">
          <div class="col-12">
             <br>
-            <h4 class="text-right"><i class="material-icons align-bottom">verified_user</i> See Our Customers</h4>
+            <h4 class="text-right"><i class="material-icons align-bottom">verified_user</i> See Our
+               Customers</h4>
             <br>
          </div>
          <div class="col-12 col-md-3">
