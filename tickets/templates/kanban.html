@@ -3,68 +3,84 @@
 {% block title %}TrackIt | Kanban{% endblock %}
 {% block container-class %}kanban-container{% endblock %}
 {% block page_heading %}
-<i class="material-icons-outlined">view_week</i> Kanban ({{ tickets.count }})
+<i class="material-icons-outlined">view_week</i> Kanban ({{ tickets|length }})
+
+<div class="form-check float-right" id="hide-cancelled-checkbox">
+   <br>
+   <input type="checkbox" class="form-check-input" id="cancelled-checkbox" checked>
+   <label class="form-check-label" for="cancelled-checkbox"><i class="material-icons-outlined align-middle">
+         visibility_off
+      </i> Hide Cancelled ({{ cancelled_tickets|length}})
+   </label>
+</div>
 <hr>
+<!-- <a href="?my_tickets_only=true" class="btn btn-primary">Mine</a> -->
 {% endblock %}
 {% block content %}
-<div class="row">
+<!-- <div class="row">
    <div class="col">
       <div class="form-check">
          <input type="checkbox" class="form-check-input" id="cancelled-checkbox" checked>
          <label class="form-check-label" for="cancelled-checkbox"><i class="material-icons-outlined align-middle">
                visibility_off
-            </i> Hide Cancelled ({{ cancelled_tickets_count}})
+            </i> Hide Cancelled ({{ cancelled_tickets|length}})
          </label>
       </div>
    </div>
-</div>
+</div> -->
+
 <div class="row">
    <!-- 'New' Column -->
    <div class="col kanban-col">
-      <div class="jumbotron kanban-todo">
+      <div class="jumbotron kanban-new">
          <h5 class="text-center bg-info-light"><i class="material-icons-outlined align-bottom">local_activity</i> New
-            ({{ new_tickets_count }})</h5>
-         {% for ticket in tickets %}
-         {% if ticket.status == 'New' %}
+            ({{ new_tickets|length }})</h5>
+         {% for ticket in new_tickets %}
          <div class="card">
             <div class="card-body">
                <h6 class="card-title">
-                  {% if ticket.ticket_type == "Bug" %}
-                  <i class="material-icons-outlined align-middle" data-toggle="tooltip" title="Bug"
-                     data-placement="right">bug_report</i>
-                  {% elif ticket.ticket_type == "Feature" %}
-                  <i class="material-icons-outlined align-middle" data-toggle="tooltip" title="Feature"
-                     data-placement="right">build</i>
-                  {% endif %}
                   <a href="{% url 'view_ticket' ticket.id %}" data-toggle="tooltip" data-placement="bottom"
-                     title="{{ ticket.description }}">
-                     {{ ticket.summary }}
+                     title="{{ ticket.description }}">{{ ticket.summary }}
                   </a>
-                  <!-- Priority Pill Badge -->
+
+                  <!-- Priority Badge -->
                   <span class="text-muted">
+                     <span class="badge
                      {% if ticket.priority == 'Low' %}
-                     <span class="badge badge-success float-right">{{ ticket.priority }}</span>
+                     badge-success 
                      {% elif ticket.priority == 'Medium' %}
-                     <span class="badge badge-warning float-right">{{ ticket.priority }}</span>
+                     badge-warning
                      {% elif ticket.priority == 'High' %}
-                     <span class="badge badge-danger float-right">{{ ticket.priority }}</span>
+                     badge-danger
                      {% endif %}
+                     float-right">{{ ticket.priority }}
+                     </span>
                   </span>
                </h6>
+
+               <!-- Bug/Feature Icon -->
+               {% if ticket.ticket_type == "Bug" %}
+               <i class="material-icons-outlined align-middle" data-toggle="tooltip" title="Bug"
+                  data-placement="left">bug_report</i>
+               {% elif ticket.ticket_type == "Feature" %}
+               <i class="material-icons-outlined align-middle" data-toggle="tooltip" title="Feature"
+                  data-placement="left">build</i>
+               {% endif %}
+
                <!-- Tags  -->
+               {% if ticket.tags.names %}
                <span>
-                  {% if ticket.tags.names %}
-                  <!-- <b>Tags:</b> -->
                   {% for tag in ticket.tags.names %}
-                  <span class="badge badge-pill badge-info">{{ tag }}</span>
+                  <span class="badge badge-pill badge-light">{{ tag }}</span>
                   {% endfor %}
-                  {% endif %}
                </span>
+               {% endif %}
+
                <!-- Status change via dropdown only available if User is Submitter or Staff -->
                {% if request.user == ticket.submitted_by or request.user.is_staff %}
                <div class="btn-group float-right">
-                  <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
-                     aria-haspopup="true" aria-expanded="false">
+                  <button class="btn btn-secondary btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="false">...
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
                      <h6 class="dropdown-header">Move to:</h6>
@@ -80,47 +96,62 @@
                {% endif %}
             </div>
          </div>
-         {% endif %}
          {% endfor %}
       </div>
    </div>
+
    <!-- In Progress Column -->
    <div class="col kanban-col">
       <div class="jumbotron kanban-in-progress">
          <h5 class="text-center bg-warning-light"><i class="material-icons align-bottom">schedule</i> In Progress
-            ({{ in_progress_tickets_count }})
+            ({{ in_progress_tickets|length }})
          </h5>
-         {% for ticket in tickets %}
-         {% if ticket.status == 'In Progress' %}
+         {% for ticket in in_progress_tickets %}
          <div class="card">
             <div class="card-body">
                <h6 class="card-title">
                   <a href="{% url 'view_ticket' ticket.id %}" data-toggle="tooltip" data-placement="bottom"
                      title="{{ ticket.description }}">{{ ticket.summary }}
                   </a>
-                  {% if ticket.ticket_type == "Bug" %}
-                  <i class="material-icons-outlined float-right" data-toggle="tooltip" data-placement="right"
-                     title="Bug">bug_report</i>
-                  {% elif ticket.ticket_type == "Feature" %}
-                  <i class="material-icons-outlined float-right" data-toggle="tooltip" data-placement="right"
-                     title="Feature">build</i>
-                  {% endif %}
+
+                  <!-- Priority Badge -->
+                  <span class="text-muted">
+                     <span class="badge
+                     {% if ticket.priority == 'Low' %}
+                     badge-success 
+                     {% elif ticket.priority == 'Medium' %}
+                     badge-warning
+                     {% elif ticket.priority == 'High' %}
+                     badge-danger
+                     {% endif %}
+                     float-right">{{ ticket.priority }}
+                     </span>
+                  </span>
                </h6>
-               <small class="text-muted">
-                  {% if ticket.priority == 'Low' %}
-                  <span class="badge badge-success">{{ ticket.priority }}</span>
-                  {% elif ticket.priority == 'Medium' %}
-                  <span class="badge badge-warning">{{ ticket.priority }}</span>
-                  {% elif ticket.priority == 'High' %}
-                  <span class="badge badge-danger">{{ ticket.priority }}</span>
-                  {% endif %}
-               </small>
+
+               <!-- Bug/Feature Icon -->
+               {% if ticket.ticket_type == "Bug" %}
+               <i class="material-icons-outlined float-left" data-toggle="tooltip" data-placement="left"
+                  title="Bug">bug_report</i>
+               {% elif ticket.ticket_type == "Feature" %}
+               <i class="material-icons-outlined float-left" data-toggle="tooltip" data-placement="left"
+                  title="Feature">build</i>
+               {% endif %}
+
+               <!-- Tags  -->
+               {% if ticket.tags.names %}
+               <span>
+                  {% for tag in ticket.tags.names %}
+                  <span class="badge badge-pill badge-light">{{ tag }}</span>
+                  {% endfor %}
+               </span>
+               {% endif %}
 
                <!-- Status change via dropdown only available if User is Submitter or Staff -->
                {% if request.user == ticket.submitted_by or request.user.is_staff %}
                <div class="btn-group float-right">
-                  <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
-                     aria-haspopup="true" aria-expanded="false">
+                  <button class="btn btn-secondary btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="false">...
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
                      <h6 class="dropdown-header">Move to:</h6>
@@ -136,47 +167,63 @@
                {% endif %}
             </div>
          </div>
-         {% endif %}
          {% endfor %}
       </div>
    </div>
+
    <!-- Resolved Column-->
    <div class="col kanban-col">
       <div class="jumbotron kanban-resolved">
          <h5 class="text-center bg-success-light"><i class="material-icons align-bottom">done</i> Resolved
-            ({{ resolved_tickets_count }})
+            ({{ resolved_tickets|length }})
          </h5>
-         {% for ticket in tickets %}
-         {% if ticket.status == 'Resolved' %}
+         {% for ticket in resolved_tickets %}
          <div class="card">
             <div class="card-body">
                <h6 class="card-title">
                   <a href="{% url 'view_ticket' ticket.id %}" data-toggle="tooltip" data-placement="bottom"
                      title="{{ ticket.description }}">{{ ticket.summary }}
                   </a>
-                  {% if ticket.ticket_type == "Bug" %}
-                  <i class="material-icons-outlined float-right" data-toggle="tooltip" data-placement="right"
-                     title="Bug">bug_report</i>
-                  {% elif ticket.ticket_type == "Feature" %}
-                  <i class="material-icons-outlined float-right" data-toggle="tooltip" data-placement="right"
-                     title="Feature">build</i>
-                  {% endif %}
+
+                  <!-- Priority Badge -->
+                  <span class="text-muted">
+                     <span class="badge
+                     {% if ticket.priority == 'Low' %}
+                     badge-success 
+                     {% elif ticket.priority == 'Medium' %}
+                     badge-warning
+                     {% elif ticket.priority == 'High' %}
+                     badge-danger
+                     {% endif %}
+                     float-right">{{ ticket.priority }}
+                     </span>
+                  </span>
+
                </h6>
-               <small class="text-muted">
-                  {% if ticket.priority == 'Low' %}
-                  <span class="badge badge-pill badge-success">{{ ticket.priority }}</span>
-                  {% elif ticket.priority == 'Medium' %}
-                  <span class="badge badge-pill badge-warning">{{ ticket.priority }}</span>
-                  {% elif ticket.priority == 'High' %}
-                  <span class="badge badge-pill badge-danger">{{ ticket.priority }}</span>
-                  {% endif %}
-               </small>
+
+               <!-- Bug/Feature Icon -->
+               {% if ticket.ticket_type == "Bug" %}
+               <i class="material-icons-outlined float-left" data-toggle="tooltip" data-placement="left"
+                  title="Bug">bug_report</i>
+               {% elif ticket.ticket_type == "Feature" %}
+               <i class="material-icons-outlined float-left" data-toggle="tooltip" data-placement="left"
+                  title="Feature">build</i>
+               {% endif %}
+
+               <!-- Tags  -->
+               {% if ticket.tags.names %}
+               <span>
+                  {% for tag in ticket.tags.names %}
+                  <span class="badge badge-pill badge-light">{{ tag }}</span>
+                  {% endfor %}
+               </span>
+               {% endif %}
 
                <!-- Status change via dropdown only available if User is Submitter or Staff -->
                {% if request.user == ticket.submitted_by or request.user.is_staff %}
                <div class="btn-group float-right">
-                  <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
-                     aria-haspopup="true" aria-expanded="false">
+                  <button class="btn btn-secondary btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="false">...
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
                      <h6 class="dropdown-header">Move to:</h6>
@@ -192,48 +239,62 @@
                {% endif %}
             </div>
          </div>
-         {% endif %}
          {% endfor %}
       </div>
    </div>
+
    <!-- Cancelled Column -->
    <div class="col kanban-col d-none">
       <div class="jumbotron kanban-cancelled">
          <h5 class="text-center bg-grey-light"><i class="material-icons-outlined align-bottom">cancel</i> Cancelled
-            ({{ cancelled_tickets_count }})
+            ({{ cancelled_tickets|length }})
          </h5>
-         {% for ticket in tickets %}
-         {% if ticket.status == 'Cancelled' %}
+         {% for ticket in cancelled_tickets %}
          <div class="card">
             <div class="card-body">
                <h6 class="card-title">
                   <a href="{% url 'view_ticket' ticket.id %}" data-toggle="tooltip" data-placement="bottom"
-                     title="{{ ticket.description }}">
-                     {{ ticket.summary }}
+                     title="{{ ticket.description }}">{{ ticket.summary }}
                   </a>
-                  {% if ticket.ticket_type == "Bug" %}
-                  <i class="material-icons-outlined float-right" data-toggle="tooltip" title="Bug"
-                     data-placement="right">bug_report</i>
-                  {% elif ticket.ticket_type == "Feature" %}
-                  <i class="material-icons-outlined float-right" data-toggle="tooltip" title="Feature"
-                     data-placement="right">build</i>
-                  {% endif %}
+
+                  <!-- Priority Badge -->
+                  <span class="text-muted">
+                     <span class="badge
+                     {% if ticket.priority == 'Low' %}
+                     badge-success 
+                     {% elif ticket.priority == 'Medium' %}
+                     badge-warning
+                     {% elif ticket.priority == 'High' %}
+                     badge-danger
+                     {% endif %}
+                     float-right">{{ ticket.priority }}
+                     </span>
+                  </span>
                </h6>
-               <small class="text-muted">
-                  {% if ticket.priority == 'Low' %}
-                  <span class="badge badge-pill badge-success">{{ ticket.priority }}</span>
-                  {% elif ticket.priority == 'Medium' %}
-                  <span class="badge badge-pill badge-warning">{{ ticket.priority }}</span>
-                  {% elif ticket.priority == 'High' %}
-                  <span class="badge badge-pill badge-danger">{{ ticket.priority }}</span>
-                  {% endif %}
-               </small>
+
+               <!-- Bug/Feature Icon -->
+               {% if ticket.ticket_type == "Bug" %}
+               <i class="material-icons-outlined align-middle" data-toggle="tooltip" title="Bug"
+                  data-placement="left">bug_report</i>
+               {% elif ticket.ticket_type == "Feature" %}
+               <i class="material-icons-outlined align-middle" data-toggle="tooltip" title="Feature"
+                  data-placement="left">build</i>
+               {% endif %}
+
+               <!-- Tags  -->
+               {% if ticket.tags.names %}
+               <span>
+                  {% for tag in ticket.tags.names %}
+                  <span class="badge badge-pill badge-light">{{ tag }}</span>
+                  {% endfor %}
+               </span>
+               {% endif %}
 
                <!-- Status change via dropdown only available if User is Submitter or Staff -->
                {% if request.user == ticket.submitted_by or request.user.is_staff %}
                <div class="btn-group float-right">
-                  <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
-                     aria-haspopup="true" aria-expanded="false">
+                  <button class="btn btn-secondary btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="false">...
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
                      <h6 class="dropdown-header">Move to:</h6>
@@ -248,7 +309,6 @@
                {% endif %}
             </div>
          </div>
-         {% endif %}
          {% endfor %}
       </div>
    </div>

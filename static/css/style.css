@@ -24,7 +24,7 @@ html {
 }
 
 .kanban-container {
-	max-width: 1400px;
+	max-width: 1600px;
 }
 
 .user-list-container,
@@ -34,6 +34,10 @@ html {
 
 .dashboard-container {
 	max-width: 1700px;
+}
+
+#hide-cancelled-checkbox {
+	font-size: 15px;
 }
 
 /* Pie Chart and Row Chart labels */
@@ -61,28 +65,34 @@ footer {
 	padding-bottom: 32px;
 }
 
+/* Update Status Dropdown  */
+.dropdown-toggle {
+	opacity: 0.7;
+}
+
 .kanban-col {
-	margin: 0px;
-	padding: 0px;
+	margin: 3px;
+	padding: 3px;
 }
 
 .kanban-col .jumbotron {
 	padding: 6px;
 }
 
-.kanban-todo {
-	background-color: white;
-}
-.kanban-resolved {
-	background-color: white;
+.kanban-new .card {
+	background-color: lightblue;
 }
 
-.kanban-in-progress {
-	background-color: white;
+.kanban-in-progress .card {
+	background-color: lightgoldenrodyellow;
 }
 
-.kanban-cancelled {
-	background-color: white;
+.kanban-resolved .card {
+	background-color: #c3e6cb;
+}
+
+.kanban-cancelled .card {
+	background-color: lightgrey;
 }
 
 /* From  https://github.com/masagameplay/light-bootstrap-colors/blob/master/lightBSColors.css */

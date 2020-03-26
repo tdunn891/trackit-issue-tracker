@@ -1,29 +1,59 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
-{% load bootstrap_tags %}
-{% block title %}
-Add Ticket
-{% endblock %}
+{% load crispy_forms_tags %}
+{% block title %}TrackIt | Add Ticket{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/bootstrap-tagsinput.css' %}">
 {% endblock %}
 {% block page_heading %}
-<h2>Add Ticket</h2>
+<i class="material-icons">add</i> Add Ticket
 <hr>
 {% endblock %}
+{% block container-class %}add-ticket-container{% endblock %}
 {% block content %}
-<div class="row">
-   <div class="col col-8">
-      <form method="post" enctype="multipart/form-data">
-         {% csrf_token %}
-         {{ form | as_bootstrap }}
-         <button class="btn btn-primary" type="submit">Submit</button>
-      </form>
-      <a class="btn" href="{% url 'tickets' %}">Cancel</a>
+<div class="jumbotron mx-auto" style="max-width: 1400px;">
+   <div class="row">
+      <div class="col-12">
+         <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+               <div class="col-md-12 col-lg-6">
+                  {{ form.summary | as_crispy_field }}
+               </div>
+               <div class="col-12">
+                  {{ form.description | as_crispy_field }}
+               </div>
+               <div class="col-sm-12 col-md-4 col-lg-3">
+                  {{ form.ticket_type | as_crispy_field }}
+               </div>
+               <div class="col-sm-12 col-md-4 col-lg-3">
+                  {{ form.priority | as_crispy_field }}
+               </div>
+               <div class="col-sm-12 col-md-4 col-lg-3">
+                  {{ form.status | as_crispy_field }}
+               </div>
+            </div>
+            <div class="row">
+               <div class="col col-md-8 col-lg-6">
+                  {{ form.tags | as_crispy_field }}
+               </div>
+            </div>
+            <div class="row">
+               <div class="col">
+                  {{ form.screenshot | as_crispy_field }}
+               </div>
+            </div>
+            <hr>
+            <button class="btn btn-primary" type="submit" style="min-width: 180px;"><span
+                  class="material-icons align-bottom">send</span> Submit</button>
+            <a class="" href="{% url 'tickets' %}">Cancel</a>
+         </form>
+      </div>
    </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
+<!-- Bootstrap tags input js -->
 <script type="text/javascript" src="{% static 'js/bootstrap-tagsinput.js' %}"></script>
 {% endblock %}
