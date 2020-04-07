@@ -13,34 +13,40 @@
 <!-- Stripe JS -->
 <script type="text/javascript" src="{% static 'js/stripe.js' %}"></script>
 {% endblock head %}
-{% block page_heading %}<span class="material-icons">
+{% block page_heading %}<span class="material-icons heading-icon">
    shopping_cart
 </span> Checkout<br>
 <hr>{% endblock %}
 {% block container-class %}checkout-container{% endblock %}
 {% block content %}
-<div class="jumbotron mx-auto" style="max-width: 1200px;">
+<div class="jumbotron mx-auto" id="checkout-jumbotron">
    <div class="row">
       <div class="col-12">
          <h3>Go PRO</h3>
-         <b>Includes:</b>
-         <ul>
-            <li>Unlimited Tickets/month</li>
-            <li>KANBAN View</li>
-            <li>24/7 Live Support</li>
+         <hr>
+         <b>Unlocked Features:</b>
+         <br>
+         <br>
+         <ul class="list-group plan-list-group text-left">
+            <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i>
+               UNLIMITED Tickets/month
+            </li>
+            <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i>
+               KANBAN View
+            </li>
          </ul>
-         <p class="lead">Total Due: 9.90 EUR (Single Payment)</p>
-         <!-- <p><span class="glyphicon glyphicon-euro" aria-hidden="true"></span>{{ total }}</p> -->
+         <br>
+         <p class="lead"><b>Total Due: 9.90 EUR (Single Payment)</b></p>
          <form role="form" method="post" id="payment-form" action="{% url 'checkout' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row">
-               <div id="credit-card-errors" style="display: none;">
+               <div id="credit-card-errors">
                   <div id="alert-message block-message error" id="stripe-error-message"></div>
                </div>
             </div>
             <div class="row">
                <div class="col-md-9 col-lg-6">
-                  <legend>Your Details</legend>
+                  <p class="lead">Your Details</p>
                   {{ order_form.full_name | as_crispy_field }}
                </div>
             </div>
@@ -72,8 +78,8 @@
                </div>
             </div>
             <div class="row">
-               <legend>Payment Details</legend>
                <div class="col-md-12 col-lg-6">
+                  <p class="lead">Payment Details</p>
                   {{ payment_form.credit_card_number | as_crispy_field }}
                </div>
             </div>
@@ -98,6 +104,5 @@
       </div>
       </form>
    </div>
-</div>
 </div>
 {% endblock %}

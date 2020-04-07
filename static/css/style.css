@@ -3,15 +3,65 @@ html {
 	scroll-behavior: smooth;
 }
 
-/* Title */
+/* TrackIt Title */
 .navbar-brand {
 	font-size: 26px !important;
+	color: whitesmoke;
 }
 
-.body {
-	font-size: 14px;
+/* TrackIt Icon in Navbar */
+.navbar-brand i {
+	font-size: 36px;
 }
 
+/* Nav icon size */
+.nav-item i {
+	font-size: 34px;
+}
+
+/* Nav-item hover */
+.nav-item:hover {
+	transition: all 0.2s ease-in-out;
+}
+
+/* Navbar GO PRO button */
+#go-pro-btn {
+	margin: auto;
+}
+
+/* Default body font size */
+body {
+	font-size: 15px;
+	height: 100%;
+}
+
+/* To fix Footer to bottom */
+main {
+	min-height: 76%;
+}
+
+/* Messages row margin top so fixed navbar doesn't overlap main content  */
+.messages-row {
+	margin-top: 66px;
+}
+
+/* Index page section headings */
+h4 {
+	color: #0052cc;
+}
+
+/* Heading Icon Size */
+.heading-icon {
+	font-size: 34px;
+}
+
+/* Feature section icons */
+.feature-icon {
+	font-size: 38px !important;
+	color: #0093e9;
+}
+
+/* Container max widths */
 .tickets-container {
 	max-width: 1564px;
 }
@@ -36,8 +86,100 @@ html {
 	max-width: 1700px;
 }
 
+/* Min heights for Index Page sections */
+.section {
+	min-height: 270px;
+}
+
+/* 'Focus on what matters' navbar tag line */
+#index-tag-line {
+	min-height: 260px;
+}
+
+#vertical-line-index {
+	border-left: 1px solid black;
+	height: 180px;
+	margin-left: 25px;
+}
+
+/* Log in button min width on Index page */
+#log-in-btn {
+	min-width: 160px;
+}
+
+/* Full length login btn */
+#login-btn-login-page {
+	width: 100%;
+}
+
+#log-in-jumbotron {
+	max-width: 500px;
+}
+
+/* Kanban cancelled checkbox */
 #hide-cancelled-checkbox {
 	font-size: 15px;
+}
+
+/* Index page Plans cards */
+.card-deck .card {
+}
+
+#customer-logos {
+	width: 76%;
+}
+
+/* Ticket View profile image  */
+.ticket-view-profile-image {
+	width: 42px !important;
+}
+
+/* Default profile icon size */
+.ticket-view-profile-default {
+	font-size: 40px;
+}
+
+/* Profile page default profile image */
+#default-profile-image {
+	font-size: 140px;
+}
+
+/* Profile page profile image */
+#profile-image {
+	width: 100%;
+}
+
+#registration-jumbotron {
+	max-width: 550px;
+}
+
+/* Registration page btn */
+#reg-page-reg-btn {
+	width: 100%;
+}
+
+/* Checkout page */
+#checkout-jumbotron {
+	max-width: 1200px;
+}
+
+#credit-card-errors {
+	display: none;
+}
+
+/* Zoom icon */
+.zoom-icon {
+	width: 22px;
+}
+
+/* Submit comment button */
+#submit-comment-btn {
+	min-height: 58px;
+}
+
+/* Comment profile image */
+.comment-profile-image {
+	width: 40px;
 }
 
 /* Pie Chart and Row Chart labels */
@@ -50,11 +192,6 @@ g .row {
 #filtered-count {
 	font-size: 16px;
 }
-/* footer */
-footer {
-	width: 100%;
-	bottom: 0;
-}
 
 .clickable-row:hover {
 	cursor: pointer;
@@ -65,14 +202,8 @@ footer {
 	padding-bottom: 32px;
 }
 
-/* Update Status Dropdown  */
-.dropdown-toggle {
-	opacity: 0.7;
-}
-
 .kanban-col {
-	margin: 3px;
-	padding: 3px;
+	padding: 6px;
 }
 
 .kanban-col .jumbotron {
@@ -95,7 +226,57 @@ footer {
 	background-color: lightgrey;
 }
 
-/* From  https://github.com/masagameplay/light-bootstrap-colors/blob/master/lightBSColors.css */
+#profile-image:hover {
+	opacity: 0.85;
+}
+
+/* Plans Feature List Items */
+.list-group-item {
+	border: none;
+	padding: 6px;
+}
+
+/* Plans Feature list icons */
+.list-group-item i {
+	color: green;
+}
+
+.plan-card {
+	/* margin-bottom: 24px; */
+	margin: 0 auto 24px auto;
+	max-width: 22rem;
+}
+
+.plan-card-header {
+	font-size: 18px;
+}
+
+.plan-list-group .list-group-item {
+	color: grey;
+}
+
+#add-ticket-jumbotron {
+	max-width: 1400px;
+}
+
+#add-ticket-btn {
+	min-width: 180px;
+}
+
+#tickets-table {
+	width: 100% !important;
+}
+
+/* footer */
+footer {
+	width: 100%;
+	min-height: 140px;
+}
+
+#github-logo:hover {
+	opacity: 0.75;
+}
+
 /* Background colors */
 .bg-primary-light {
 	background: #e3e4e6;
@@ -109,42 +290,27 @@ footer {
 .bg-warning-light {
 	background: #ffeeba;
 }
-.bg-danger-light {
-	background: #dc6460;
+
+/* Used for Navbar colour gradient */
+.bg-royal-blue {
+	background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+	background-color: #0093e9;
 }
 
-.text-royal-blue {
-	background: #0052cc;
-	color: #0052cc;
-}
-
-/* Text colors */
-.text-primary-light {
-	background: #3490df;
-}
-.text-success-light {
-	background: #6cbf6c;
-}
-.text-info-light {
-	background: #6bc6e1;
-}
-.text-warning-light {
-	background: #f1b55f;
-}
-.text-danger-light {
-	background: #dc6460;
-}
-
-/* Custom background colors */
 .bg-cyan-light {
 	background-color: lightcyan;
 }
+
 .bg-grey-light {
 	background-color: lightgrey;
 }
 
+.bg-light {
+	background-color: #f1f1f1 !important;
+}
+
 /* Kanban headers */
-.kanban-col .jumbotron h5 {
+.jumbotron h5 {
 	padding: 8px;
 	margin-bottom: 0;
 }
@@ -160,49 +326,63 @@ footer {
 	padding: 0 1px 0 0;
 }
 
+/* Medium table padding */
+.table-md td,
+.table-md th {
+	padding: 0.55rem;
+}
+
 /* Ticket page Feature and Bug icons  */
 .ticket-type-icon {
 	font-size: 22px;
 }
 
-/* Parallax Effect */
-body {
-	height: 100%;
+/* MEDIA QUERIES */
+/* Tablet and smaller */
+@media (max-width: 768px) {
+	#tickets-table {
+		font-size: 13px;
+	}
+	.ticket-type-icon,
+	.status-icon {
+		font-size: 16px;
+	}
+	/* Small tickets table */
+	.table-md td,
+	.table-md th {
+		padding: 0.5rem 1px;
+	}
+	/* customer logos */
+	#customer-logos {
+		width: 100%;
+	}
 }
 
-.parallax {
-	/* The image used */
-	/* background-image: url('https://www.imgacademy.com/themes/custom/imgacademy/images/helpbox-contact.jpg'); */
-	/* background-color: gainsboro; */
-
-	/* Full height */
-	height: 100%;
-
-	/* Create the parallax scrolling effect */
-	background-attachment: fixed;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
+/* Small Devices and smaller */
+@media (max-width: 568px) {
+	.pagination {
+		margin-top: 20px !important;
+		justify-content: center !important;
+	}
+	.table-md td,
+	.table-md th {
+		padding: 0.5rem 1px;
+		font-size: 13px;
+	}
+	#submitters-col,
+	#assignees-col {
+		padding: 4px;
+	}
+	h3 {
+		font-size: 20px;
+	}
+	.heading-icon {
+		font-size: 24px;
+	}
 }
 
-/* nav icon size */
-.nav-item i {
-	font-size: 30px;
-}
-
-/* nav-item hover */
-.nav-item:hover {
-	background-color: #0052cc;
-	color: whitesmoke;
-	transition: all 0.3s ease-in-out;
-}
-
-/* index page section headings */
-h4 {
-	color: #0052cc;
-}
-
+/* Testing Only */
 * {
-	/* outline: 1px solid lightcoral;
-	outline-offset: -1px; */
+	/* outline: 1px solid lightcoral; */
+	outline-offset: -1px;
 }

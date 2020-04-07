@@ -46,6 +46,7 @@ def checkout(request):
                 # Set 'is_pro_user' to True
                 user = get_object_or_404(Profile, user_id=request.user.id)
                 user.is_pro_user = True
+                user.date_turned_pro = timezone.now()
                 user.save()
                 messages.success(
                     request, "You have successfully paid. Enjoy PRO!")

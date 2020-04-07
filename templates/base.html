@@ -23,9 +23,7 @@
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"></script>
    <!-- Favicon -->
-   <!-- <link rel="icon" 
-      type="image/png" 
-      href="/somewhere/myicon.png" /> -->
+   <link rel="icon" type="image/png" href="{% static 'images/target_favicon.png' %}" />
    {% block head %}
    {% endblock %}
    <!-- style.css -->
@@ -33,11 +31,11 @@
 </head>
 
 <body>
-   <nav class="navbar navbar-expand-lg bg-light">
+   <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-royal-blue">
       <a class="navbar-brand" href="{% url 'index' %}">
          <i class="material-icons align-top">track_changes</i> <b>TrackIt</b>
       </a>
-      <span class="navbar-text">Focus on what matters</span>
+      <span class="navbar-text d-none d-md-block">Focus on what matters</span>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
          aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
          <span class="navbar-toggler-icon"></span>
@@ -45,75 +43,105 @@
       <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
          <div class="navbar-nav">
             {% if user.is_authenticated %}
-            <a class="nav-item nav-link active" data-toggle="tooltip" href="{% url 'tickets' %}" title="Tickets"><i
-                  class="material-icons-outlined align-bottom">confirmation_number</i><span
-                  class="sr-only">(current)</span>
+            <a class="nav-item nav-link align-middle" id="tickets-nav-link" data-toggle="tooltip"
+               href="{% url 'tickets' %}" title="Tickets">
+               <i class="material-icons-outlined align-middle">confirmation_number</i>
+               <span class="d-lg-none align-middle">TICKETS</span>
+               <span class="sr-only">(current)</span>
             </a>
-            <a class="nav-item nav-link" data-toggle="tooltip" title="Dashboard" href="{% url 'dashboard' %}"><i
-                  class="material-icons-outlined align-bottom">assessment</i>
+            <a class="nav-item nav-link align-middle" id="dashboard-nav-link" data-toggle="tooltip" title="Dashboard"
+               href="{% url 'dashboard' %}"><i class="material-icons-outlined align-middle">assessment</i>
+               <span class="d-lg-none align-middle">DASHBOARD</span>
             </a>
-            <a class="nav-item nav-link" data-toggle="tooltip" title="Kanban" href="{% url 'kanban' %}"><i
-                  class="material-icons-outlined align-bottom">view_week</i>
+            {% if user.profile.is_pro_user %}
+            <a class="nav-item nav-link align-middle" id="kanban-nav-link" data-toggle="tooltip" title="Kanban"
+               href="{% url 'kanban' %}"><i class="material-icons-outlined align-middle">view_week</i>
+               <span class="d-lg-none align-middle">KANBAN</span>
             </a>
-            <a class="nav-item nav-link" data-toggle="tooltip" title="Team" href="{% url 'user_list' %}"><i
-                  class="material-icons-outlined align-bottom">people</i>
+            {% else %}
+            <a class="nav-item nav-link align-middle" id="kanban-nav-link" data-toggle="tooltip" title="Kanban (PRO)"
+               href="{% url 'kanban' %}"><i class="material-icons-outlined align-middle">view_week</i>
+               <span class="d-lg-none align-middle">KANBAN (PRO)</span>
             </a>
-            <a class="nav-item nav-link" data-toggle="tooltip" title="Account" href="{% url 'profile' %}"><i
-                  class="material-icons align-top">
-                  account_circle</i> {{ user }}
+            {% endif %}
+            <a class="nav-item nav-link align-middle" id="user-list-nav-link" data-toggle="tooltip" title="Team"
+               href="{% url 'user_list' %}"><i class="material-icons-outlined align-middle">people</i>
+               <span class="d-lg-none align-middle">TEAM</span>
+            </a>
+            <a class="nav-item nav-link align-middle" id="profile-nav-link" data-toggle="tooltip" title="Account"
+               href="{% url 'profile' %}">
+               {% if user.profile.image %}
+               <img src="{{ user.profile.image.url }}" alt="My Profile Picture" id="account-profile-thumbnail"
+                  class="rounded-circle align-middle" width="38px">
+               {% else %}
+               <i class="material-icons align-middle">account_circle</i>
+               {% endif %}
+               {{ user }}
+               <span class="d-lg-none"> | MY ACCOUNT</span>
             </a>
             {% if not user.profile.is_pro_user %}
-            <a href="{% url 'checkout' %}" class="btn btn-outline-primary nav-item nav-link">Go PRO</a>
+            <a href="{% url 'checkout' %}" class="btn btn-primary nav-item nav-link" id="go-pro-btn"
+               data-toggle="tooltip" title="Upgrade Account"><span class="material-icons align-bottom">stars</span> Go
+               PRO
+            </a>
             {% endif %}
-            <a class="nav-item nav-link" data-toggle="tooltip" title="Logout" href="{% url 'logout' %}"><i
-                  class="material-icons-outlined align-bottom">exit_to_app</i></a>
+            <a class="nav-item nav-link align-middle" data-toggle="tooltip" title="Logout" href="{% url 'logout' %}"><i
+                  class="material-icons-outlined align-middle">exit_to_app</i>
+               <span class="d-lg-none align-middle">LOG OUT</span>
+            </a>
             {% else %}
             <!-- User not authenticated -->
-            <a class="nav-item nav-link" href="{% url 'login' %}">
+            <a class="nav-item nav-link" href="{% url 'login' %}" id="login-nav-item">
                <i class="material-icons align-middle">input</i>
                Log In
             </a>
-            <a class="nav-item nav-link btn btn-primary" href="{% url 'registration' %}">
+            <a class="nav-item nav-link btn btn-primary" href="{% url 'registration' %}" id="register-nav-item">
                <i class="material-icons align-middle">person_add</i>Create Free Account
             </a>
             {% endif %}
          </div>
       </div>
    </nav>
-
-   <div class="container-fluid {% block container-class %}{% endblock %}">
-      <div class="row">
-         <div class="col">
-            {% if messages %}
-            {% for message in messages %}
-            <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
-               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-               </button>
-               {{ message }}
+   <main>
+      <div class="container-fluid {% block container-class %}{% endblock %}">
+         <div class="row messages-row">
+            <div class="col">
+               {% if messages %}
+               {% for message in messages %}
+               <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+                  {{ message }}
+               </div>
+               {% endfor %}
+               {% endif %}
             </div>
-            {% endfor %}
-            {% endif %}
          </div>
-      </div>
-      <div class="row">
-         <div class="col col-12">
-            <br>
-            <h3>{% block page_heading %}{% endblock %}</h3>
+         <div class="row">
+            <div class="col col-12">
+               <br>
+               <h3>{% block page_heading %}{% endblock %}</h3>
+            </div>
          </div>
+         {% block content %}
+         {% endblock %}
       </div>
-      {% block content %}
-      {% endblock %}
-   </div>
+   </main>
    <!-- footer -->
    <div class="container-fluid bg-light">
-      <footer style="min-height: 140px;">
+      <footer>
          <hr>
          <div class="row">
             <div class="col-12 text-center">
-               <p><a href="mailto:thomas.brian.dunn@gmail.com"><i class="material-icons-outlined align-top">
-                        email
-                     </i> Contact Developer
+               <p><a href="mailto:thomas.brian.dunn@gmail.com">
+                     <i class="material-icons-outlined align-top">
+                        email </i> Contact Developer
+                  </a>
+               </p>
+               <p>
+                  <a href="https://github.com/tdunn891/milestone-3" target="_blank">
+                     <img src="{% static 'images/github-32.png' %}" id="github-logo" alt="GitHub Logo" />
                   </a>
                </p>
             </div>
