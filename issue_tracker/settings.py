@@ -152,18 +152,20 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 
 # STATIC_ROOT = (os.path.join(BASE_DIR, 'staticfiles'))
 
-MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
-
-TAGGIT_CASE_INSENSITIVE = True
+MEDIAFILES_LOCATION = 'media'
+DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 STRIPE_PUBLISHABLE = os.getenv('STRIPE_PUBLISHABLE')
 STRIPE_SECRET = os.getenv('STRIPE_SECRET')
 
+TAGGIT_CASE_INSENSITIVE = True
+
+MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',
     messages.INFO: 'alert-info',
