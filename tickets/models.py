@@ -31,7 +31,7 @@ class Ticket(models.Model):
     tags = TaggableManager(blank=True)
     upvotes = models.IntegerField(default=0)
     screenshot = models.ImageField(
-        upload_to='tickets/', null=True, blank=True)
+        upload_to='tickets/', null=True, default=None, blank=True)
     history = HistoricalRecords()
 
     def age(self):

@@ -4,9 +4,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Sum, Count
 from .models import Ticket, Comment, HistoricalTicket
+from accounts.models import Profile
+from django.contrib.auth.models import User
 from .forms import AddTicketForm, AddCommentForm, EditTicketForm
 from rest_framework import viewsets
 from .serializers import TicketSerializer
+from django.utils.safestring import mark_safe
 import datetime
 
 
@@ -41,6 +44,7 @@ def view_ticket(request, pk):
         delta = new_record.diff_against(old_record)
         for change in delta.changes:
             if (change.field != 'upvotes'):
+                # if (change.field != 'upvotes' and change.field != 'image'):
                 test_change = {
                     'field': change.field,
                     'new_value': change.new,
@@ -70,9 +74,26 @@ def view_ticket(request, pk):
 
 @login_required()
 def add_ticket(request, pk=None):
-    """Add Ticket"""
+    """User Adds Ticket (Bug or Feature)"""
+    # If user has BASIC account, check if user has reached 10 ticket submission limit in current month
+    user = get_object_or_404(User, id=request.user.id)
+    user_profile = get_object_or_404(Profile, user_id=request.user.id)
+    if not user_profile.is_pro_user:
+        today = datetime.datetime.today()
+        start_date = datetime.datetime(today.year, today.month, 1)
+        end_date = datetime.datetime(
+            today.year + int(today.month / 12), ((today.month % 12) + 1), 1)
+        tickets_submitted_this_month = Ticket.objects.filter(
+            submitted_by_id=user, created_date__range=(start_date, end_date)).count()
+        if tickets_submitted_this_month > 9:
+            messages.warning(
+                request, "You have reached the 10 ticket monthly limit - Go PRO for unlimited tickets.")
+            return redirect('checkout')
+        else:
+            messages.info(
+                request, mark_safe("Note: You have submitted <b>" + str(tickets_submitted_this_month) + "</b> of <b>10</b> free tickets this month. <a href='/checkout/'>Go PRO</a> for unlimited."))
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
-    # On Submit
+
     if (request.method == "POST"):
         form = AddTicketForm(request.POST, request.FILES, instance=ticket)
         if form.is_valid():
@@ -102,7 +123,7 @@ def upvote(request, pk=None):
 
 @login_required()
 def edit_ticket(request, pk=None):
-    """Get and Edit a Ticket"""
+    """Edit a Ticket"""
     # Get ticket
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
     if (request.method == "POST"):
@@ -120,43 +141,31 @@ def edit_ticket(request, pk=None):
         return render(request, 'edit_ticket.html', {'form': form, 'ticket': ticket})
 
 
-# Not currently used
-@login_required()
-def delete_ticket(request, pk=None):
-    """Deletes a ticket"""
-    ticket = get_object_or_404(Ticket, pk=pk) if pk else None
-    ticket.delete()
-    return redirect(view_tickets)
-
-
 @login_required()
 def kanban(request):
-    """Show KANBAN View"""
-    # my_tickets_only = request.GET.get('my_tickets_only')
-    # if my_tickets_only == 'true':
-    #     tickets = Ticket.objects.filter(
-    #         Q(assigned_to=request.user.id) | Q(submitted_by=request.user.id))
-    # else:
-    tickets = Ticket.objects.filter()
-
-    new_tickets = tickets.filter(
-        status='New')
-
-    in_progress_tickets = tickets.filter(
-        status='In Progress')
-
-    resolved_tickets = tickets.filter(
-        status='Resolved')
-
-    cancelled_tickets = tickets.filter(
-        status='Cancelled')
-
-    return render(request, 'kanban.html', {'tickets': tickets,
-                                           'new_tickets': new_tickets,
-                                           'in_progress_tickets': in_progress_tickets,
-                                           'resolved_tickets': resolved_tickets,
-                                           'cancelled_tickets': cancelled_tickets,
-                                           })
+    """Show KANBAN View (PRO Feature)"""
+    # Ensure user is PRO user
+    user = get_object_or_404(Profile, user_id=request.user.id)
+    if not user.is_pro_user:
+        messages.warning(
+            request, "Upgrade your account to unlock KANBAN View.")
+        return redirect('checkout')
+    else:
+        tickets = Ticket.objects.filter()
+        new_tickets = tickets.filter(
+            status='New')
+        in_progress_tickets = tickets.filter(
+            status='In Progress')
+        resolved_tickets = tickets.filter(
+            status='Resolved')
+        cancelled_tickets = tickets.filter(
+            status='Cancelled')
+        return render(request, 'kanban.html', {'tickets': tickets,
+                                               'new_tickets': new_tickets,
+                                               'in_progress_tickets': in_progress_tickets,
+                                               'resolved_tickets': resolved_tickets,
+                                               'cancelled_tickets': cancelled_tickets,
+                                               })
 
 
 @login_required()

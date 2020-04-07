@@ -9,11 +9,6 @@ STATUSES = (('New', 'New'),  ('In Progress', 'In Progress'),
             ('Resolved', 'Resolved'), ('Cancelled', 'Cancelled'))
 
 
-# ? not used
-# class DateInput(forms.DateInput):
-#     input_type = 'date'
-
-
 class AddTicketForm(forms.ModelForm):
     ticket_type = forms.ChoiceField(
         choices=TICKET_TYPES, required=True, label='Ticket Type')
@@ -57,7 +52,7 @@ class AddCommentForm(forms.ModelForm):
         model = Comment
         fields = ('comment_body',)
         widgets = {
-            'comment_body': forms.Textarea(attrs={'placeholder': 'Leave a comment', 'rows': 3})
+            'comment_body': forms.Textarea(attrs={'placeholder': 'Leave a comment', 'rows': 2})
         }
         labels = {
             'comment_body': '',

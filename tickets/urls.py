@@ -16,6 +16,4 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/$', views.view_ticket, name='view_ticket'),
     url(r'^upvote/(?P<pk>\d+)/$', views.upvote, name='upvote'),
     url(r'^edit_ticket/(?P<pk>\d+)/$', views.edit_ticket, name='edit_ticket'),
-    url(r'^delete_ticket/(?P<pk>\d+)/$',
-        views.delete_ticket, name='delete_ticket'),
 ]
