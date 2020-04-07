@@ -8,7 +8,7 @@ import os
 import dj_database_url
 from django.contrib.messages import constants as messages
 
-if os.environ.get('DEVELOPMENT'):
+if os.environ.get('DEVELOPMENT') == '1':
     development = True
     print('DEVELOPMENT=TRUE')
 else:
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'crispy_forms',
     'checkout',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -132,8 +133,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/static/'
+AWS_S3_OBJECT_PARAMETERS = {
+    'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+    'CacheControl': 'max-age=94608000'
+}
 
+AWS_STORAGE_BUCKET_NAME = 'django-issue-tracker-1'
+AWS_S3_REGION_NAME = 'eu-west-1'
+AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 STATIC_ROOT = (os.path.join(BASE_DIR, 'staticfiles'))
 
