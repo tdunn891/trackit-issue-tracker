@@ -2,20 +2,21 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
-# Create your models here.
+from tickets.models import Ticket
+from datetime import datetime
 
 
 class Profile(models.Model):
+    """Profile class is required to allow additional User fields to be saved"""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_pro_user = models.BooleanField(default=False)
+    pro_user_since_date = models.DateTimeField(null=True, default=None)
+    image = models.ImageField(
+        upload_to='profile_image', null=True, default=None)
+    zoom_id = models.CharField(max_length=50, null=True, default=None)
 
     def __str__(self):
         return self.user.username
-
-    # bio = models.TextField(max_length=500, blank=True)
-    # location = models.CharField(max_length=30, blank=True)
-    # birth_date = models.DateField(null=True, blank=True)
 
 
 @receiver(post_save, sender=User)
