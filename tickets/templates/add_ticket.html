@@ -11,7 +11,7 @@
 {% endblock %}
 {% block container-class %}add-ticket-container{% endblock %}
 {% block content %}
-<div class="jumbotron mx-auto" style="max-width: 1400px;">
+<div class="jumbotron mx-auto" id="add-ticket-jumbotron">
    <div class="row">
       <div class="col-12">
          <form method="post" enctype="multipart/form-data">
@@ -44,16 +44,11 @@
                </div>
             </div>
             <hr>
-            <button class="btn btn-primary" type="submit" style="min-width: 180px;"><span
+            <button class="btn btn-primary" id="add-ticket-btn" type="submit"><span
                   class="material-icons align-bottom">send</span> Submit</button>
             <a class="" href="{% url 'tickets' %}">Cancel</a>
          </form>
       </div>
    </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
-<!-- Bootstrap tags input js -->
-<script type="text/javascript" src="{% static 'js/bootstrap-tagsinput.js' %}"></script>
 {% endblock %}

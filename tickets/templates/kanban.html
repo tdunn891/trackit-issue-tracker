@@ -3,35 +3,23 @@
 {% block title %}TrackIt | Kanban{% endblock %}
 {% block container-class %}kanban-container{% endblock %}
 {% block page_heading %}
-<i class="material-icons-outlined">view_week</i> Kanban ({{ tickets|length }})
+<i class="material-icons-outlined heading-icon align-bottom">view_week</i> Kanban ({{ tickets|length }})
 
 <div class="form-check float-right" id="hide-cancelled-checkbox">
    <br>
    <input type="checkbox" class="form-check-input" id="cancelled-checkbox" checked>
-   <label class="form-check-label" for="cancelled-checkbox"><i class="material-icons-outlined align-middle">
+   <label class="form-check-label" for="cancelled-checkbox">
+      <i class="material-icons-outlined align-middle">
          visibility_off
       </i> Hide Cancelled ({{ cancelled_tickets|length}})
    </label>
 </div>
 <hr>
-<!-- <a href="?my_tickets_only=true" class="btn btn-primary">Mine</a> -->
 {% endblock %}
 {% block content %}
-<!-- <div class="row">
-   <div class="col">
-      <div class="form-check">
-         <input type="checkbox" class="form-check-input" id="cancelled-checkbox" checked>
-         <label class="form-check-label" for="cancelled-checkbox"><i class="material-icons-outlined align-middle">
-               visibility_off
-            </i> Hide Cancelled ({{ cancelled_tickets|length}})
-         </label>
-      </div>
-   </div>
-</div> -->
-
 <div class="row">
    <!-- 'New' Column -->
-   <div class="col kanban-col">
+   <div class="col-md-4 kanban-col">
       <div class="jumbotron kanban-new">
          <h5 class="text-center bg-info-light"><i class="material-icons-outlined align-bottom">local_activity</i> New
             ({{ new_tickets|length }})</h5>
@@ -101,7 +89,7 @@
    </div>
 
    <!-- In Progress Column -->
-   <div class="col kanban-col">
+   <div class="col-md-4 kanban-col">
       <div class="jumbotron kanban-in-progress">
          <h5 class="text-center bg-warning-light"><i class="material-icons align-bottom">schedule</i> In Progress
             ({{ in_progress_tickets|length }})
@@ -172,7 +160,7 @@
    </div>
 
    <!-- Resolved Column-->
-   <div class="col kanban-col">
+   <div class="col-md-4 kanban-col">
       <div class="jumbotron kanban-resolved">
          <h5 class="text-center bg-success-light"><i class="material-icons align-bottom">done</i> Resolved
             ({{ resolved_tickets|length }})
@@ -184,7 +172,6 @@
                   <a href="{% url 'view_ticket' ticket.id %}" data-toggle="tooltip" data-placement="bottom"
                      title="{{ ticket.description }}">{{ ticket.summary }}
                   </a>
-
                   <!-- Priority Badge -->
                   <span class="text-muted">
                      <span class="badge
@@ -198,7 +185,6 @@
                      float-right">{{ ticket.priority }}
                      </span>
                   </span>
-
                </h6>
 
                <!-- Bug/Feature Icon -->
@@ -244,7 +230,7 @@
    </div>
 
    <!-- Cancelled Column -->
-   <div class="col kanban-col d-none">
+   <div class="col-md-4 kanban-col d-none">
       <div class="jumbotron kanban-cancelled">
          <h5 class="text-center bg-grey-light"><i class="material-icons-outlined align-bottom">cancel</i> Cancelled
             ({{ cancelled_tickets|length }})
@@ -313,6 +299,4 @@
       </div>
    </div>
 </div>
-{% endblock %}
-{% block scripts %}
 {% endblock %}

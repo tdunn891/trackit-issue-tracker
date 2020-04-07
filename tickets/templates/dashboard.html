@@ -12,96 +12,46 @@
 {% block container-class %}dashboard-container{% endblock %}
 {% block title %}TrackIt | Dashboard{% endblock %}
 {% block page_heading %}
-<i class="material-icons-outlined">assessment</i> Dashboard
+<i class="material-icons-outlined align-bottom heading-icon">assessment</i> Dashboard
 <div id="filtered-count" class="float-right"></div>
 <hr>
 {% endblock %}
 {% block content %}
-
-<!-- Internal Panes Nav Items -->
-<nav>
-   <div class="nav nav-tabs" id="nav-tab" role="tablist">
-      <a class="nav-item nav-link active" id="nav-tickets-tab" data-toggle="tab" href="#nav-tickets" role="tab"
-         aria-controls="nav-tickets" aria-selected="true">All Tickets</a>
-      <a class="nav-item nav-link" id="nav-ph-tab" data-toggle="tab" href="#nav-ph" role="tab" aria-controls="nav-ph"
-         aria-selected="false">Aged Tickets (>14days)</a>
+<div class="row">
+   <div class="col-md-12 col-lg-4 text-center">
+      <div class="jumbotron">
+         <h5 class="lead">Open/Closed Tickets</h5>
+         <div id="open-closed-tickets-pie-chart"></div>
+      </div>
+      <div class="jumbotron">
+         <h5 class="lead">Status</h5>
+         <div id="statusRowChart"></div>
+      </div>
    </div>
-</nav>
-
-<!-- Internal Panes  -->
-<div class="tab-content" id="nav-tabContent">
-   <!-- Tickets Pane -->
-   <div class="tab-pane fade show active" id="nav-tickets" role="tabpanel" aria-labelledby="nav-tickets-tab">
-      <br>
-      <div class="row">
-         <div class="col-12">
-            <div id="submitted-by-dropdown"></div>
-            <br>
-         </div>
+   <div class="col col-md-12 col-lg-8">
+      <div class="jumbotron text-center">
+         <h5 class="lead">Ticket Status by Date Submitted</h5>
+         <div id="statusByMonthBarChart"></div>
       </div>
-      <div class="row">
-         <div class="col col-md-8">
-            <div class="jumbotron text-center">
-               <h5 class="lead">Ticket Status by Date Submitted</h5>
-               <div id="statusByMonthBarChart"></div>
-            </div>
-         </div>
-         <div class="col-md-4 text-center">
-            <div class="jumbotron">
-               <h5 class="lead">Open Tickets Count</h5>
-               <div id="open-closed-tickets-pie-chart"></div>
-            </div>
-            <div class="jumbotron">
-               <h5 class="lead">Status</h5>
-               <div id="statusRowChart"></div>
-            </div>
-         </div>
-      </div>
-      <div class="row">
-         <div class="col-md-4">
-            <div class="jumbotron text-center">
-               <h5 class="lead">Type</h5>
-               <div id="ticketTypeRowChart"></div>
-            </div>
-         </div>
-         <div class="col-md-4">
-            <div class="jumbotron text-center">
-               <h5 class="lead">Priority</h5>
-               <div id="priorityRowChart"></div>
-            </div>
-         </div>
-         <div class="col-md-4">
-            <div class="jumbotron text-center">
-               <h5 class="lead">In-Demand Tickets</h5>
-               <div id="upvotesRowChart"></div>
-            </div>
-         </div>
-      </div>
-      <!-- <div class="row">
-         <div class="col-12">
-            <div class="jumbotron text-center">
-               <h5 class="lead">Age vs Priority Scatter</h5>
-               <div id="age-priority-scatter-plot"></div>
-            </div>
-         </div>
-      </div>
-      <div class="row">
-         <div class="col-12">
-            <div class="jumbotron text-center">
-               <h5 class="lead">Average Days to Resolve</h5>
-               <div id="average-days-to-resolve"></div>
-            </div>
-         </div>
-      </div> -->
    </div>
-   <!-- placeholder Pane -->
-   <div class="tab-pane fade show" id="nav-ph" role="tabpanel" aria-labelledby="nav-ph-tab">
-      <br>
-      <div class="row">
-         <div class="col">
-            <h5 class="lead">Aged Tickets</h5>
-            <div id="agedRowChart"></div>
-         </div>
+</div>
+<div class="row">
+   <div class="col-md-4">
+      <div class="jumbotron text-center">
+         <h5 class="lead">Type</h5>
+         <div id="ticketTypeRowChart"></div>
+      </div>
+   </div>
+   <div class="col-md-4">
+      <div class="jumbotron text-center">
+         <h5 class="lead">Priority</h5>
+         <div id="priorityRowChart"></div>
+      </div>
+   </div>
+   <div class="col-md-4">
+      <div class="jumbotron text-center">
+         <h5 class="lead">In-Demand Tickets</h5>
+         <div id="upvotesRowChart"></div>
       </div>
    </div>
 </div>
@@ -117,8 +67,6 @@
 <!-- dc.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dc/3.1.9/dc.min.js"
    integrity="sha256-unWojco2TOb01l2JB43J27kr4UQIkHk+PWce5A2eq8Y=" crossorigin="anonymous"></script>
-<!-- dc-tableview-light.js NOT USED-->
-<!-- <script src="{% static 'js/dc-tableview-light.min.js' %}"></script> -->
-<!-- main.js -->
+<!-- dashboard.js -->
 <script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}

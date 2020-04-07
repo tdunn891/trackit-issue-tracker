@@ -39,10 +39,21 @@
                               data-placement="right">build</i>
                            {% endif %}
                         </h4>
+                        <!-- Upvote Button -->
+                        <form action="{% url 'upvote' ticket.id %}" method="post">
+                           {% csrf_token %}
+                           <button type="submit" class="btn btn-outline-primary float-right">
+                              <i class="material-icons align-top">arrow_upward</i>
+                              Upvote <span class="badge badge-pill badge-light">{{ ticket.upvotes }}</span>
+                              <span class="sr-only">upvotes</span>
+                           </button>
+                        </form>
+                        <!-- Description -->
                         <p class="lead">{{ ticket.description }}</p>
+                        <!-- Tags -->
                         {% if ticket.tags.names %}
                         {% for tag in ticket.tags.names %}
-                        <span class="badge badge-pill badge-info">{{ tag }}</span>
+                        <span class="badge badge-pill badge-light">{{ tag }}</span>
                         {% endfor %}
                         <br>
                         <br>
@@ -54,7 +65,7 @@
                         <table class="table table-sm">
                            <tbody>
                               <tr>
-                                 <th>Priority</th>
+                                 <th>Priority:</th>
                                  <td>
                                     {% if ticket.priority == "Low" %}
                                     <span class="badge badge-light">
@@ -68,7 +79,7 @@
                                  </td>
                               </tr>
                               <tr>
-                                 <th>Status</th>
+                                 <th>Status:</th>
                                  {% if ticket.status == "New" %}
                                  <td><i class="material-icons-outlined" data-toggle="tooltip" title="New"
                                        data-placement="right">local_activity</i><span class="d-none">New</span></td>
@@ -85,41 +96,94 @@
                                  {% endif %}
                               </tr>
                               <tr>
-                                 <th>Submitter</th>
-                                 <td><a href="mailto:{{ ticket.submitted_by.email }}" data-toggle="tooltip"
-                                       title="Mail to:" data-placement="left">{{ ticket.submitted_by }}
-                                    </a>
+                                 <th class="align-middle">Submitter:</th>
+                                 <td>
+                                    <div class="dropright">
+                                       <a href="#" class="badge badge-pill badge-info dropdown-toggle"
+                                          data-toggle="dropdown" title="Mail to:" data-placement="left">
+                                          {% if ticket.submitted_by.profile.image %}
+                                          <img src="{{ ticket.submitted_by.profile.image.url }}"
+                                             class="align-middle rounded-circle ticket-view-profile-image"
+                                             alt="Submitter's Profile Image">
+                                          {% else %}
+                                          <i class="material-icons align-middle ticket-view-profile-default">
+                                             account_circle</i>
+                                          {% endif %}
+                                          {{ ticket.submitted_by }}
+                                       </a>
+                                       <div class="dropdown-menu">
+                                          <a class="dropdown-item" href="mailto:{{ ticket.submitted_by.email }}">
+                                             <span class="material-icons align-top">email</span> Send Email
+                                          </a>
+                                          {% if ticket.submitted_by.profile.zoom_id %}
+                                          <a class="dropdown-item"
+                                             href="https://zoom.us/j/{{ ticket.submitted_by.profile.zoom_id }}"
+                                             target="_blank">
+                                             <img src="https://zoom.us/zoom.ico" class="zoom-icon align-top"
+                                                alt="zoom-icon">
+                                             Join Zoom Meeting
+                                          </a>
+                                          {% endif %}
+                                       </div>
+                                    </div>
                                  </td>
                               </tr>
                               <tr>
-                                 <th>Assignee</th>
-                                 <td><a href="mailto:{{ ticket.assigned_to.email }}" data-toggle="tooltip"
-                                       title="Mail to:" data-placement="left">{{ ticket.assigned_to }}
-                                    </a>
+                                 <th class="align-middle">Assignee:</th>
+                                 <td>
+                                    <div class="dropright">
+                                       <a href="#" class="badge badge-pill badge-info dropdown-toggle"
+                                          data-toggle="dropdown" title="Mail to:" data-placement="left">
+                                          {% if ticket.assigned_to.profile.image %}
+                                          <img src="{{ ticket.assigned_to.profile.image.url }}"
+                                             class="align-middle rounded-circle ticket-view-profile-image"
+                                             alt="Assignee's Profile Image">
+                                          {% else %}
+                                          <i
+                                             class="material-icons align-middle ticket-view-profile-default">account_circle</i>
+                                          {% endif %}
+                                          {{ ticket.assigned_to }}
+                                       </a>
+                                       <div class="dropdown-menu">
+                                          <a class="dropdown-item" href="mailto:{{ ticket.assigned_to.email }}">
+                                             <span class="material-icons align-top">email</span> Send Email
+                                          </a>
+                                          {% if ticket.assigned_to.profile.zoom_id %}
+                                          <a class="dropdown-item"
+                                             href="https://zoom.us/j/{{ ticket.assigned_to.profile.zoom_id }}"
+                                             target="_blank">
+                                             <img src="https://zoom.us/zoom.ico" class="zoom-icon align-top"
+                                                alt="zoom-icon">
+                                             Join Zoom Meeting
+                                          </a>
+                                          {% endif %}
+                                       </div>
+                                    </div>
                                  </td>
                               </tr>
                               <tr>
-                                 <th>Created</th>
-                                 <td>{{ ticket.created_date }}</td>
+                                 <th>Created:</th>
+                                 <td>{{ ticket.created_date|date:"d/m/Y H:i" }}</td>
                               </tr>
                               <tr>
-                                 <th>Resolved</th>
+                                 <th>Resolved:</th>
                                  {% if ticket.resolved_date == None %}
-                                 <td>--</td>
+                                 <td></td>
                                  {% else %}
-                                 <td>{{ ticket.resolved_date }}</td>
+                                 <td>{{ ticket.resolved_date|date:"d/m/Y H:i" }}</td>
                                  {% endif %}
                               </tr>
                               <tr>
-                                 <th>Days to Resolve</th>
                                  {% if ticket.days_to_resolve == None %}
-                                 <td>--</td>
+                                 <th>Age (days):</th>
+                                 <td>{{ ticket.age }}</td>
                                  {% else %}
+                                 <th>Days to Resolve:</th>
                                  <td>{{ ticket.days_to_resolve }}</td>
                                  {% endif %}
                               </tr>
                               <tr>
-                                 <th>Screenshot</th>
+                                 <th>Screenshot:</th>
                                  {% if ticket.screenshot %}
                                  <!-- Modal trigger -->
                                  <td><a href="{{ ticket.screenshot.url }}" data-toggle="modal"
@@ -154,29 +218,22 @@
                                  </div>
                                  <!-- End modal -->
                                  {% else %}
-                                 <td>--</td>
+                                 <td></td>
                                  {% endif %}
                               </tr>
                            </tbody>
                         </table>
                         <hr>
-                        <!-- Upvote Button -->
-                        <form action="{% url 'upvote' ticket.id %}" method="post">
-                           {% csrf_token %}
-                           <button type="submit" class="btn btn-sm btn-info float-right">
-                              <i class="material-icons align-top">arrow_upward</i>
-                              Upvote <span class="badge badge-pill badge-light">{{ ticket.upvotes }}</span>
-                              <span class="sr-only">upvotes</span>
-                           </button>
-                        </form>
                         {% if ticket.submitted_by == request.user or request.user.is_staff %}
                         <!-- If user is Submitter or Staff, User can Edit or Cancel -->
-                        <a class="btn btn-primary" href="{% url 'edit_ticket' ticket.id %}"><i
-                              class="material-icons-outlined align-bottom">edit</i> Edit</a>
+                        <a class="btn btn-warning" href="{% url 'edit_ticket' ticket.id %}"><i
+                              class="material-icons-outlined align-bottom">edit</i> Edit Ticket</a>
                         <!-- Status change via dropdown  -->
                         <div class="btn-group">
-                           <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"
-                              aria-haspopup="true" aria-expanded="false">Update Status
+                           <button class="btn btn-outline-dark dropdown-toggle" type="button" data-toggle="dropdown"
+                              aria-haspopup="true" aria-expanded="false"><span class="material-icons align-top">
+                                 speed
+                              </span> Status
                            </button>
                            <div class="dropdown-menu dropdown-menu-left">
                               <h6 class="dropdown-header">Set to:</h6>
@@ -188,31 +245,18 @@
                                     New</button>
                                  <button type="submit" class="dropdown-item"
                                     formaction="{% url 'change_status' pk=ticket.id new_status='In Progress' %}">
-                                    <i class="material-icons-outlined align-bottom">local_activity</i>
+                                    <i class="material-icons-outlined align-bottom">schedule</i>
                                     In Progress</button>
                                  <button type="submit" class="dropdown-item"
                                     formaction="{% url 'change_status' pk=ticket.id new_status='Resolved' %}">
-                                    <i class="material-icons-outlined align-bottom">local_activity</i>
+                                    <i class="material-icons-outlined align-bottom">done</i>
                                     Resolved</button>
+                                 <div class="dropdown-divider"></div>
                                  <button type="submit" class="dropdown-item"
                                     formaction="{% url 'change_status' pk=ticket.id new_status='Cancelled' %}">
-                                    <i class="material-icons-outlined align-bottom">local_activity</i>
+                                    <i class="material-icons-outlined align-bottom">cancel</i>
                                     Cancelled</button>
                               </form>
-
-                              <!-- Standard Dropdown -->
-                              <!-- <a class="dropdown-item"
-                                    href="{% url 'change_status' pk=ticket.id new_status='New' %}"><i
-                                       class="material-icons-outlined align-bottom">local_activity</i> New</a> -->
-                              <!-- <a class="dropdown-item"
-                                 href="{% url 'change_status' pk=ticket.id new_status='In Progress' %}">
-                                 <i class="material-icons align-bottom">schedule</i> In Progress</a>
-                              <a class="dropdown-item"
-                                 href="{% url 'change_status' pk=ticket.id new_status='Resolved' %}"><i
-                                    class="material-icons align-bottom">done</i> Resolved</a>
-                              <div class="dropdown-divider"></div>
-                              <a class="dropdown-item" href="{% url 'change_status' pk=ticket.id new_status='New' %}"><i
-                                    class="material-icons-outlined align-bottom">cancel</i> Cancelled</a> -->
                            </div>
                         </div>
                         {% else %}
@@ -242,17 +286,33 @@
                      <ul class="list-group">
                         {% for comment in comments %}
                         <li class="list-group-item">
-                           <i class="material-icons rounded-circle float-left">account_circle</i>
+                           {% if comment.user.profile.image %}
+                           <img class="rounded-circle float-left comment-profile-image"
+                              src="{{ user.profile.image.url }}" alt="{{ user.first_name }}'s Profile Image">
+                           {% else %}
+                           <i class="material-icons float-left">account_circle</i>
+                           {% endif %}
                            <b>&nbsp;&nbsp;{{ comment.user }}</b><span class="text-muted">
-                              <small>&nbsp;{{ comment.date }}</small></span>
+                              <small>&nbsp;{{ comment.date|date:"d/m/Y H:i" }}</small></span>
                            <br>&nbsp;&nbsp;{{ comment.comment_body }}
                         </li>
                         {% endfor %}
                      </ul>
-                     <form method="post" enctype="multipart/form-data">
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col">
+                     <br>
+                     <form method="post">
                         {% csrf_token %}
-                        {{ form | as_bootstrap }}
-                        <button class="btn btn-outline-primary float-right" type="submit">Submit</button>
+                        <div class="row">
+                           <div class="col-12 col-md-10">
+                              {{ form | as_bootstrap }}
+                           </div>
+                           <div class="col-12 col-md-2">
+                              <button class="btn btn-primary" id="submit-comment-btn" type="submit">Submit</button>
+                           </div>
+                        </div>
                      </form>
                   </div>
                </div>
