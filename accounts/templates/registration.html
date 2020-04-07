@@ -1,20 +1,24 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-{% block title %}Sign Up{% endblock %}
+{% block title %}TrackIt | Create Account{% endblock %}
 {% block content %}
 <div class="row">
    <div class="col">
       <br>
-      <div class="jumbotron mx-auto shadow p-3 mb-5 bg-white" style="max-width: 500px;">
+      <div class="jumbotron mx-auto shadow p-3 mb-5 bg-white" id="registration-jumbotron">
          <h4 class="display-6 text-center">Create Account</h4>
          <br>
          <form method="POST">
             {% csrf_token %}
             {{ registration_form |crispy }}
-            <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+            <button type="submit" class="btn btn-primary" id="reg-page-reg-btn">Register</button>
          </form>
          <hr>
          <p class="text-center">Already registered? <a href="{% url 'login' %}">Log In</a></p>
+         <p class="text-muted"><b>CI Assessors:</b><br>After Registration, please grant yourself Staff Access
+            via My Account.<br>This will ensure the full feature set is available to you.
+            (eg. edit all Tickets).
+         </p>
       </div>
    </div>
 </div>

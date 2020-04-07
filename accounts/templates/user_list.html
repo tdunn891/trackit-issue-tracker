@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}Trackit | Team{% endblock %}
-{% block page_heading %}<i class="material-icons">people</i> Users ({{ users.count }})
+{% block page_heading %}<i class="material-icons heading-icon align-bottom">people</i> Users ({{ users.count }})
 <hr>
 {% endblock %}
 {% block head %}
@@ -15,7 +15,7 @@
       <a class="nav-item nav-link active" id="nav-submitters-tab" data-toggle="tab" href="#nav-submitters" role="tab"
          aria-controls="nav-submitters" aria-selected="true">Submitters ({{ submitters.count }})</a>
       <a class="nav-item nav-link" id="nav-assignees-tab" data-toggle="tab" href="#nav-assignees" role="tab"
-         aria-controls="nav-assignees" aria-selected="false">Assignees ({{ staff.count }})</a>
+         aria-controls="nav-assignees" aria-selected="false">Staff ({{ staff.count }})</a>
    </div>
 </nav>
 
@@ -25,31 +25,53 @@
    <div class="tab-pane fade show active" id="nav-submitters" role="tabpanel" aria-labelledby="nav-submitters-tab">
       <br>
       <div class="row">
-         <div class="col col-12">
-            <table id="submitters-table" class="table display">
-               <thead>
-                  <tr>
-                     <th>ID</th>
-                     <th>User</th>
-                     <th>First Name</th>
-                     <th>Last Name</th>
-                     <th>Email</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  {% for submitter in submitters %}
-                  <tr>
-                     <td>{{ submitter.id }}</td>
-                     <td>{{ submitter.username }}</td>
-                     <td>{{ submitter.first_name }}</td>
-                     <td>{{ submitter.last_name }}</td>
-                     <td><a href="mailto:{{ submitter.email }}" data-toggle="tooltip" title="Mail to:"
-                           data-placement="left">
-                           {{ submitter.email }}</td>
-                  </tr>
-                  {% endfor %}
-               </tbody>
-            </table>
+         <div class="col col-12" id="submitters-col">
+            <div class="jumbotron">
+               <table id="submitters-table" class="table display table-md table-responsive">
+                  <thead>
+                     <tr>
+                        <th>User</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Zoom ID</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {% for submitter in submitters %}
+                     <tr>
+                        <td class="align-middle">
+                           {% if submitter.profile.image %}
+                           <img src="{{ submitter.profile.image.url }}" alt="Profile Image"
+                              class="rounded-circle ticket-view-profile-image d-none d-sm-inline-block">
+                           {% else %}
+                           <i class="material-icons align-middle rounded-circle ticket-view-profile-default
+                           d-none d-sm-inline-block">account_circle
+                           </i>
+                           {% endif %}
+                           {{ submitter.username }}
+                        </td>
+                        <td class="align-middle">{{ submitter.first_name }}</td>
+                        <td class="align-middle">{{ submitter.last_name }}</td>
+                        <td class="align-middle">
+                           <a href="mailto:{{ submitter.email }}" data-toggle="tooltip" title="Mail to:"
+                              data-placement="left">
+                              {{ submitter.email }}
+                           </a>
+                        </td>
+                        <td class="align-middle">
+                           {% if submitter.profile.zoom_id %}
+                           <a href="https://zoom.us/j/{{ submitter.profile.zoom_id }}" target="_blank"
+                              data-toggle="tooltip" title="Join Zoom Meeting:" data-placement="left">
+                              {{ submitter.profile.zoom_id }}
+                           </a>
+                           {% endif %}
+                        </td>
+                     </tr>
+                     {% endfor %}
+                  </tbody>
+               </table>
+            </div>
          </div>
       </div>
    </div>
@@ -58,31 +80,52 @@
       <!-- Table -->
       <br>
       <div class="row">
-         <div class="col col-12">
-            <table id="assignees-table" class="table display">
-               <thead>
-                  <tr>
-                     <th>ID</th>
-                     <th>User</th>
-                     <th>First Name</th>
-                     <th>Last Name</th>
-                     <th>Email</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  {% for staff_member in staff %}
-                  <tr>
-                     <td>{{ staff_member.id }}</td>
-                     <td>{{ staff_member.username }}</td>
-                     <td>{{ staff_member.first_name }}</td>
-                     <td>{{ staff_member.last_name }}</td>
-                     <td><a href="mailto:{{ staff_member.email }}" data-toggle="tooltip" title="Mail to:"
-                           data-placement="left">
-                           {{ staff_member.email }}</td>
-                  </tr>
-                  {% endfor %}
-               </tbody>
-            </table>
+         <div class="col col-12" id="assignees-col">
+            <div class="jumbotron">
+               <table id="assignees-table" class="table display table-md table-responsive">
+                  <thead>
+                     <tr>
+                        <th>User</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Zoom ID</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {% for staff_member in staff %}
+                     <tr>
+                        <td class="align-middle">
+                           {% if staff_member.profile.image %}
+                           <img src="{{ staff_member.profile.image.url }}" id="profile-image" alt="Profile Image"
+                              class="rounded-circle ticket-view-profile-image d-none d-sm-inline-block">
+                           {% else %}
+                           <i class="material-icons align-middle rounded-circle ticket-view-profile-default">
+                              account_circle</i>
+                           {% endif %}
+                           {{ staff_member.username }}
+                        </td>
+                        <td class="align-middle">{{ staff_member.first_name }}</td>
+                        <td class="align-middle">{{ staff_member.last_name }}</td>
+                        <td class="align-middle">
+                           <a href="mailto:{{ staff_member.email }}" data-toggle="tooltip" title="Mail to:"
+                              data-placement="left">
+                              {{ staff_member.email }}
+                           </a>
+                        </td>
+                        <td class="align-middle">
+                           {% if staff_member.profile.zoom_id %}
+                           <a href="https://zoom.us/j/{{ submitter.profile.zoom_id }}" target="_blank"
+                              data-toggle="tooltip" title="Zoom Call:" data-placement="left">
+                              {{ staff_member.profile.zoom_id }}
+                           </a>
+                           {% endif %}
+                        </td>
+                     </tr>
+                     {% endfor %}
+                  </tbody>
+               </table>
+            </div>
          </div>
       </div>
    </div>

@@ -1,56 +1,148 @@
 {% extends 'base.html' %}
-{% block title %}TrackIt | Account{% endblock %}
-{% block page_heading %}<i class="material-icons">account_circle</i> Account
+{% load crispy_forms_tags %}
+{% block title %}TrackIt | My Account{% endblock %}
+{% block page_heading %}<i class="material-icons align-bottom heading-icon">account_circle</i> My Account
 <hr>
 {% endblock %}
 {% block container-class %}profile-container{% endblock %}
 {% block content %}
 <div class="row">
-   <div class="col-sm-2">
-      <p><a href="#">Add Avatar</a></p>
-   </div>
-   <div class="col-sm-10">
+   <div class="col-md-3">
+      <a href="#">
+         {% if user.profile.image %}
+         <img class="rounded-circle" src="{{ user.profile.image.url }}" alt="Profile Image" data-toggle="tooltip"
+            title="Upload New Image" data-placement="bottom" id="profile-image">
+         {% else %}
+         <i class="material-icons-outlined" id="default-profile-image" data-toggle="tooltip" title="Upload New Image"
+            data-placement="bottom">account_circle</i>
+         {% endif %}
+      </a>
       <br>
-      <table class="table table-sm">
-         <tbody>
-            <tr>
-               <th>Username</th>
-               <td>{{ user.username }} </td>
-            </tr>
-            <tr>
-               <th>First Name</th>
-               <td>{{ user.first_name }} </td>
-            </tr>
-            <tr>
-               <th>Last Name</th>
-               <td>{{ user.last_name }}</td>
-            </tr>
-            <tr>
-               <th>Email</th>
-               <!-- * Triggers Modal on click, user enters new email, backend checks if email is valid and not already taken,  -->
-               <td>{{ user.email }}
-                  <!-- <a href="#" class="float-right">Update</a> -->
-               </td>
-            </tr>
-            <tr>
-               <th>Member Since</th>
-               <td>{{ user.date_joined.date }}</td>
-            </tr>
-            <tr>
-               <th>Staff</th>
-               <td>{{ user.is_staff }}</td>
-            </tr>
-            <tr>
-               <th>Current Plan</th>
+      <br>
+      <form id="profile-image-form" method="post" class="d-none" enctype="multipart/form-data">
+         {% csrf_token %}
+         {{ form.image }}
+         <br>
+         <br>
+         <button class="btn btn-primary btn-sm d-none" id="save-profile-image-btn" type="submit">Save Photo</button>
+      </form>
+   </div>
+   <div class="col-md-9">
+      <br>
+      <div class="jumbotron">
+         <table class="table table-sm">
+            <tbody>
+               <tr>
+                  <th>Username</th>
+                  <td>{{ user.username }}</td>
+               </tr>
+               <tr>
+                  <th>First Name</th>
+                  <td>
+                     <span id="current-first-name">{{ user.first_name }}</span>
+                     <a id="first-name-update" class="float-right" data-toggle="tooltip" title="Edit"
+                        data-placement="right" href="#">
+                        <i class="material-icons">edit</i>
+                     </a>
+                     <a id="cancel-first-name" class="d-none float-right" data-toggle="tooltip" title="Cancel"
+                        data-placement="right" href="#">
+                        <i class="material-icons-outlined">cancel</i>
+                     </a>
+                     <form id="first-name-form" class="d-none" action="{% url 'update_first_name' %}" method="post">
+                        {% csrf_token %}
+                        <input id="first-name-input" name="updated_first_name" type="text"
+                           value="{{ user.first_name }}">
+                        <button class="btn btn-primary btn-sm" type="submit">Update</button>
+                     </form>
+                  </td>
+               </tr>
+               <tr>
+                  <th>Last Name</th>
+                  <td><span id="current-last-name">{{ user.last_name }}</span>
+                     <a id="last-name-update" class="float-right" data-toggle="tooltip" title="Edit"
+                        data-placement="right" href="#">
+                        <i class="material-icons">edit</i>
+                     </a>
+                     <a id="cancel-last-name" class="d-none float-right" data-toggle="tooltip" title="Cancel"
+                        data-placement="right" href="#">
+                        <i class="material-icons-outlined">cancel</i>
+                     </a>
+                     <form id="last-name-form" class="d-none" action="{% url 'update_last_name' %}" method="post">
+                        {% csrf_token %}
+                        <input id="last-name-input" name="updated_last_name" type="text" value="{{ user.last_name }}">
+                        <button class="btn btn-primary btn-sm" type="submit">Update</button>
+                     </form>
+                  </td>
+               </tr>
+               <tr>
+                  <th>Email</th>
+                  <td>{{ user.email }}</td>
+               </tr>
+               <tr>
+                  <th>Zoom Meeting ID</th>
+                  <td>
+                     <span id="current-zoomid">
+                        {% if user.profile.zoom_id %}
+                        <a href="https://zoom.us/j/{{ user.profile.zoom_id }}" target="_blank" id="zoom-url"
+                           data-toggle="tooltip" data-placement="left" title="Start Zoom Meeting">
+                           {{ user.profile.zoom_id }}
+                        </a>
+                        {% endif %}
+                     </span>
+                     <a id="zoomid-update" class="float-right" data-toggle="tooltip" title="Edit" data-placement="right"
+                        href="#">
+                        <i class="material-icons">edit</i>
+                     </a>
+                     <a id="cancel-zoomid" class="d-none float-right" data-toggle="tooltip" title="Cancel"
+                        data-placement="right" href="#">
+                        <i class="material-icons-outlined">cancel</i>
+                     </a>
+                     <form id="zoomid-form" class="d-none" action="{% url 'update_zoomid' pk=request.user.id %}"
+                        method="post">
+                        {% csrf_token %}
+                        <input id="zoomid-input" name="updated_zoomid" type="text" value="{{ user.profile.zoom_id }}">
+                        <button class="btn btn-primary btn-sm" type="submit">Update</button>
+                     </form>
+                  </td>
+               </tr>
+               <tr>
+                  <th>Member Since</th>
+                  <td>{{ user.date_joined.date }}</td>
+               </tr>
+               <tr>
+                  <th>Staff</th>
+                  {% if user.is_staff %}
+                  <td>{{ user.is_staff }}</td>
+                  {% else %}
+                  <td>{{ user.is_staff }}
+                     <form action="{% url 'grant_staff_access' pk=request.user.id %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="float-right btn btn-warning btn-sm align-top" data-toggle="tooltip"
+                           title="Assessors, please grant yourself immediate staff access via this link to experience the site's full feature set.
+                           In a live environment, these requests would be reviewed first by an Administrator."
+                           data-placement="bottom">
+                           <i class="material-icons align-top">priority_high</i>CI Assessors: Staff Access
+                        </button>
+                     </form>
+                  </td>
+                  {% endif %}
+               </tr>
+               <tr>
+                  <th>Current Plan</th>
+                  {% if user.profile.is_pro_user %}
+                  <td><span class="badge badge-primary">PRO</span> since {{ user.profile.pro_user_since_date.date }}
+                  </td>
+                  {% else %}
+                  <td>Basic <a href="{% url 'checkout' %}" class="btn btn-primary float-right">
+                        <span class="material-icons align-bottom">stars</span> Go PRO</a>
+                  </td>
+                  {% endif %}
+               </tr>
                {% if user.profile.is_pro_user %}
-               <td><span class="badge badge-primary">PRO</span></td>
-               {% else %}
-               <td>Basic <a href="{% url 'checkout' %}" class="btn btn-sm btn-primary"><b>Go PRO</b></a>
-               </td>
                {% endif %}
-            </tr>
-         </tbody>
-      </table>
+            </tbody>
+         </table>
+      </div>
    </div>
 </div>
 {% endblock %}

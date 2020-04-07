@@ -6,19 +6,16 @@
 <div class="row">
    <div class="col">
       <br>
-      <div class="jumbotron mx-auto shadow p-3 mb-5 bg-white" style="max-width: 500px;">
+      <div class="jumbotron mx-auto shadow p-3 mb-5 bg-white" id="log-in-jumbotron">
          <h4 class="display-6 text-center">Log in to your account</h4>
          <br>
          <form method="POST">
             {% csrf_token %}
             {{ login_form | crispy }}
-            <button type="submit" class="btn btn-primary" style="width: 100%;"> Log In</button>
+            <button type="submit" class="btn btn-primary" id="login-btn-login-page"> Log In</button>
          </form>
          <hr>
-         <a href="#" class="float-right">Forgot Password?</a>
          <p>Don't have an account? <a href="{% url 'registration' %}">Create Account</a></p>
-         <p>Assessors: <a href="#"><i class="material-icons align-middle">person</i>Log in as Demo User</a>
-         </p>
       </div>
    </div>
 </div>

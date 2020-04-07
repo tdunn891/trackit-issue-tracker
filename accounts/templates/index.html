@@ -1,73 +1,77 @@
 {% extends 'base.html' %}
-{% load bootstrap_tags %}
+{% load static from static %}
 {% block title %}TrackIt | Home{% endblock %}
 {% block page_heading %}{% endblock %}
 {% block content %}
 <div class="row">
-   <div class="col-5 col-md-4 text-right" style="min-height: 260px;">
+   <div class="d-none d-sm-inline-block col-md-4 text-right" id="index-tag-line">
       <br>
-      <i class="material-icons align-top" style="font-size: 66px;">track_changes</i>
-      <div class="vl float-right" style="border-left: 1px solid black;
-      height: 200px; margin-left: 25px;"></div>
+      <div class="vl float-right" id="vertical-line-index"></div>
       <h2>Log it<br> TrackIt<br> Crack on</h2>
    </div>
-   <div class="col-7 col-md-8">
+   <div class="col-12 col-md-8">
+      <br>
       <h2 class="display-5">Issue and Feature tracking done right</h2>
       <br>
-      <!-- If user already logged in, hide Login and Create Account buttons -->
+      <!-- If user logged in, hide Login and Create Account -->
       {% if not user.is_authenticated %}
-      <!-- <a href="#" class="btn btn-primary btn-sm">
-         <i class="material-icons align-middle">person</i> Log in as Demo User
-      </a> -->
       <p>Get started today:</p>
       <a href="{% url 'registration' %}" class="btn btn-primary"><i class="material-icons align-top">
             person_add</i> Create Free Account</a>
       <br>
       <br>
       <p>Returning Users: </p>
-      <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm" style="min-width: 160px;"><i
+      <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm" id="log-in-btn"><i
             class="material-icons align-top">
             input</i> Log In</a>
+      <br>
+      <br>
       {% else %}
       <br>
       <p>Logged in as: <b>{{ user.username }}</b></p>
       <p><a href="{% url 'profile' %}">My Account</a></p>
       {% if user.is_authenticated and not user.profile.is_pro_user %}
-      <p><a href="{% url 'checkout' %}" class="btn btn-sm btn-primary">Go PRO</a></p>
+      <p>
+         <a href="{% url 'checkout' %}" class="btn btn-sm btn-primary"><span class="material-icons align-top">
+               stars</span> Go PRO
+         </a>
+      </p>
       {% endif %}
       {% endif %}
    </div>
 </div>
+<hr>
 <!-- Features -->
-<div class="row bg-light">
+<div class="row section">
    <div class="container">
       <div class="row">
          <div class="col-12">
             <br>
-            <h4 class="text-right"><i class="material-icons align-bottom">build</i> Features</h4>
+            <h4 class="">
+               <i class="material-icons align-bottom">build</i>
+               Features</h4>
             <br>
          </div>
       </div>
-      <div class="row bg-light" style="min-height: 230px;">
+      <div class="row">
          <div class="col-12 col-md-4">
-            <h5><i class="material-icons-outlined align-bottom">confirmation_number</i><br>
+            <h5><i class="material-icons-outlined align-bottom feature-icon">confirmation_number</i><br>
                Tickets</h5>
-            <p class="text-muted">Raise Tickets & Feature Requests</p>
+            <p class="text-muted">Searchable, filterable table display of all bug and feature requests.</p>
          </div>
          <div class="col-12 col-md-4">
-            <h5><i class="material-icons-outlined align-bottom">assessment</i><br> Dashboard</h5>
-            <p class="text-muted">Dynamic charting, providing on-demand insights</p>
-            <p class="text-muted">At a glance view Tickets by Age, Priority and more</p>
+            <h5><i class="material-icons-outlined align-bottom feature-icon">assessment</i><br> Dashboard</h5>
+            <p class="text-muted">Dynamic charting views, allowing on-demand insights.</p>
          </div>
          <div class="col-12 col-md-4">
-            <h5><i class="material-icons-outlined align-bottom">view_week</i><br> Kanban (PRO)</h5>
-            <p class="text-muted">Intuitive Kanban view, unlocked with PRO Plan</p>
+            <h5><i class="material-icons-outlined align-bottom feature-icon">view_week</i><br> Kanban (PRO)</h5>
+            <p class="text-muted">Visualise your team's workflow.</p>
          </div>
       </div>
    </div>
 </div>
 <!-- Testimonials -->
-<div class="row" style="min-height: 230px;">
+<div class="row section bg-light">
    <div class="container">
       <div class="row">
          <div class="col-12">
@@ -75,48 +79,43 @@
             <h4><i class="material-icons align-bottom">rate_review</i> Our users tell us</h4>
             <br>
          </div>
-         <div class="col-12 col-md-3">
-            <h5>Useful</h5>
+         <div class="col-12 col-md-4">
+            <h5>Clean</h5>
+            <p class="text-muted">"Clean, inituitive workflows mean nothing slips through the cracks."</p>
          </div>
-         <div class="col-12 col-md-3">
+         <div class="col-12 col-md-4">
             <h5>Excellent</h5>
+            <p class="text-muted">"TrackIt allows us to focus on our core business."</p>
          </div>
-         <div class="col-12 col-md-3">
-            <h5>Great</h5>
-         </div>
-         <div class="col-12 col-md-3">
-            <h5>Nice</h5>
+         <div class="col-12 col-md-4">
+            <h5>Game Changer</h5>
+            <p class="text-muted">"A key tool of our business."</p>
+            <br>
          </div>
       </div>
    </div>
 </div>
 <!-- Customers -->
-<div class="row bg-light" style="min-height: 230px;">
-   <div class="container">
+<div class="row section">
+   <div class="container-fluid">
       <div class="row">
          <div class="col-12">
             <br>
-            <h4 class="text-right"><i class="material-icons align-bottom">verified_user</i> See Our
-               Customers</h4>
+            <h4 class="text-center">
+               <i class="material-icons align-bottom">verified_user</i>
+               Trusted By
+            </h4>
+         </div>
+         <div class="col-12 text-center">
             <br>
-         </div>
-         <div class="col-12 col-md-3">
-            <h5>Organisation 1</h5>
-         </div>
-         <div class="col-12 col-md-3">
-            <h5>Organisation 2</h5>
-         </div>
-         <div class="col-12 col-md-3">
-            <h5>Organisation 3</h5>
-         </div>
-         <div class="col-12 col-md-3">
-            <h5>Organisation 4</h5>
+            <br>
+            <img src="{% static 'images/Partner-Logos.png' %}" id="customer-logos" alt="Customer Logos">
          </div>
       </div>
    </div>
 </div>
 <!-- Plans -->
-<div class="row" style="min-height: 230px;">
+<div class="row section bg-light">
    <div class="container">
       <div class="row">
          <div class="col-12 text-center">
@@ -124,76 +123,79 @@
             <h4>Plans</h4>
             <br>
          </div>
-         <div class="col-12 text-center">
-            <div class="card-deck text-center justify-content-center">
-               <div class="card border-primary" style="max-width: 18rem;">
-                  <!-- <div class="card-header">Free -->
-                  <div class="card-header">Get Started
-                     <!-- If user is logged in Basic User, show CURRENT -->
-                     {% if user.is_authenticated and not user.profile.is_pro_user %}
-                     <span class="badge badge-primary align-middle">Current Plan</span>
-                     {% endif %}
-                  </div>
-                  <div class="card-body text-primary">
-                     <!-- <h5 class="card-title">Get started</h5> -->
-                     <h5 class="card-title">FREE</h5>
-                     <ul class="list-group text-left">
-                        <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i> Up to
-                           10 Tickets/month</li>
-                        <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i>
-                           Dashboard View</li>
-                        <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i> Image
-                           uploads</li>
-                     </ul>
-                     {% if not request.user.is_authenticated %}
-                     <!-- If user is already authenticated, hide Sign Up button -->
-                     <a href="{% url 'registration' %}" class="btn btn-primary"><i class="material-icons align-top">
-                           person_add</i> Create Account</a>
-                     <br>
-                     <br>
-                     <p>Obligation-free</p>
-                     <p>No credit card required</p>
-                     {% endif %}
-                  </div>
+         <div class="col-12 col-md-6">
+            <!-- <div class="text-center justify-content-center"> -->
+            <div class="card border-primary plan-card text-center">
+               <div class="card-header plan-card-header">Get Started
+                  <!-- If user is logged in Basic User, show CURRENT -->
+                  {% if user.is_authenticated and not user.profile.is_pro_user %}
+                  <span class="badge badge-primary align-middle">Current Plan</span>
+                  {% endif %}
                </div>
-               <div class="card border-primary" style="max-width: 18rem;">
-                  <div class="card-header">PRO
-                     {% if user.profile.is_pro_user %}
-                     <!-- If PRO User, show CURRENT -->
-                     <span class="badge badge-primary align-middle">Current Plan</span>
-                     {% endif %}
-                  </div>
-                  <div class="card-body text-primary">
-                     <!-- <h5 class="card-title">Go PRO</h5> -->
-                     <h5 class="card-title">&euro;9.90 <br>(Single Payment)</h5>
-                     <ul class=" list-group text-left">
-                        <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i>
-                           UNLIMITED Tickets/month
-                        </li>
-                        <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i>
-                           Dashboard View</li>
-                        <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i>
-                           Image
-                           uploads</li>
-                        <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i>
-                           KANBAN
-                           View</li>
-                        <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i> 24/7
-                           Live Support
-                        </li>
-                     </ul>
-                     {% if not user.profile.is_pro_user %}
-                     <a href="{% url 'checkout' %}" class="btn btn-primary">Go PRO</a>
-                     {% endif %}
-                  </div>
+               <div class="card-body text-primary">
+                  <h5 class="card-title">FREE</h5>
+                  <ul class="list-group plan-list-group text-left">
+                     <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i>
+                        Up to 10 Tickets/month
+                     </li>
+                     <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i>
+                        Dashboard View
+                     </li>
+                     <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i>
+                        Image uploads
+                     </li>
+                  </ul>
+                  {% if not request.user.is_authenticated %}
+                  <!-- If user is not authenticated, show Sign Up -->
+                  <br>
+                  <p>No credit card required</p>
+                  <a href="{% url 'registration' %}" class="btn btn-primary"><i class="material-icons align-top">
+                        person_add</i> Create Account</a>
+                  {% endif %}
                </div>
             </div>
+         </div>
+         <div class="col-12 col-md-6">
+            <div class="card border-primary plan-card text-center">
+               <div class="card-header plan-card-header">
+                  <span class="material-icons align-top">stars</span>
+                  PRO
+                  {% if user.profile.is_pro_user %}
+                  <!-- If PRO User, show CURRENT -->
+                  <span class="badge badge-primary align-middle">Current Plan</span>
+                  {% endif %}
+               </div>
+               <div class="card-body text-primary">
+                  <h5 class="card-title">&euro;9.90</h5>
+                  <ul class="list-group plan-list-group text-left">
+                     <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i>
+                        UNLIMITED Tickets/month
+                     </li>
+                     <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i>
+                        Dashboard View
+                     </li>
+                     <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i>
+                        Image uploads
+                     </li>
+                     <li class="list-group-item"><i class="material-icons align-top">check_circle_outline</i>
+                        KANBAN View
+                     </li>
+                  </ul>
+                  {% if not user.profile.is_pro_user and request.user.is_authenticated %}
+                  <br>
+                  <a href="{% url 'checkout' %}" class="btn btn-primary"><span class="material-icons align-bottom">
+                        stars</span> Go PRO
+                  </a>
+                  {% endif %}
+               </div>
+            </div>
+            <!-- </div> -->
          </div>
       </div>
    </div>
 </div>
 <!-- FAQ -->
-<div class="row bg-light" style="min-height: 230px;">
+<div class="row section">
    <div class="container">
       <div class="row">
          <div class="col-12">
@@ -215,7 +217,7 @@
          </div>
          <div class="col-12 col-md-4">
             <b>What if I change my mind?</b>
-            <p class="text-muted">If you are not entirely satified with your PRO membership, refunds are available
+            <p class="text-muted">If you are not entirely satisfied with PRO membership, refunds are available
                within 7 days of payment.</p>
          </div>
       </div>
