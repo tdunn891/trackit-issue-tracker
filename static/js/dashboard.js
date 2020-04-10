@@ -1,5 +1,5 @@
-// Fetch data from Django REST API
-fetch('http://localhost:8000/tickets/api/tickets')
+// Fetch source data for charts from Django REST API
+fetch(document.location.origin + '/tickets/api/tickets')
 	.then((response) => {
 		return response.json();
 	})
