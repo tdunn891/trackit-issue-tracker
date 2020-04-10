@@ -1,5 +1,5 @@
 // Fetch source data for charts from Django REST API
-fetch(document.location.origin + '/tickets/api/tickets')
+fetch('https://django-ecommerce1.herokuapp.com/tickets/api/tickets')
 	.then((response) => {
 		return response.json();
 	})
