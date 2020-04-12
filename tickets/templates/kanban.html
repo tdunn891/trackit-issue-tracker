@@ -21,8 +21,9 @@
    <!-- 'New' Column -->
    <div class="col-md-4 kanban-col">
       <div class="jumbotron kanban-new">
-         <h5 class="text-center bg-info-light"><i class="material-icons-outlined align-bottom">local_activity</i> New
-            ({{ new_tickets|length }})</h5>
+         <h5 class="text-center bg-info-light"><i class="material-icons-outlined align-bottom">local_activity</i>
+            New ({{ new_tickets|length }})
+         </h5>
          {% for ticket in new_tickets %}
          <div class="card">
             <div class="card-body">
@@ -31,18 +32,9 @@
                      title="{{ ticket.description }}">{{ ticket.summary }}
                   </a>
 
-                  <!-- Priority Badge -->
-                  <span class="text-muted">
-                     <span class="badge
-                     {% if ticket.priority == 'Low' %}
-                     badge-success 
-                     {% elif ticket.priority == 'Medium' %}
-                     badge-warning
-                     {% elif ticket.priority == 'High' %}
-                     badge-danger
-                     {% endif %}
-                     float-right">{{ ticket.priority }}
-                     </span>
+                  <!-- Assigned To -->
+                  <span class="float-right text-muted" data-toggle="tooltip" title="Assignee">
+                     {{ ticket.assigned_to }}
                   </span>
                </h6>
 
@@ -54,6 +46,20 @@
                <i class="material-icons-outlined align-middle" data-toggle="tooltip" title="Feature"
                   data-placement="left">build</i>
                {% endif %}
+
+               <!-- Priority Badge -->
+               <span class="text-muted">
+                  <span class="badge
+                     {% if ticket.priority == 'Low' %}
+                     badge-success 
+                     {% elif ticket.priority == 'Medium' %}
+                     badge-warning
+                     {% elif ticket.priority == 'High' %}
+                     badge-danger
+                     {% endif %}
+                     ">{{ ticket.priority }}
+                  </span>
+               </span>
 
                <!-- Tags  -->
                {% if ticket.tags.names %}
@@ -67,8 +73,9 @@
                <!-- Status change via dropdown only available if User is Submitter or Staff -->
                {% if request.user == ticket.submitted_by or request.user.is_staff %}
                <div class="btn-group float-right">
-                  <button class="btn btn-secondary btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true"
-                     aria-expanded="false">...
+                  <button class="btn btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="false"><span class="material-icons text-muted">
+                        more_vert</span>
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
                      <h6 class="dropdown-header">Move to:</h6>
@@ -82,6 +89,7 @@
                   </div>
                </div>
                {% endif %}
+
             </div>
          </div>
          {% endfor %}
@@ -102,9 +110,24 @@
                      title="{{ ticket.description }}">{{ ticket.summary }}
                   </a>
 
-                  <!-- Priority Badge -->
-                  <span class="text-muted">
-                     <span class="badge
+                  <!-- Assigned To -->
+                  <span class="float-right text-muted" data-toggle="tooltip" title="Assignee"> {{ ticket.assigned_to }}
+                  </span>
+
+               </h6>
+
+               <!-- Bug/Feature Icon -->
+               {% if ticket.ticket_type == "Bug" %}
+               <i class="material-icons-outlined align-middle" data-toggle="tooltip" data-placement="left"
+                  title="Bug">bug_report</i>
+               {% elif ticket.ticket_type == "Feature" %}
+               <i class="material-icons-outlined align-middle" data-toggle="tooltip" data-placement="left"
+                  title="Feature">build</i>
+               {% endif %}
+
+               <!-- Priority Badge -->
+               <span class="text-muted">
+                  <span class="badge
                      {% if ticket.priority == 'Low' %}
                      badge-success 
                      {% elif ticket.priority == 'Medium' %}
@@ -112,19 +135,9 @@
                      {% elif ticket.priority == 'High' %}
                      badge-danger
                      {% endif %}
-                     float-right">{{ ticket.priority }}
-                     </span>
+                     ">{{ ticket.priority }}
                   </span>
-               </h6>
-
-               <!-- Bug/Feature Icon -->
-               {% if ticket.ticket_type == "Bug" %}
-               <i class="material-icons-outlined float-left" data-toggle="tooltip" data-placement="left"
-                  title="Bug">bug_report</i>
-               {% elif ticket.ticket_type == "Feature" %}
-               <i class="material-icons-outlined float-left" data-toggle="tooltip" data-placement="left"
-                  title="Feature">build</i>
-               {% endif %}
+               </span>
 
                <!-- Tags  -->
                {% if ticket.tags.names %}
@@ -138,8 +151,9 @@
                <!-- Status change via dropdown only available if User is Submitter or Staff -->
                {% if request.user == ticket.submitted_by or request.user.is_staff %}
                <div class="btn-group float-right">
-                  <button class="btn btn-secondary btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true"
-                     aria-expanded="false">...
+                  <button class="btn btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="false">
+                     <span class="material-icons text-muted">more_vert</span>
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
                      <h6 class="dropdown-header">Move to:</h6>
@@ -172,9 +186,24 @@
                   <a href="{% url 'view_ticket' ticket.id %}" data-toggle="tooltip" data-placement="bottom"
                      title="{{ ticket.description }}">{{ ticket.summary }}
                   </a>
-                  <!-- Priority Badge -->
-                  <span class="text-muted">
-                     <span class="badge
+
+                  <!-- Assigned To -->
+                  <span class="float-right text-muted" data-toggle="tooltip" title="Assignee"> {{ ticket.assigned_to }}
+                  </span>
+               </h6>
+
+               <!-- Bug/Feature Icon -->
+               {% if ticket.ticket_type == "Bug" %}
+               <i class="material-icons-outlined align-middle" data-toggle="tooltip" data-placement="left"
+                  title="Bug">bug_report</i>
+               {% elif ticket.ticket_type == "Feature" %}
+               <i class="material-icons-outlined align-middle" data-toggle="tooltip" data-placement="left"
+                  title="Feature">build</i>
+               {% endif %}
+
+               <!-- Priority Badge -->
+               <span class="text-muted">
+                  <span class="badge
                      {% if ticket.priority == 'Low' %}
                      badge-success 
                      {% elif ticket.priority == 'Medium' %}
@@ -182,19 +211,9 @@
                      {% elif ticket.priority == 'High' %}
                      badge-danger
                      {% endif %}
-                     float-right">{{ ticket.priority }}
-                     </span>
+                     ">{{ ticket.priority }}
                   </span>
-               </h6>
-
-               <!-- Bug/Feature Icon -->
-               {% if ticket.ticket_type == "Bug" %}
-               <i class="material-icons-outlined float-left" data-toggle="tooltip" data-placement="left"
-                  title="Bug">bug_report</i>
-               {% elif ticket.ticket_type == "Feature" %}
-               <i class="material-icons-outlined float-left" data-toggle="tooltip" data-placement="left"
-                  title="Feature">build</i>
-               {% endif %}
+               </span>
 
                <!-- Tags  -->
                {% if ticket.tags.names %}
@@ -208,8 +227,9 @@
                <!-- Status change via dropdown only available if User is Submitter or Staff -->
                {% if request.user == ticket.submitted_by or request.user.is_staff %}
                <div class="btn-group float-right">
-                  <button class="btn btn-secondary btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true"
-                     aria-expanded="false">...
+                  <button class="btn btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="false">
+                     <span class="material-icons text-muted">more_vert</span>
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
                      <h6 class="dropdown-header">Move to:</h6>
@@ -243,19 +263,10 @@
                      title="{{ ticket.description }}">{{ ticket.summary }}
                   </a>
 
-                  <!-- Priority Badge -->
-                  <span class="text-muted">
-                     <span class="badge
-                     {% if ticket.priority == 'Low' %}
-                     badge-success 
-                     {% elif ticket.priority == 'Medium' %}
-                     badge-warning
-                     {% elif ticket.priority == 'High' %}
-                     badge-danger
-                     {% endif %}
-                     float-right">{{ ticket.priority }}
-                     </span>
+                  <!-- Assigned To -->
+                  <span class="float-right text-muted" data-toggle="tooltip" title="Assignee"> {{ ticket.assigned_to }}
                   </span>
+
                </h6>
 
                <!-- Bug/Feature Icon -->
@@ -266,6 +277,20 @@
                <i class="material-icons-outlined align-middle" data-toggle="tooltip" title="Feature"
                   data-placement="left">build</i>
                {% endif %}
+
+               <!-- Priority Badge -->
+               <span class="text-muted">
+                  <span class="badge
+                     {% if ticket.priority == 'Low' %}
+                     badge-success 
+                     {% elif ticket.priority == 'Medium' %}
+                     badge-warning
+                     {% elif ticket.priority == 'High' %}
+                     badge-danger
+                     {% endif %}
+                     ">{{ ticket.priority }}
+                  </span>
+               </span>
 
                <!-- Tags  -->
                {% if ticket.tags.names %}
@@ -279,8 +304,9 @@
                <!-- Status change via dropdown only available if User is Submitter or Staff -->
                {% if request.user == ticket.submitted_by or request.user.is_staff %}
                <div class="btn-group float-right">
-                  <button class="btn btn-secondary btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true"
-                     aria-expanded="false">...
+                  <button class="btn btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="false">
+                     <span class="material-icons text-muted">more_vert</span>
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
                      <h6 class="dropdown-header">Move to:</h6>
