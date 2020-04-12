@@ -20,7 +20,7 @@
    <!-- Details Pane -->
    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
       {% if ticket.status == "New" %}
-      <div class="jumbotron bg-cyan-light">
+      <div class="jumbotron bg-light-blue">
          {% elif ticket.status == "In Progress" %}
          <div class="jumbotron bg-warning-light">
             {% elif ticket.status == "Resolved" %}
@@ -230,10 +230,9 @@
                               class="material-icons-outlined align-bottom">edit</i> Edit Ticket</a>
                         <!-- Status change via dropdown  -->
                         <div class="btn-group">
-                           <button class="btn btn-outline-dark dropdown-toggle" type="button" data-toggle="dropdown"
-                              aria-haspopup="true" aria-expanded="false"><span class="material-icons align-top">
-                                 speed
-                              </span> Status
+                           <button class="btn btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true"
+                              aria-expanded="false">
+                              <span class="material-icons align-top">more_vert</span>
                            </button>
                            <div class="dropdown-menu dropdown-menu-left">
                               <h6 class="dropdown-header">Set to:</h6>
@@ -320,7 +319,7 @@
             <!-- Change History Pane -->
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                {% if ticket.status == "New" %}
-               <div class="jumbotron bg-cyan-light">
+               <div class="jumbotron bg-light-blue">
                   {% elif ticket.status == "In Progress" %}
                   <div class="jumbotron bg-warning-light">
                      {% elif ticket.status == "Resolved" %}
