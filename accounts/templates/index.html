@@ -109,7 +109,12 @@
          <div class="col-12 text-center">
             <br>
             <br>
-            <img src="{% static 'images/Partner-Logos.png' %}" id="customer-logos" alt="Customer Logos">
+            <img src="{% static 'images/Partner-Logos.png' %}" id="customer-logos" class="d-none d-sm-inline-block"
+               alt="Customer Logos">
+            <img src="{% static 'images/Partner-Logos-mobile.png' %}" id="customer-logos-mobile"
+               class="d-inline-block d-sm-none" alt="Customer Logos Mobile">
+            <img src="{% static 'images/Partner-Logos-mobile-2.png' %}" id="customer-logos-mobile-2"
+               class="d-inline-block d-sm-none" alt="Customer Logos Mobile 2">
          </div>
       </div>
    </div>
@@ -123,7 +128,7 @@
             <h4>Plans</h4>
             <br>
          </div>
-         <div class="col-12 col-md-6">
+         <div class="col-12 col-md-6 col-lg-4 offset-lg-2">
             <!-- <div class="text-center justify-content-center"> -->
             <div class="card border-primary plan-card text-center">
                <div class="card-header plan-card-header">Get Started
@@ -155,7 +160,7 @@
                </div>
             </div>
          </div>
-         <div class="col-12 col-md-6">
+         <div class="col-12 col-md-6 col-lg-4">
             <div class="card border-primary plan-card text-center">
                <div class="card-header plan-card-header">
                   <span class="material-icons align-top">stars</span>

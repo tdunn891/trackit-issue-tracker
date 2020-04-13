@@ -29,6 +29,10 @@ html {
 	margin: auto;
 }
 
+#login-nav-text {
+	font-size: 1rem;
+}
+
 /* Default body font size */
 body {
 	font-size: 15px;
@@ -119,10 +123,6 @@ h4 {
 /* Kanban cancelled checkbox */
 #hide-cancelled-checkbox {
 	font-size: 15px;
-}
-
-/* Index page Plans cards */
-.card-deck .card {
 }
 
 #customer-logos {
@@ -309,6 +309,10 @@ footer {
 	background-color: #f1f1f1 !important;
 }
 
+.bg-light-blue {
+	background-color: lightblue !important;
+}
+
 /* Kanban headers */
 .jumbotron h5 {
 	padding: 8px;
@@ -353,8 +357,13 @@ footer {
 		padding: 0.5rem 1px;
 	}
 	/* customer logos */
-	#customer-logos {
-		width: 100%;
+	#customer-logos,
+	#customer-logos-mobile {
+		width: 98%;
+	}
+	#customer-logos-mobile-2 {
+		margin-top: 34px;
+		width: 65%;
 	}
 }
 
