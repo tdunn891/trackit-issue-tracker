@@ -1,10 +1,10 @@
 // Fetch source data for charts from Django REST API
-fetch('https://django-ecommerce1.herokuapp.com/tickets/api/tickets')
+fetch('https://django-issue-tracker-1.herokuapp.com/tickets/api/tickets')
 	.then((response) => {
 		return response.json();
 	})
 	.then((data) => {
-		// Date parsing
+		// Parse datetime
 		const dateFormatSpecifier = '%Y-%m-%dT%H:%M:%S.%f%Z';
 		const dateFormatParser = d3.timeParse(dateFormatSpecifier);
 
@@ -17,7 +17,7 @@ fetch('https://django-ecommerce1.herokuapp.com/tickets/api/tickets')
 			d.created_date_month = d3.timeMonth(d.created_date_dd);
 			// Month
 			d.created_date_year = d3.timeYear(d.created_date_dd);
-			// RESOLVED DATE parsed, if resolved
+			// If ticket status is resolved, parse RESOLVED DATE
 			if (d.resolved_date) {
 				// Parsed date
 				d.resolved_date_dd = dateFormatParser(d.resolved_date);
@@ -33,6 +33,7 @@ fetch('https://django-ecommerce1.herokuapp.com/tickets/api/tickets')
 	});
 
 function drawGraphs(data) {
+	// Crossfilter data
 	let ndx = crossfilter(data);
 
 	// Pass crossfiltered data to charts
@@ -43,16 +44,18 @@ function drawGraphs(data) {
 	drawStatusByMonthBarChart(ndx);
 	showFilteredCount(ndx);
 
+	// Render all charts
 	dc.renderAll();
 }
 
-// Status by month
+// Status by Month Bar Chart
 function drawStatusByMonthBarChart(ndx) {
 	let dateCreatedDim = ndx.dimension((d) => d.created_date_day);
 	let statusGroup = dateCreatedDim
 		.group()
 		.reduce(reduceAdd, reduceRemove, reduceInitial);
 
+	// Custom reducer
 	function reduceAdd(i, d) {
 		i[d.status] = (i[d.status] || 0) + 1;
 		return i;
@@ -137,7 +140,7 @@ function drawStatusRowChart(ndx) {
 	let statusDim = ndx.dimension((d) => d.status);
 	let statusGroup = statusDim.group();
 
-	// Open/Closed
+	// Open/Closed Dimension
 	let openClosedDim = ndx.dimension(function (d) {
 		if (d.status == 'Resolved' || d.status == 'Cancelled') {
 			return 'Closed';
@@ -145,6 +148,8 @@ function drawStatusRowChart(ndx) {
 			return 'Open';
 		}
 	});
+
+	// Open/Closed Group
 	let openClosedGroup = openClosedDim.group();
 
 	// Status Row Chart
