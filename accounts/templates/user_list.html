@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
-{% block title %}Trackit | Team{% endblock %}
-{% block page_heading %}<i class="material-icons heading-icon align-bottom">people</i> Users ({{ users.count }})
-<hr>
-{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css"
-   href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-html5-1.6.1/cr-1.5.2/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.css" />
+   href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-html5-1.6.1/cr-1.5.2/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.css">
+{% endblock %}
+{% block title %}Trackit | Team{% endblock %}
+{% block page_heading %}
+<h3>
+   <i class="material-icons heading-icon align-bottom">people</i> Users ({{ users.count }})
+</h3>
+<hr>
 {% endblock %}
 {% block container-class %}user-list-container{% endblock %}
 {% block content %}
@@ -97,7 +100,7 @@
                      <tr>
                         <td class="align-middle">
                            {% if staff_member.profile.image %}
-                           <img src="{{ staff_member.profile.image.url }}" id="profile-image" alt="Profile Image"
+                           <img src="{{ staff_member.profile.image.url }}" alt="Profile Image"
                               class="rounded-circle ticket-view-profile-image d-none d-sm-inline-block">
                            {% else %}
                            <i class="material-icons align-middle rounded-circle ticket-view-profile-default">
@@ -133,6 +136,6 @@
 {% endblock %}
 {% block scripts %}
 <!-- DataTables.js -->
-<script type="text/javascript"
+<script
    src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-html5-1.6.1/cr-1.5.2/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.js"></script>
 {% endblock %}

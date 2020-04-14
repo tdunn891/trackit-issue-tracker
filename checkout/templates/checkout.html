@@ -4,19 +4,21 @@
 {% block title %}TrackIt | Checkout | Go PRO{% endblock %}
 {% block head %}
 <!-- Stripe JS -->
-<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-<script type="text/javascript">
+<script src="https://js.stripe.com/v2/"></script>
+<script>
    //<![CDATA[
    Stripe.publishableKey = '{{ publishable }}';
     //]]>
 </script>
 <!-- Stripe JS -->
-<script type="text/javascript" src="{% static 'js/stripe.js' %}"></script>
+<script src="{% static 'js/stripe.js' %}"></script>
 {% endblock head %}
-{% block page_heading %}<span class="material-icons heading-icon">
-   shopping_cart
-</span> Checkout<br>
-<hr>{% endblock %}
+{% block page_heading %}
+<h3>
+   <span class="material-icons heading-icon">shopping_cart</span> Checkout
+</h3>
+<hr>
+{% endblock %}
 {% block container-class %}checkout-container{% endblock %}
 {% block content %}
 <div class="jumbotron mx-auto" id="checkout-jumbotron">
@@ -37,7 +39,7 @@
          </ul>
          <br>
          <p class="lead"><b>Total Due: 9.90 EUR (Single Payment)</b></p>
-         <form role="form" method="post" id="payment-form" action="{% url 'checkout' %}" enctype="multipart/form-data">
+         <form method="post" id="payment-form" action="{% url 'checkout' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row">
                <div id="credit-card-errors">
@@ -92,17 +94,19 @@
                </div>
                <div class="col-6 col-lg-2">
                   {{ payment_form.cvv | as_crispy_field }}
+                  {{ payment_form.stripe_id | as_crispy_field }}
                </div>
             </div>
             <hr>
-            {{ payment_form.stripe_id | as_crispy_field }}
-            <div class="col-md-12">
-               <input class=" btn btn-primary" id="submit_payment_btn" name="commit" type="submit"
-                  value="Submit Payment">
-               <a href="{% url 'tickets' %}" class="float-right">Cancel</a>
+            <div class="row">
+               <div class="col-md-12">
+                  <input class=" btn btn-primary" id="submit_payment_btn" name="commit" type="submit"
+                     value="Submit Payment">
+                  <a href="{% url 'tickets' %}" class="float-right">Cancel</a>
+               </div>
             </div>
+         </form>
       </div>
-      </form>
    </div>
 </div>
 {% endblock %}

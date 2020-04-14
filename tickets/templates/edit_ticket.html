@@ -6,7 +6,9 @@
 <link rel="stylesheet" href="{% static 'css/bootstrap-tagsinput.css' %}">
 {% endblock %}
 {% block page_heading %}
-<i class="material-icons">edit</i> Edit Ticket | {{ ticket.id }}
+<h3>
+   <i class="material-icons">edit</i> Edit Ticket | {{ ticket.id }}
+</h3>
 <hr>
 {% endblock %}
 {% block container-class %}edit-ticket-container{% endblock %}

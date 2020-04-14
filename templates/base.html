@@ -10,7 +10,7 @@
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
    <!-- Material Icons -->
-   <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/icon?family=Material+Icons%7CMaterial+Icons+Outlined" rel="stylesheet">
    <!-- jQuery -->
    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
       integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -23,11 +23,11 @@
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"></script>
    <!-- Favicon -->
-   <link rel="icon" type="image/png" href="{% static 'images/target_favicon.png' %}" />
+   <link rel="icon" type="image/png" href="{% static 'images/target_favicon.png' %}">
    {% block head %}
    {% endblock %}
    <!-- style.css -->
-   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
 <body>
@@ -72,7 +72,7 @@
                href="{% url 'profile' %}">
                {% if user.profile.image %}
                <img src="{{ user.profile.image.url }}" alt="My Profile Picture" id="account-profile-thumbnail"
-                  class="rounded-circle align-middle" width="38px">
+                  class="rounded-circle align-middle">
                {% else %}
                <i class="material-icons align-middle">account_circle</i>
                {% endif %}
@@ -93,7 +93,7 @@
             <!-- User not authenticated -->
             <a class="nav-item nav-link" href="{% url 'login' %}" id="login-nav-item">
                <i class="material-icons align-middle">input</i>
-               Log In
+               <span id="login-nav-text">Log In</span>
             </a>
             <a class="nav-item nav-link btn btn-primary" href="{% url 'registration' %}" id="register-nav-item">
                <i class="material-icons align-middle">person_add</i>Create Free Account
@@ -121,7 +121,7 @@
          <div class="row">
             <div class="col col-12">
                <br>
-               <h3>{% block page_heading %}{% endblock %}</h3>
+               {% block page_heading %}{% endblock %}
             </div>
          </div>
          {% block content %}
@@ -135,13 +135,12 @@
          <div class="row">
             <div class="col-12 text-center">
                <p><a href="mailto:thomas.brian.dunn@gmail.com">
-                     <i class="material-icons-outlined align-top">
-                        email </i> Contact Developer
+                     <i class="material-icons-outlined align-top">email</i> Contact Developer
                   </a>
                </p>
                <p>
                   <a href="https://github.com/tdunn891/milestone-3" target="_blank">
-                     <img src="{% static 'images/github-32.png' %}" id="github-logo" alt="GitHub Logo" />
+                     <img src="{% static 'images/github-32.png' %}" id="github-logo" alt="GitHub Logo">
                   </a>
                </p>
             </div>

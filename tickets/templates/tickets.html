@@ -3,18 +3,20 @@
 {% block head %}
 <!-- DataTables.net css -->
 <link rel="stylesheet" type="text/css"
-   href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-html5-1.6.1/cr-1.5.2/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.css" />
+   href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-html5-1.6.1/cr-1.5.2/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.css">
 {% endblock %}
 {% block page_heading %}
-<i class="material-icons-outlined align-bottom heading-icon">confirmation_number</i> Tickets ({{ tickets.count }})
-<a class="btn btn-primary float-right" href="{% url 'add_ticket' %}"><span class="d-none d-md-inline-block">Raise
-      Ticket</span>
-   <i class="material-icons align-bottom">add</i>
-</a>
-<hr>
+<h3>
+   <i class="material-icons-outlined align-bottom heading-icon">confirmation_number</i> Tickets ({{ tickets.count }})
+   <a class="btn btn-primary float-right" href="{% url 'add_ticket' %}">
+      <span class="d-none d-md-inline-block">Raise Ticket</span>
+      <i class="material-icons align-bottom">add</i>
+   </a>
+</h3>
 {% endblock %}
 {% block container-class %}tickets-container{% endblock %}
 {% block content %}
+<hr>
 <div class="row">
    <div class="col-12" id="tickets-table-col">
       <a href="{% url 'tickets' %}" class="btn btn-light btn-sm float-right">Reset</a>
@@ -59,13 +61,11 @@
                <td>{{ ticket.submitted_by }}</td>
                <td>{{ ticket.assigned_to }}</td>
                {% if ticket.priority == "Low" %}
-               <td><span class="badge badge-light">{{ ticket.priority }}</span></td>
+               <td><span class="badge badge-light"><span class="d-none">1</span> {{ ticket.priority }}</span></td>
                {% elif ticket.priority == "Medium" %}
-               <td><span class="badge badge-warning">{{ ticket.priority }}</span></td>
-               {% elif ticket.priority == "High" %}
-               <td><span class="badge badge-danger">{{ ticket.priority }}</span></td>
-               {% else  %}
-               <td><span class="badge badge-light">{{ ticket.priority }}</span></td>
+               <td><span class="badge badge-warning"><span class="d-none">2</span> {{ ticket.priority }}</span></td>
+               {% else %}
+               <td><span class="badge badge-danger"><span class="d-none">3</span> {{ ticket.priority }}</span></td>
                {% endif %}
                <!-- Ticket Status Icon -->
                {% if ticket.status == "New" %}
@@ -111,8 +111,8 @@
 {% endblock %}
 {% block scripts %}
 <!-- VFS Fonts js -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 <!-- DataTables js -->
-<script type="text/javascript"
+<script
    src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-html5-1.6.1/cr-1.5.2/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.js"></script>
 {% endblock %}

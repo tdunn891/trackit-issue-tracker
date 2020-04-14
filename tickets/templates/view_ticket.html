@@ -2,7 +2,10 @@
 {% load bootstrap_tags %}
 {% block title %}TrackIt | View Ticket | {{ ticket.id }}{% endblock %}
 {% block container-class %}view-ticket-container{% endblock %}
-{% block page_heading %}<i class="material-icons">pageview</i> View Ticket | {{ticket.id}}
+{% block page_heading %}
+<h3>
+   <i class="material-icons">pageview</i> View Ticket | {{ticket.id}}
+</h3>
 <hr>
 {% endblock %}
 {% block content %}

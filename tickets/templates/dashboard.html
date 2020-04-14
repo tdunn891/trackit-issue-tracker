@@ -7,13 +7,15 @@
 <script src="https://d3js.org/d3-time-format.v2.min.js"></script>
 <!-- dc.min.css -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dc/3.1.9/dc.min.css"
-   integrity="sha256-uq/xxnkXyjSgp47vyRtSvBEwWuxTFbtxbKwOxkmWIJM=" crossorigin="anonymous" />
+   integrity="sha256-uq/xxnkXyjSgp47vyRtSvBEwWuxTFbtxbKwOxkmWIJM=" crossorigin="anonymous">
 {% endblock %}
 {% block container-class %}dashboard-container{% endblock %}
 {% block title %}TrackIt | Dashboard{% endblock %}
 {% block page_heading %}
-<i class="material-icons-outlined align-bottom heading-icon">assessment</i> Dashboard
 <div id="filtered-count" class="float-right"></div>
+<h3>
+   <i class="material-icons-outlined align-bottom heading-icon">assessment</i> Dashboard
+</h3>
 <hr>
 {% endblock %}
 {% block content %}

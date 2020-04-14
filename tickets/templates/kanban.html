@@ -3,8 +3,6 @@
 {% block title %}TrackIt | Kanban{% endblock %}
 {% block container-class %}kanban-container{% endblock %}
 {% block page_heading %}
-<i class="material-icons-outlined heading-icon align-bottom">view_week</i> Kanban ({{ tickets|length }})
-
 <div class="form-check float-right" id="hide-cancelled-checkbox">
    <br>
    <input type="checkbox" class="form-check-input" id="cancelled-checkbox" checked>
@@ -14,9 +12,12 @@
       </i> Hide Cancelled ({{ cancelled_tickets|length}})
    </label>
 </div>
-<hr>
+<h3>
+   <i class="material-icons-outlined heading-icon align-bottom">view_week</i> Kanban ({{ tickets|length }})
+</h3>
 {% endblock %}
 {% block content %}
+<hr>
 <div class="row">
    <!-- 'New' Column -->
    <div class="col-md-4 kanban-col">
