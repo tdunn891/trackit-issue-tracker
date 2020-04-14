@@ -1,3 +1,5 @@
+/* prefixed by https://autoprefixer.github.io (PostCSS: v7.0.26, autoprefixer: v9.7.3) */
+
 html {
 	height: 100%;
 	scroll-behavior: smooth;
@@ -21,6 +23,8 @@ html {
 
 /* Nav-item hover */
 .nav-item:hover {
+	-webkit-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
 	transition: all 0.2s ease-in-out;
 }
 
@@ -49,6 +53,11 @@ main {
 	margin-top: 66px;
 }
 
+/* Messages Row Alert  */
+.messages-row .col .alert {
+	margin-bottom: 0;
+}
+
 /* Index page section headings */
 h4 {
 	color: #0052cc;
@@ -63,6 +72,10 @@ h4 {
 .feature-icon {
 	font-size: 38px !important;
 	color: #0093e9;
+}
+
+#account-profile-thumbnail {
+	width: 38px;
 }
 
 /* Container max widths */
@@ -190,7 +203,7 @@ g .row {
 
 /* Dashboard Filtered Count */
 #filtered-count {
-	font-size: 16px;
+	font-size: 17px;
 }
 
 .clickable-row:hover {
@@ -293,6 +306,14 @@ footer {
 
 /* Used for Navbar colour gradient */
 .bg-royal-blue {
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		from(#30cfd0),
+		to(#330867)
+	);
+	background-image: -o-linear-gradient(bottom, #30cfd0 0%, #330867 100%);
 	background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
 	background-color: #0093e9;
 }
@@ -323,6 +344,7 @@ footer {
 #ticket-search-boxes th input {
 	width: 100%;
 	padding: 0px;
+	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -371,6 +393,8 @@ footer {
 @media (max-width: 568px) {
 	.pagination {
 		margin-top: 20px !important;
+		-webkit-box-pack: center !important;
+		-ms-flex-pack: center !important;
 		justify-content: center !important;
 	}
 	.table-md td,
