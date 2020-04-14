@@ -3,9 +3,7 @@
 {% block title %}TrackIt | View Ticket | {{ ticket.id }}{% endblock %}
 {% block container-class %}view-ticket-container{% endblock %}
 {% block page_heading %}
-<h3>
-   <i class="material-icons">pageview</i> View Ticket | {{ticket.id}}
-</h3>
+<h3><i class="material-icons">pageview</i> View Ticket | {{ticket.id}}</h3>
 <hr>
 {% endblock %}
 {% block content %}
@@ -291,7 +289,8 @@
                         <li class="list-group-item">
                            {% if comment.user.profile.image %}
                            <img class="lazyload rounded-circle float-left comment-profile-image"
-                              data-src="{{ user.profile.image.url }}" alt="{{ user.first_name }}'s Profile Image">
+                              data-src="{{ comment.user.profile.image.url }}"
+                              alt="{{ comment.user.first_name }}'s Profile Image">
                            {% else %}
                            <i class="material-icons float-left">account_circle</i>
                            {% endif %}
