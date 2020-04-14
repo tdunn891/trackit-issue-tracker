@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block title %}TrackIt | My Account{% endblock %}
-{% block page_heading %}<i class="material-icons align-bottom heading-icon">account_circle</i> My Account
+{% block page_heading %}
+<h3>
+   <i class="material-icons align-bottom heading-icon">account_circle</i> My Account
+</h3>
 <hr>
 {% endblock %}
 {% block container-class %}profile-container{% endblock %}
@@ -10,8 +13,8 @@
    <div class="col-md-3">
       <a href="#">
          {% if user.profile.image %}
-         <img class="rounded-circle" src="{{ user.profile.image.url }}" alt="Profile Image" data-toggle="tooltip"
-            title="Upload New Image" data-placement="bottom" id="profile-image">
+         <img class="lazyload rounded-circle" data-src="{{ user.profile.image.url }}" alt="Profile Image"
+            data-toggle="tooltip" title="Upload New Image" data-placement="bottom" id="profile-image">
          {% else %}
          <i class="material-icons-outlined" id="default-profile-image" data-toggle="tooltip" title="Upload New Image"
             data-placement="bottom">account_circle</i>
@@ -51,7 +54,7 @@
                      <form id="first-name-form" class="d-none" action="{% url 'update_first_name' %}" method="post">
                         {% csrf_token %}
                         <input id="first-name-input" name="updated_first_name" type="text"
-                           value="{{ user.first_name }}">
+                           value="{{ user.first_name }}" />
                         <button class="btn btn-primary btn-sm" type="submit">Update</button>
                      </form>
                   </td>
@@ -69,7 +72,7 @@
                      </a>
                      <form id="last-name-form" class="d-none" action="{% url 'update_last_name' %}" method="post">
                         {% csrf_token %}
-                        <input id="last-name-input" name="updated_last_name" type="text" value="{{ user.last_name }}">
+                        <input id="last-name-input" name="updated_last_name" type="text" value="{{ user.last_name }}" />
                         <button class="btn btn-primary btn-sm" type="submit">Update</button>
                      </form>
                   </td>
@@ -83,8 +86,8 @@
                   <td>
                      <span id="current-zoomid">
                         {% if user.profile.zoom_id %}
-                        <a href="https://zoom.us/j/{{ user.profile.zoom_id }}" target="_blank" id="zoom-url"
-                           data-toggle="tooltip" data-placement="left" title="Start Zoom Meeting">
+                        <a href="https://zoom.us/j/{{ user.profile.zoom_id }}" target="_blank" rel="noopener"
+                           id="zoom-url" data-toggle="tooltip" data-placement="left" title="Start Zoom Meeting">
                            {{ user.profile.zoom_id }}
                         </a>
                         {% endif %}

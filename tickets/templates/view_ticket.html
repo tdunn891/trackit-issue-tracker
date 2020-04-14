@@ -105,8 +105,8 @@
                                        <a href="#" class="badge badge-pill badge-info dropdown-toggle"
                                           data-toggle="dropdown" title="Mail to:" data-placement="left">
                                           {% if ticket.submitted_by.profile.image %}
-                                          <img src="{{ ticket.submitted_by.profile.image.url }}"
-                                             class="align-middle rounded-circle ticket-view-profile-image"
+                                          <img data-src="{{ ticket.submitted_by.profile.image.url }}"
+                                             class="lazyload align-middle rounded-circle ticket-view-profile-image"
                                              alt="Submitter's Profile Image">
                                           {% else %}
                                           <i class="material-icons align-middle ticket-view-profile-default">
@@ -121,7 +121,7 @@
                                           {% if ticket.submitted_by.profile.zoom_id %}
                                           <a class="dropdown-item"
                                              href="https://zoom.us/j/{{ ticket.submitted_by.profile.zoom_id }}"
-                                             target="_blank">
+                                             target="_blank" rel="noopener">
                                              <img src="https://zoom.us/zoom.ico" class="zoom-icon align-top"
                                                 alt="zoom-icon">
                                              Join Zoom Meeting
@@ -138,8 +138,8 @@
                                        <a href="#" class="badge badge-pill badge-info dropdown-toggle"
                                           data-toggle="dropdown" title="Mail to:" data-placement="left">
                                           {% if ticket.assigned_to.profile.image %}
-                                          <img src="{{ ticket.assigned_to.profile.image.url }}"
-                                             class="align-middle rounded-circle ticket-view-profile-image"
+                                          <img data-src="{{ ticket.assigned_to.profile.image.url }}"
+                                             class="lazyload align-middle rounded-circle ticket-view-profile-image"
                                              alt="Assignee's Profile Image">
                                           {% else %}
                                           <i
@@ -154,7 +154,7 @@
                                           {% if ticket.assigned_to.profile.zoom_id %}
                                           <a class="dropdown-item"
                                              href="https://zoom.us/j/{{ ticket.assigned_to.profile.zoom_id }}"
-                                             target="_blank">
+                                             target="_blank" rel="noopener">
                                              <img src="https://zoom.us/zoom.ico" class="zoom-icon align-top"
                                                 alt="zoom-icon">
                                              Join Zoom Meeting
@@ -198,12 +198,13 @@
                                     <div class="modal-dialog" role="document">
                                        <div class="modal-content">
                                           <div class="modal-body">
-                                             <img src="{{ ticket.screenshot.url }}" alt="{{ ticket.screenshot }}">
+                                             <img data-src="{{ ticket.screenshot.url }}" class="lazyload"
+                                                alt="{{ ticket.screenshot }}">
                                              <br>
                                              <br>
                                              <span><b>Ticket: </b>{{ ticket.id }} | {{ ticket.summary }}</span>
                                              <span class="float-right"><b>Filename:</b> <a
-                                                   href="{{ ticket.screenshot.url }}" target="_blank"
+                                                   href="{{ ticket.screenshot.url }}" target="_blank" rel="noopener"
                                                    data-toggle="tooltip" title="Open in New Tab"
                                                    data-placement="bottom">
                                                    {{ ticket.screenshot }}</a></span>
@@ -289,8 +290,8 @@
                         {% for comment in comments %}
                         <li class="list-group-item">
                            {% if comment.user.profile.image %}
-                           <img class="rounded-circle float-left comment-profile-image"
-                              src="{{ user.profile.image.url }}" alt="{{ user.first_name }}'s Profile Image">
+                           <img class="lazyload rounded-circle float-left comment-profile-image"
+                              data-src="{{ user.profile.image.url }}" alt="{{ user.first_name }}'s Profile Image">
                            {% else %}
                            <i class="material-icons float-left">account_circle</i>
                            {% endif %}
