@@ -145,8 +145,8 @@ def update_zoomid(request, pk):
 def grant_staff_access(request, pk):
     """Allows Code Institute assessors to be immediately granted Staff Access.
     This is to ensure Assessors can see the full feature set.
-    In a non-assessment situation, clicking Request Staff Access link would send email to Admin,
-    who could then set is_staff to True
+    In a non-assessment situation, clicking Request Staff Access link would
+     send email to Admin, who could then set is_staff to True.
     """
     user = get_object_or_404(User, pk=pk)
     if request.method == 'POST':
@@ -157,5 +157,6 @@ def grant_staff_access(request, pk):
             user.is_staff = True
             user.save()
             messages.success(
-                request, "You have been granted Staff Access as a CI Assessor. You can now edit all tickets.")
+                request, ("You have been granted Staff Access as a CI Assessor."
+                          "You can now edit all tickets."))
     return redirect(user_profile)

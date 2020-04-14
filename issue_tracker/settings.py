@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'livereload',
+    # 'livereload',
     'django.contrib.staticfiles',
     'django_forms_bootstrap',
     'accounts',
@@ -55,7 +55,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
-    'livereload.middleware.LiveReloadScript',
+    # 'livereload.middleware.LiveReloadScript',
 ]
 
 ROOT_URLCONF = 'issue_tracker.urls'
@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'issue_tracker.wsgi.application'
 
 # Database
 
-if "DATABASE_URL" in os.environ and development == False:
+if "DATABASE_URL" in os.environ and development is False:
     print('Database URL found. Using POSTGRESQL')
     DATABASES = {
         'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))

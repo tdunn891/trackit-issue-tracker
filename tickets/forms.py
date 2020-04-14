@@ -19,8 +19,9 @@ class AddTicketForm(forms.ModelForm):
         model = Ticket
         widgets = {
             'summary': forms.TextInput(attrs={'placeholder': 'Summary'}),
-            'description': forms.Textarea(attrs={'placeholder': 'Add a description',
-                                                 'rows': 4}),
+            'description': forms.Textarea(
+                attrs={'placeholder': 'Add a description',
+                       'rows': 4}),
         }
         fields = ('ticket_type', 'summary',
                   'description', 'priority',
@@ -39,7 +40,11 @@ class EditTicketForm(forms.ModelForm):
         model = Ticket
         widgets = {
             'summary': forms.TextInput(attrs={'placeholder': 'Summary'}),
-            'description': forms.Textarea(attrs={'placeholder': 'Add a description', 'rows': 4}),
+            'description': forms.Textarea(
+                attrs={
+                    'placeholder': 'Add a description',
+                    'rows': 4
+                }),
         }
         fields = ('ticket_type', 'summary',
                   'description', 'priority',
@@ -52,7 +57,8 @@ class AddCommentForm(forms.ModelForm):
         model = Comment
         fields = ('comment_body',)
         widgets = {
-            'comment_body': forms.Textarea(attrs={'placeholder': 'Leave a comment', 'rows': 2})
+            'comment_body': forms.Textarea(
+                attrs={'placeholder': 'Leave a comment', 'rows': 2})
         }
         labels = {
             'comment_body': '',

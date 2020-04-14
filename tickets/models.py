@@ -40,7 +40,9 @@ class Ticket(models.Model):
 
     def days_to_resolve(self):
         if self.resolved_date:
-            return int((self.resolved_date.date() - self.created_date.date()).days)
+            return int(
+                (self.resolved_date.date() - self.created_date.date()).days
+            )
         else:
             return None
 

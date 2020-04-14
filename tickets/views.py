@@ -1,39 +1,40 @@
+from accounts.models import Profile
+import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, Sum, Count
-from .models import Ticket, Comment, HistoricalTicket
-from accounts.models import Profile
 from django.contrib.auth.models import User
-from .forms import AddTicketForm, AddCommentForm, EditTicketForm
-from rest_framework import viewsets
-from .serializers import TicketSerializer
+from django.db.models import Q, Sum, Count
 from django.utils.safestring import mark_safe
-import datetime
+from rest_framework import viewsets
+from .forms import AddTicketForm, AddCommentForm, EditTicketForm
+from .models import Ticket, Comment, HistoricalTicket
+from .serializers import TicketSerializer
 
 
-# Django REST API
 class RestView(viewsets.ModelViewSet):
+    """Django REST API as data source for Dashboard page"""
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
 
-# Dashboard
+
 @login_required()
 def dashboard(request):
+    """Renders Dashboard page with 6 charts"""
     return render(request, 'dashboard.html')
 
-# View Tickets
+
 @login_required()
 def view_tickets(request):
-    """Display All Tickets"""
+    """Renders Tickets page with data table of all tickets"""
     tickets = Ticket.objects.filter()
     return render(request, 'tickets.html', {'tickets': tickets})
 
-# View Single Ticket
+
 @login_required()
 def view_ticket(request, pk):
-    """Display single ticket details, change history and comments"""
+    """View single ticket details, change history and comments"""
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
     # Change History
     historical_changes = HistoricalTicket.objects.filter(id=pk)
@@ -44,7 +45,6 @@ def view_ticket(request, pk):
         delta = new_record.diff_against(old_record)
         for change in delta.changes:
             if (change.field != 'upvotes'):
-                # if (change.field != 'upvotes' and change.field != 'image'):
                 test_change = {
                     'field': change.field,
                     'new_value': change.new,
@@ -62,7 +62,9 @@ def view_ticket(request, pk):
         if form.is_valid():
             comment_body = form.cleaned_data.get("comment_body")
             comment = Comment(
-                ticket_id=pk, comment_body=comment_body, user_id=request.user.id)
+                ticket_id=pk,
+                comment_body=comment_body,
+                user_id=request.user.id)
             comment.save()
             messages.info(request, "Comment submitted.")
             return redirect(view_ticket, pk)
@@ -75,23 +77,32 @@ def view_ticket(request, pk):
 @login_required()
 def add_ticket(request, pk=None):
     """User Adds Ticket (Bug or Feature)"""
-    # If user has BASIC account, check if user has reached 10 ticket submission limit in current month
+    """If user has BASIC account, check if user has reached 10 ticket
+     submission limit in current month"""
     user = get_object_or_404(User, id=request.user.id)
     user_profile = get_object_or_404(Profile, user_id=request.user.id)
     if not user_profile.is_pro_user:
         today = datetime.datetime.today()
         start_date = datetime.datetime(today.year, today.month, 1)
         end_date = datetime.datetime(
-            today.year + int(today.month / 12), ((today.month % 12) + 1), 1)
+            today.year + int(today.month / 12),
+            ((today.month % 12) + 1), 1)
         tickets_submitted_this_month = Ticket.objects.filter(
-            submitted_by_id=user, created_date__range=(start_date, end_date)).count()
+            submitted_by_id=user,
+            created_date__range=(start_date, end_date)).count()
         if tickets_submitted_this_month > 9:
             messages.warning(
-                request, "You have reached the 10 ticket monthly limit - Go PRO for unlimited tickets.")
+                request, ("You have reached the 10 ticket monthly limit"
+                          " - Go PRO for unlimited tickets."))
             return redirect('checkout')
         else:
             messages.info(
-                request, mark_safe("Note: You have submitted <b>" + str(tickets_submitted_this_month) + "</b> of <b>10</b> free tickets this month. <a href='/checkout/'>Go PRO</a> for unlimited."))
+                request, mark_safe(
+                    ("Note: You have submitted <b>" +
+                     str(tickets_submitted_this_month) +
+                     "</b> of <b>10</b> free tickets this month."
+                     " <a href='/checkout/'>Go PRO</a> for unlimited."
+                     )))
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
 
     if (request.method == "POST"):
@@ -111,7 +122,7 @@ def add_ticket(request, pk=None):
 
 @login_required()
 def upvote(request, pk=None):
-    """Upvote a Ticket"""
+    """Upvote a Ticket. Increments upvotes by 1."""
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
     if (request.method == "POST"):
         # Increment upvotes by 1
@@ -129,8 +140,10 @@ def edit_ticket(request, pk=None):
     if (request.method == "POST"):
         form = EditTicketForm(request.POST, request.FILES, instance=ticket)
         if form.is_valid():
-            if ticket.status == 'Resolved' and ticket.resolved_date != None:
-                # If ticket is set to resolved for the first time, set resolved date to now
+            if (ticket.status == 'Resolved' and
+                    ticket.resolved_date is not None):
+                # If ticket is set to resolved for the first time,
+                #  set resolved date to now
                 ticket.resolved_date = datetime.datetime.now()
             ticket = form.save()
             messages.info(
@@ -138,12 +151,14 @@ def edit_ticket(request, pk=None):
             return redirect(view_tickets)
     else:
         form = EditTicketForm(instance=ticket)
-        return render(request, 'edit_ticket.html', {'form': form, 'ticket': ticket})
+        return render(request, 'edit_ticket.html',
+                      {'form': form, 'ticket': ticket})
 
 
 @login_required()
 def kanban(request):
-    """Show KANBAN View (PRO Feature)"""
+    """Show tickets in KANBAN View with columns
+    representing ticket status (PRO Feature)"""
     # Ensure user is PRO user
     user = get_object_or_404(Profile, user_id=request.user.id)
     if not user.is_pro_user:
@@ -160,12 +175,13 @@ def kanban(request):
             status='Resolved')
         cancelled_tickets = tickets.filter(
             status='Cancelled')
-        return render(request, 'kanban.html', {'tickets': tickets,
-                                               'new_tickets': new_tickets,
-                                               'in_progress_tickets': in_progress_tickets,
-                                               'resolved_tickets': resolved_tickets,
-                                               'cancelled_tickets': cancelled_tickets,
-                                               })
+        return render(request, 'kanban.html',
+                      {'tickets': tickets,
+                       'new_tickets': new_tickets,
+                       'in_progress_tickets': in_progress_tickets,
+                       'resolved_tickets': resolved_tickets,
+                       'cancelled_tickets': cancelled_tickets,
+                       })
 
 
 @login_required()

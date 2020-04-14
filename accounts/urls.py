@@ -1,6 +1,8 @@
 from django.conf.urls import url
 from . import views
-from accounts.views import index, logout, login, registration, user_profile, user_list, update_first_name, update_last_name, update_zoomid, grant_staff_access
+from accounts.views import (index, logout, login, registration, user_profile,
+                            user_list, update_first_name, update_last_name,
+                            update_zoomid, grant_staff_access)
 
 urlpatterns = [
     url(r'^logout/$', logout, name='logout'),
