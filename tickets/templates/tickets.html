@@ -82,7 +82,9 @@
                      data-placement="right">cancel</i><span class="d-none">Cancelled</span></td>
                {% endif %}
                <td>{{ ticket.created_date|date:"d/m/Y" }}</td>
-               {% if ticket.resolved_date == None %}
+               {% if ticket.status == "Cancelled" %}
+               <td>N/A</td>
+               {% elif ticket.resolved_date == None %}
                <td></td>
                {% else %}
                <td>{{ ticket.resolved_date|date:"d/m/Y" }}</td>
