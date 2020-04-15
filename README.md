@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/tdunn891/milestone-4.svg?branch=master)](https://travis-ci.org/tdunn891/milestone-4)
 
-# Milestone Profile 4 - [TrackIt](https://django-issue-tracker-1.herokuapp.com/)
+# Milestone Project 4 - [TrackIt](https://django-issue-tracker-1.herokuapp.com/)
 
 # Contents
 
@@ -16,7 +16,10 @@
    - [**Existing Features**](#existing-features)
    - [**Potential Future Features**](#potential-future-features)
 
-4. [**Database**](#Database)
+4. [**Databases**](#databases)
+
+   - [**Data Models**](#data-models)
+   - [**Data Migration**](#data-migration)
 
 5. [**Technologies**](#technologies)
 
@@ -25,6 +28,7 @@
    - [**Unit Testing**](#unit-testing)
    - [**Manual Testing**](#manual-testing)
    - [**Code Validation**](#code-validation)
+   - [**Audit**](#audit)
 
 7. [**Deployment**](#deployment)
 
@@ -193,6 +197,12 @@ The **Change History** tab allows the user to see a timeline of what has changed
 
 The **Comments** section displayed below the ticket allows anyone to leave a comment, which helps to speed up resolution of the ticket.
 
+### Add Ticket
+
+Basic users can upload up to 10 tickets per month, with a message displaying how many remaining:
+
+![Add Ticket Basic User](static/images/add-ticket-basic-user.png)
+
 ### Edit Ticket
 
 The Edit ticket form is accessible by the ticket's Submitter and Staff. Possible edits include reassigning the ticket, upgrading/downgrading its Priority, editing Description, Tags, Summary.
@@ -203,7 +213,11 @@ Dashboard page allows visual interaction with the tickets data across 6 intercon
 
 ### KANBAN
 
-Tickets are displayed in KANBAN columns by Status: New, In Progress, Resolved, Cancelled. Given that Cancelled tickets may be unimportant to some users, the 'Hide Cancelled' checkbox
+Tickets are displayed in KANBAN columns by Status: New, In Progress, Resolved, Cancelled. Given that Cancelled tickets may be unimportant to some users, the 'Hide Cancelled' checkbox.
+
+If Basic users click the KANBAN navigation link, they are redirected to Checkout page.
+
+![KANBAN Basic User](static/images/kanban-go-pro.png)
 
 ### Team
 
@@ -244,7 +258,7 @@ Users can:
 - Dark Mode setting toggle in Account page.
 - Allow the Assignee to set an Estimated Resolved Date for each ticket.
 
-# Database
+# Databases
 
 Sqlite3 was used during development. For deployment, data tables and data was migrated to a PostgreSQL database.
 
@@ -323,173 +337,7 @@ OrderLineItem Model
 | product  | CharField         |
 | quantity | IntegerField      |
 
-# Technologies
-
-- [Autoprefixer CSS Online](https://autoprefixer.github.io/) : to add vendor prefixes.
-- [Balsamiq](https://balsamiq.com/) : to create wireframes.
-- [Bootstrap](https://bootstrap.com/) : for responsive webpages.
-- [Chrome Developer Tools](https://developers.google.com/web/tools/chrome-devtools) : to ensure device responsiveness.
-- [crossfilter](https://github.com/crossfilter/crossfilter) : enables filters to be applied to all graphs.
-- [CSS3](https://www.w3.org/Style/CSS/Overview.en.html) : styling language.
-- [d3js.org](https://d3.js) : Javascript charting library.
-- [DataTables.net](https://datatables.net) : pagination and filtering of tables.
-- [DBDiagram](https://dbdiagram.io/) : mapping database relationships.
-- [DBeaver](https://dbeaver.io) : database tool to confirm successful data migration from sqlite3.
-- [dc.js](https://dc.js) : charting Javascript library built on d3.js.
-- [Django](https://django.io/) :
-- [Django Crispy Forms](https://django-crispy-forms.readthedocs.io/) : for Django form styling.
-- [Django REST Framework](https://www.django-rest-framework.org/) : API data source for dashboard charts.
-- [Django Simple History](https://django-simple-history.readthedocs.io) : tracking changes to model fields.
-- [Git](https://git-scm.com/) : version control.
-- [GitHub](https://github.com) : code repository and source branch used in deployment.
-- [Heroku](https://www.heroku.com) : deployment.
-- [jQuery](https://jquery.com/) : manipulate HTML elements.
-- [Material Icons](https://material.io/) : icons and fonts.
-- [PEP8 Validator](http://pep8online.com/) : validation of Python code.
-- [Pillow](https://pillow.readthedocs.io) : processing images in database.
-- [PostgreSQL](https://www.postgresql.org/) : as relational database in production.
-- [Stripe](https://stripe.com/) : accept payments.
-- [Travis](https://travis-ci.org) : continuous integration.
-- [VSCode](https://code.visualstudio.com) : preferred code editor.
-- [W3C Validator](https://jigsaw.w3.org) : validate HTML & CSS.
-
-# Testing
-
-Extensive automatic and manual testing was conducted to ensure the site functions and looks well on all major browsers (Chrome, Firefox, Safari, Edge) and device sizes.
-
-## Unit Testing
-
-- Django testing framework was used. tests_xx.py files show the tests run.
-
-## Manual Testing
-
-### Desktop Testing
-
-The following manual tests passed:
-
-Home
-
-- If no user is logged in, 3 'Create Free Account' buttons are displayed
-- If Basic user is logged in, 3 'Go PRO' buttons are displayed.
-- If Pro user is logged in, 3 'Go PRO' buttons are hidden.
-
-Tickets
-
-- Global search input filters in all fields.
-- Reset filters button reloads page.
-- All field-specific search boxes filter correctly.
-- Clicking headings orders by that field. Clicking again changes order direction.
-- Pagination and 'Show x tickets' per page functions correctly.
-- All columns are visible or accessible via horizontal scroll.
-- Tooltips function on hover of Summary, Type, Status.
-- Row colours represent status.
-- Raise Ticket button takes user to Add Ticket page.
-
-Dashboard
-
-- All 6 charts display with adequate padding.
-- All 6 charts be filtered on click, or range selection.
-- Display updates to show how many tickets are filtered - eg. 12 of 25 Tickets.
-
-KANBAN
-
-- If user is not PRO user, redirect to Checkout page.
-- 'Hide Cancelled' checkbox toggles Cancelled column.
-- Ticket count and counts for each column (ticket status) are correct.
-- Quick update dropdown updates status and success message displayed: 'Ticket status updated.'
-
-Add Ticket
-
-- If Basic user, message is displayed shows how many tickets have been submitted out of 10 in the current month. If limit has been reached, message is displayed and user is redirected to checkout page.
-- Form is valid and submits even if Tags and Screenshot is blank.
-- Success message is displayed: 'Ticket raised.'
-
-View Ticket
-
-- Jumbotron colour correctly represents ticket status.
-- Submitter and Assignee pill badges show user profile pictures if any, and on click a drop-right menu with 'mailto:' links Zoom links functioning.
-- Upvote button shows upvote count and increments by 1 on click.
-- On click, Quick Status dropdown links update the ticket status and display confirmation message.
-- Edit ticket button takes user to the Edit Ticket form.
-- If screenshot exists, following link shows the screenshot in a modal. Download button downloads image.
-- Comments can be submitted and success message is displayed: 'Comment shared.'
-
-Edit Ticket
-
-- Only submitter or staff can edit a ticket.
-- Fields are pre-filled with existing values.
-- Submitting form updates all fields.
-- On successful edit, success message is displayed: 'Ticket successfully updated'.
-
-Account
-
-- User Profile image can be changed via upload. Image is displayed with rounded border.
-- First Name, Last Name can be updated via edit button.
-- If user not Staff, requesting staff access button is displayed, which on click enables Staff access. Note: In a live environment, these requests would be sent to Admin for review before granting permission. For assessment purposes this permission is granted immediately so assessors can edit all tickets.
-- Member Since and PRO Since (if PRO) shows correct dates.
-- On click of Zoom Meeting ID, Zoom Personal Meeting Room is launched.
-
-404 Error Page
-
-- When an incorrect URL is entered, 404 Page is displayed
-- Return home button takes user back to Home Page
-- Navigation buttons function
-
-### Mobile and Tablet Testing
-
-The above Desktop Tests were also conducted on mobile and tablet devices (via Chrome DevTools). In addition, the following mobile and tablet-specific tests were run:
-
-Dashboard (Mobile)
-
-- All graphs on dashboard page are readable.
-
-The following tests failed:
-
-| Issue No. | Test Name                                       | Issue                                   | Resolved? | Action Taken                                                            |
-| :-------- | :---------------------------------------------- | :-------------------------------------- | :-------- | :---------------------------------------------------------------------- |
-| 1         | Content is not squeezed or overlapping (Mobile) | Tickets table overflowing horizontally. | Yes       | Added Bootstrap class 'table-responsive' to enable horizontal scrolling |
-
-## Code Validation
-
-| Code                                                        | Result |
-| :---------------------------------------------------------- | :----- |
-| CSS ([W3C](https://jigsaw.w3.org/css-validator/))           | PASS   |
-| HTML ([W3C](https://validator.w3.org/))                     | PASS   |
-| Javascript: no major errors ([jshint](https://jshint.com/)) | PASS   |
-| Python ([PEP8](https://pep8online.com/))                    | PASS   |
-
-^ The following classes of errors were deemed not applicable, as the validator did not take into account Flask and Jinja templating:
-
-# Deployment
-
-## Heroku
-
-The application was deployed to Heroku, via the following steps:
-
-1. Ensure `requirements.txt` reflects all dependencies via `pip freeze > requirements.txt`
-2. Create `Procfile` via `web: gunicorn issue_tracker.wsgi:application > Procfile`
-3. `git add` above files, then commit and push to GitHub
-4. Heroku.com > Create new app > App name: 'django-issue-tracker-1' (app name must be unique), Region: Europe
-5. Deploy > Deployment method > Link GitHub account
-6. Select repository 'milestone-4'
-7. Select branch: 'master'
-8. Set Config Vars: Heroku Settings > Config Vars:
-
-| Config Var            | Key                                   |
-| :-------------------- | :------------------------------------ |
-| AWS_ACCESS_KEY_ID     | \<from AWS account>                   |
-| AWS_SECRET_ACCESS_KEY | \<from AWS account>                   |
-| DATABASE_URL          | \<postgres database url>              |
-| DISABLE_COLLECTSTATIC | 1                                     |
-| HOSTNAME              | \<your_heroku_app_name>.herokuapp.com |
-| SECRET_KEY            | \<Django secret key>                  |
-| STRIPE_PUBLISHABLE    | \<from Stripe>                        |
-| STRIPE_SECRET         | \<from Stripe>                        |
-
-9. Manual Deploy > Deploy Branch (master)
-10. Heroku Website > Open App
-
-### Data Migration
+## Data Migration
 
 To ensure a rich dataset for assessment purposes, testing data (including users, tickets) was migrated from sqlite3 to the PostgreSQL database using the following method:
 
@@ -513,6 +361,174 @@ python3 manage.py shell
 Load json data into PostgreSQL:
 
 `python3 manage.py loaddata datadump.json`
+
+# Technologies
+
+- [Autoprefixer CSS Online](https://autoprefixer.github.io/) : add vendor prefixes.
+- [Balsamiq](https://balsamiq.com/) : wireframes development.
+- [Bootstrap](https://bootstrap.com/) : responsive webpages on all devices.
+- [Chrome Developer Tools](https://developers.google.com/web/tools/chrome-devtools) : device responsiveness and audits.
+- [crossfilter](https://github.com/crossfilter/crossfilter) : enables filters to be applied to all graphs.
+- [CSS3](https://www.w3.org/Style/CSS/Overview.en.html) : styling language.
+- [d3js.org](https://d3.js) : Javascript charting library.
+- [DataTables.net](https://datatables.net) : pagination and filtering of tables.
+- [DBDiagram](https://dbdiagram.io/) : mapping database relationships.
+- [DBeaver](https://dbeaver.io) : database tool to confirm successful data migration from sqlite3.
+- [dc.js](https://dc.js) : charting Javascript library built on d3.js.
+- [Django](https://django.io/) : high-level Python Web framework.
+- [Django Crispy Forms](https://django-crispy-forms.readthedocs.io/) : Django form styling.
+- [Django REST Framework](https://www.django-rest-framework.org/) : API data source for dashboard charts.
+- [Django Simple History](https://django-simple-history.readthedocs.io) : tracking changes to model fields.
+- [Git](https://git-scm.com/) : version control.
+- [GitHub](https://github.com) : code repository and source branch used in deployment.
+- [Heroku](https://www.heroku.com) : deployment.
+- [jQuery](https://jquery.com/) : manipulate HTML elements.
+- [LazyLoad](https://github.com/verlok/lazyload) : lazy loading of images.
+- [Material Icons](https://material.io/) : icons and fonts.
+- [PEP8 Validator](http://pep8online.com/) : validation of Python code.
+- [Pillow](https://pillow.readthedocs.io) : processing images in database.
+- [PostgreSQL](https://www.postgresql.org/) : relational production database.
+- [Stripe](https://stripe.com/) : accept online payments.
+- [Travis](https://travis-ci.org) : continuous integration.
+- [VSCode](https://code.visualstudio.com) : preferred code editor.
+- [W3C Validator](https://jigsaw.w3.org) : validate HTML & CSS.
+
+# Testing
+
+Extensive unit and manual testing was conducted to ensure the site functions and looks well on all major browsers (Chrome, Firefox, Safari, Edge) and device sizes.
+
+## Unit Testing
+
+- Django testing framework was used. tests_xx.py files show the tests run.
+
+## Manual Testing
+
+### Desktop Testing
+
+The following manual tests passed:
+
+#### Home
+
+- If no user is logged in, 3 'Create Free Account' buttons are displayed
+- If Basic user is logged in, 3 'Go PRO' buttons are displayed.
+- If Pro user is logged in, 3 'Go PRO' buttons are hidden.
+
+#### Tickets
+
+- Global search input filters in all fields.
+- Reset filters button reloads page.
+- All field-specific search boxes filter correctly.
+- Clicking headings orders by that field. Clicking again changes order direction.
+- Pagination and 'Show x tickets' per page functions correctly.
+- All columns are visible or accessible via horizontal scroll.
+- Row colours represent status.
+- Raise Ticket button takes user to Add Ticket page.
+
+#### Dashboard
+
+- All 6 charts display with adequate padding.
+- All 6 charts be filtered on click, or range selection.
+- Display updates to show how many tickets are filtered - eg. 12 of 25 Tickets.
+
+#### KANBAN
+
+- If user is not PRO user, redirect to Checkout page.
+- 'Hide Cancelled' checkbox toggles Cancelled column.
+- Ticket count and counts for each column (ticket status) are correct.
+- Quick update dropdown updates status and success message displayed: 'Ticket status updated.'
+
+#### Add Ticket
+
+- If Basic user, message is displayed shows how many tickets have been submitted out of 10 in the current month. If limit has been reached, message is displayed and user is redirected to checkout page.
+- Form is valid and submits even if Tags and Screenshot is blank.
+- Success message is displayed: 'Ticket raised.'
+
+#### View Ticket
+
+- Jumbotron colour correctly represents ticket status.
+- Submitter and Assignee pill badges show user profile pictures if any, and on click a drop-right menu with 'mailto:' links Zoom links functioning.
+- Upvote button shows upvote count and increments by 1 on click.
+- On click, Quick Status dropdown links update the ticket status and display confirmation message.
+- Edit ticket button takes user to the Edit Ticket form.
+- If screenshot exists, following link shows the screenshot in a modal. Download button downloads image.
+- Comments can be submitted and success message is displayed: 'Comment shared.'
+
+#### Edit Ticket
+
+- Only submitter or staff can edit a ticket.
+- Fields are pre-filled with existing values.
+- Submitting form updates all fields.
+- On successful edit, success message is displayed: 'Ticket successfully updated'.
+
+#### Account
+
+- User Profile image can be changed via upload. Image is displayed with rounded border.
+- First Name, Last Name can be updated via edit button.
+- If user not Staff, requesting staff access button is displayed, which on click enables Staff access. Note: In a live environment, these requests would be sent to Admin for review before granting permission. For assessment purposes this permission is granted immediately so assessors can edit all tickets.
+- Member Since and PRO Since (if PRO) shows correct dates.
+- On click of Zoom Meeting ID, Zoom Personal Meeting Room is launched.
+
+#### Team
+
+- All email and zoom links function
+
+### Mobile and Tablet Testing
+
+The above Desktop Tests were repeated on mobile and tablet devices via Chrome Dev Tools. In addition, the following mobile and tablet-specific tests were run:
+
+Dashboard (Mobile)
+
+- All graphs on dashboard page are readable.
+
+The following tests failed:
+
+| Issue No. | Test Name                                                             | Issue                                                                        | Resolved? | Action Taken                                                            |
+| :-------- | :-------------------------------------------------------------------- | :--------------------------------------------------------------------------- | :-------- | :---------------------------------------------------------------------- |
+| 1         | Content is not squeezed or overlapping (Mobile)                       | Tickets table overflowing horizontally.                                      | Yes       | Added Bootstrap class 'table-responsive' to enable horizontal scrolling |
+| 2         | Tickets page: All tooltips function on hover of Summary, Type, Status | On Tickets page tooltips on tickets beyond on the first are not initialized. | Yes       | Added callback function to reinitialise all toolips on redraw of table  |
+| 3         | View Ticket page: Image appropriately sized                           | Screenshot overflows modal                                                   | Yes       | Set screenshot image max-width: 96%                                     |
+
+## Code Validation
+
+| Code                                                        | Files validated                                                    | Result |
+| :---------------------------------------------------------- | :----------------------------------------------------------------- | :----- |
+| CSS ([W3C](https://jigsaw.w3.org/css-validator/))           | style.css                                                          | PASS   |
+| HTML ([W3C](https://validator.w3.org/))                     | templates                                                          | PASS   |
+| Javascript: no major errors ([jshint](https://jshint.com/)) | dashboard.js,base.js                                               | PASS   |
+| Python ([PEP8](https://pep8online.com/))                    | views.py, models.py, forms.py, urls.py, settings.py, test\_\*\*.py | PASS   |
+
+## Audits
+
+All pages were audited using Chrome Developer Tools' Lighthouse to assess Performance, Accessibility, Best Practices and SEO. Key performance improvements included lazy loading images and optimising the loading of third-party libraries. After making these changes, the vast majority of page scores were Green (ie >90%).
+
+# Deployment
+
+## Heroku
+
+The application was deployed to Heroku, via the following steps:
+
+1. Ensure `requirements.txt` reflects all dependencies via `pip freeze > requirements.txt`
+2. Create `Procfile` via `web: gunicorn issue_tracker.wsgi:application > Procfile`
+3. `git add` above files, then `git commit` and `git push` to GitHub
+4. Heroku.com > Create new app > App name: 'django-issue-tracker-1' (app name must be unique), Region: Europe
+5. Deploy > Deployment method > Link GitHub account
+6. Select repository 'milestone-4'
+7. Select branch: 'master'
+8. Set Config Vars: Heroku Settings > Config Vars:
+
+| Config Var            | Key                                   |
+| :-------------------- | :------------------------------------ |
+| AWS_ACCESS_KEY_ID     | \<from AWS account>                   |
+| AWS_SECRET_ACCESS_KEY | \<from AWS account>                   |
+| DATABASE_URL          | \<postgres database url>              |
+| DISABLE_COLLECTSTATIC | 1                                     |
+| HOSTNAME              | \<your_heroku_app_name>.herokuapp.com |
+| SECRET_KEY            | \<Django secret key>                  |
+| STRIPE_PUBLISHABLE    | \<from Stripe>                        |
+| STRIPE_SECRET         | \<from Stripe>                        |
+
+9. Manual Deploy > Deploy Branch (master)
+10. Heroku Website > Open App
 
 ## Local Deployment
 
