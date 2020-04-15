@@ -31,6 +31,7 @@
                   {% endif %}
                   <div class="row">
                      <div class="col-12">
+                        <!-- Ticket Summary -->
                         <h4 class="display-5">{{ ticket.summary}}
                            {% if ticket.ticket_type == "Bug" %}
                            <i class="material-icons-outlined align-top" data-toggle="tooltip" title="Bug"
@@ -65,6 +66,7 @@
                      <div class="col-12 col-md-7">
                         <table class="table table-sm">
                            <tbody>
+                              <!-- Ticket Priority -->
                               <tr>
                                  <th>Priority:</th>
                                  <td>
@@ -79,6 +81,7 @@
                                           </span>
                                  </td>
                               </tr>
+                              <!-- Ticket Status -->
                               <tr>
                                  <th>Status:</th>
                                  {% if ticket.status == "New" %}
@@ -96,9 +99,11 @@
                                        data-placement="right">cancel</i><span class="d-none">Cancelled</span></td>
                                  {% endif %}
                               </tr>
+                              <!-- Ticket Submitter -->
                               <tr>
                                  <th class="align-middle">Submitter:</th>
                                  <td>
+                                    <!-- Dropright menu with Email and Zoom actions -->
                                     <div class="dropright">
                                        <a href="#" class="badge badge-pill badge-info dropdown-toggle"
                                           data-toggle="dropdown" title="Mail to:" data-placement="left">
@@ -129,9 +134,11 @@
                                     </div>
                                  </td>
                               </tr>
+                              <!-- Ticket Assignee -->
                               <tr>
                                  <th class="align-middle">Assignee:</th>
                                  <td>
+                                    <!-- Dropright menu with Email and Zoom actions -->
                                     <div class="dropright">
                                        <a href="#" class="badge badge-pill badge-info dropdown-toggle"
                                           data-toggle="dropdown" title="Mail to:" data-placement="left">
@@ -162,13 +169,16 @@
                                     </div>
                                  </td>
                               </tr>
+                              <!-- Created Date & Time -->
                               <tr>
                                  <th>Created:</th>
                                  <td>{{ ticket.created_date|date:"d/m/Y H:i" }}</td>
                               </tr>
                               <tr>
                                  <th>Resolved:</th>
-                                 {% if ticket.resolved_date == None %}
+                                 {% if ticket.status == "Cancelled" %}
+                                 <td>N/A</td>
+                                 {% elif ticket.resolved_date == None %}
                                  <td></td>
                                  {% else %}
                                  <td>{{ ticket.resolved_date|date:"d/m/Y H:i" }}</td>
@@ -183,29 +193,30 @@
                                  <td>{{ ticket.days_to_resolve }}</td>
                                  {% endif %}
                               </tr>
+                              <!-- User-uploaded Screenshot -->
                               <tr>
                                  <th>Screenshot:</th>
                                  {% if ticket.screenshot %}
-                                 <!-- Modal trigger -->
+                                 <!-- Modal trigger to open screenshot -->
                                  <td><a href="{{ ticket.screenshot.url }}" data-toggle="modal"
                                        data-target="#screenshotModal">{{ ticket.screenshot }}</a>
                                  </td>
                                  <!-- Screenshot Modal -->
                                  <div class="modal fade" id="screenshotModal" tabindex="-1" role="dialog"
                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
+                                    <div class="modal-dialog modal-lg" role="document">
                                        <div class="modal-content">
                                           <div class="modal-body">
                                              <img data-src="{{ ticket.screenshot.url }}" class="lazyload"
-                                                alt="{{ ticket.screenshot }}">
+                                                id="modal-screenshot-img" alt="{{ ticket.screenshot }}">
                                              <br>
                                              <br>
-                                             <span><b>Ticket: </b>{{ ticket.id }} | {{ ticket.summary }}</span>
-                                             <span class="float-right"><b>Filename:</b> <a
-                                                   href="{{ ticket.screenshot.url }}" target="_blank" rel="noopener"
-                                                   data-toggle="tooltip" title="Open in New Tab"
+                                             <p><b>Ticket: </b>{{ ticket.id }} | {{ ticket.summary }}</p>
+                                             <p><b>Filename:</b> <a href="{{ ticket.screenshot.url }}" target="_blank"
+                                                   rel="noopener" data-toggle="tooltip" title="Open in New Tab"
                                                    data-placement="bottom">
-                                                   {{ ticket.screenshot }}</a></span>
+                                                   {{ ticket.screenshot }}</a>
+                                             </p>
                                           </div>
                                           <div class="modal-footer">
                                              <a href="{{ ticket.screenshot.url }}" class="btn btn-primary"
@@ -218,7 +229,6 @@
                                        </div>
                                     </div>
                                  </div>
-                                 <!-- End modal -->
                                  {% else %}
                                  <td></td>
                                  {% endif %}
@@ -230,7 +240,7 @@
                         <!-- If user is Submitter or Staff, User can Edit or Cancel -->
                         <a class="btn btn-warning" href="{% url 'edit_ticket' ticket.id %}"><i
                               class="material-icons-outlined align-bottom">edit</i> Edit Ticket</a>
-                        <!-- Status change via dropdown  -->
+                        <!-- Status change via dropdown menu  -->
                         <div class="btn-group">
                            <button class="btn btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true"
                               aria-expanded="false">
@@ -261,7 +271,7 @@
                            </div>
                         </div>
                         {% else %}
-                        <!-- User does NOT have access to Edit or Cancel -->
+                        <!-- Message that User does NOT have access to Edit or Cancel -->
                         <span>Note: Only the Submitter or Staff can Edit this Ticket<br></span>
                         {% endif %}
                      </div>
@@ -281,6 +291,7 @@
                   </div>
                </div>
                <hr>
+               <!-- Comment section -->
                <div class="row">
                   <div class="col col-12">
                      <h5><i class="material-icons align-top">insert_comment</i> Comments ({{ comments.count }})</h5>
