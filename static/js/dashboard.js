@@ -1,5 +1,6 @@
 // Fetch source data for charts from Django REST API
 fetch('https://django-issue-tracker-1.herokuapp.com/tickets/api/tickets')
+	// fetch('http://localhost:8000/tickets/api/tickets')
 	.then((response) => {
 		return response.json();
 	})
