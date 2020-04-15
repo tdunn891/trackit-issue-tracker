@@ -21,7 +21,6 @@ $(document).ready(function () {
 	// REGISTRATION JS
 	if (window.location.pathname == '/accounts/register/') {
 		$('#register-nav-item').toggleClass('d-none');
-		// $('#id_email').focus();
 	}
 
 	// LOGIN JS
@@ -78,6 +77,24 @@ $(document).ready(function () {
 			$(this).html('<input type="text" placeholder="Search ' + title + '" />');
 		});
 
+		// Custom Priority order
+		$.fn.dataTable.ext.type.detect.unshift(function (d) {
+			return d === 'Low' || d === 'Medium' || d === 'High' ? 'priority' : null;
+		});
+
+		$.fn.dataTable.ext.type.order['priority-pre'] = function (d) {
+			switch (d) {
+				case 'Low':
+					return 1;
+				case 'Medium':
+					return 2;
+				case 'High':
+					return 3;
+			}
+			return 0;
+		};
+
+		// Render DataTable
 		let ticketsTable = $('#tickets-table').DataTable({
 			// Add Global search box
 			language: {
@@ -95,6 +112,10 @@ $(document).ready(function () {
 			oLanguage: {
 				sLengthMenu: 'Show: _MENU_ tickets',
 				sInfo: 'Showing: _START_-_END_ of _TOTAL_',
+			},
+			// Callback to reinitialise all tooltips on redraw of table
+			drawCallback: function (settings) {
+				$('[data-toggle="tooltip"]').tooltip();
 			},
 		});
 		// Apply the search
@@ -171,6 +192,9 @@ $(document).ready(function () {
 		});
 		// Toggle image upload form field
 		$('#profile-image').on('click', function () {
+			$('#profile-image-form').removeClass('d-none');
+		});
+		$('#default-profile-image').on('click', function () {
 			$('#profile-image-form').removeClass('d-none');
 		});
 		$('#id_image').on('click', function () {
