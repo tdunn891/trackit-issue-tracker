@@ -134,16 +134,19 @@ def upvote(request, pk=None):
 
 @login_required()
 def edit_ticket(request, pk=None):
-    """Edit a Ticket"""
+    """
+    Edit a Ticket. Get ticket object and prefill Edit Ticket
+    Form with existing values. Ticket will be updated on Submit.
+    """
     # Get ticket
     ticket = get_object_or_404(Ticket, pk=pk) if pk else None
     if (request.method == "POST"):
         form = EditTicketForm(request.POST, request.FILES, instance=ticket)
         if form.is_valid():
             if (ticket.status == 'Resolved' and
-                    ticket.resolved_date is not None):
-                # If ticket is set to resolved for the first time,
-                #  set resolved date to now
+                    ticket.resolved_date is None):
+                # If ticket status is set to resolved for the first time,
+                # set resolved date to now
                 ticket.resolved_date = datetime.datetime.now()
             ticket = form.save()
             messages.info(
@@ -159,14 +162,16 @@ def edit_ticket(request, pk=None):
 def kanban(request):
     """Show tickets in KANBAN View with columns
     representing ticket status (PRO Feature)"""
-    # Ensure user is PRO user
+    # Check if user is PRO user
     user = get_object_or_404(Profile, user_id=request.user.id)
+    # If user is not a PRO user, show message and redirect to Checkout.
     if not user.is_pro_user:
         messages.warning(
             request, "Upgrade your account to unlock KANBAN View.")
         return redirect('checkout')
     else:
         tickets = Ticket.objects.filter()
+        # Filter by each Ticket Status for subtotals in dashboard template.
         new_tickets = tickets.filter(
             status='New')
         in_progress_tickets = tickets.filter(
@@ -191,7 +196,7 @@ def change_status(request, pk=None, new_status=None):
     if (request.method == 'POST'):
         ticket.status = new_status
         if ticket.status == 'Resolved':
-            # If existing status is Resolved, set resolved date to now.
+            # If status is Resolved, set resolved date to now.
             ticket.resolved_date = datetime.datetime.now()
         ticket.save()
         messages.info(request, "Ticket Status Updated | " +
