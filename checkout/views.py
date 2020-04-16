@@ -1,4 +1,4 @@
-from accounts.models import User
+from accounts.models import User, Profile
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
@@ -6,7 +6,6 @@ from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.utils import timezone
 from .forms import MakePaymentForm, OrderForm
 from .models import OrderLineItem
-from accounts.models import Profile
 import stripe
 
 
@@ -46,7 +45,7 @@ def checkout(request):
                 # Set 'is_pro_user' to True
                 user = get_object_or_404(Profile, user_id=request.user.id)
                 user.is_pro_user = True
-                user.date_turned_pro = timezone.now()
+                user.pro_user_since_date = timezone.now()
                 user.save()
                 messages.success(
                     request, "You have successfully paid. Enjoy PRO!")
