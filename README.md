@@ -322,6 +322,7 @@ Load json data into PostgreSQL:
 ## Technologies
 
 - [Autoprefixer CSS Online](https://autoprefixer.github.io/) : add vendor prefixes
+- [AWS S3](https://aws.amazon.com/s3/) : cloud object storage service for static and media files
 - [Balsamiq](https://balsamiq.com/) : wireframes development
 - [Bootstrap](https://bootstrap.com/) : responsive webpages on all devices
 - [Chrome Developer Tools](https://developers.google.com/web/tools/chrome-devtools) : device responsiveness and audits
@@ -342,13 +343,13 @@ Load json data into PostgreSQL:
 - [jQuery](https://jquery.com/) : manipulate HTML elements
 - [LazyLoad](https://github.com/verlok/lazyload) : lazy loading of images
 - [Material Icons](https://material.io/) : icons and fonts
-- [PEP8 Validator](http://pep8online.com/) : validation of Python code
+- [PEP8 Validator](http://pep8online.com/) : validation of Python
 - [Pillow](https://pillow.readthedocs.io) : processing images in database
 - [PostgreSQL](https://www.postgresql.org/) : relational production database
 - [Stripe](https://stripe.com/) : accept online payments
 - [Travis](https://travis-ci.org) : continuous integration
 - [VSCode](https://code.visualstudio.com) : preferred code editor
-- [W3C Validator](https://jigsaw.w3.org) : validate HTML & CSS
+- [W3C Validator](https://jigsaw.w3.org) : validation of HTML & CSS
 
 ## Testing
 
@@ -434,7 +435,7 @@ The following tests failed:
 | 1         | Content is not squeezed or overlapping (Mobile)                        | Tickets table overflowing horizontally.                                      | Yes       | Added Bootstrap class 'table-responsive' to enable horizontal scrolling |
 | 2         | Tickets page: All tooltips function on hover of Summary, Type, Status  | On Tickets page tooltips on tickets beyond on the first are not initialized. | Yes       | Added callback function to reinitialise all toolips on redraw of table  |
 | 3         | View Ticket page: Image appropriately sized                            | Screenshot overflows modal                                                   | Yes       | Set screenshot image max-width: 96%                                     |
-| 4         | Test Stripe payments function and can be confirmed on Stripe dashboard | Error: 'We cannot process with that card'                                    | Yes       | jQuery CDN must be loaded before stripe.js                              |
+| 4         | Test Stripe payments function and can be confirmed on Stripe dashboard | Error: 'We were unable to process a payment with that card'                  | Yes       | jQuery CDN must be loaded before stripe.js                              |
 
 ### Code Validation
 
