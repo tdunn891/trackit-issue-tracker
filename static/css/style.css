@@ -417,9 +417,3 @@ footer {
 		font-size: 24px;
 	}
 }
-
-/* Testing Only */
-* {
-	/* outline: 1px solid lightcoral; */
-	outline-offset: -1px;
-}
