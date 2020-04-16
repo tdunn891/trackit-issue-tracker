@@ -158,5 +158,5 @@ def grant_staff_access(request, pk):
             user.save()
             messages.success(
                 request, ("You have been granted Staff Access as a CI Assessor."
-                          "You can now edit all tickets."))
+                          " You can now edit all tickets."))
     return redirect(user_profile)
