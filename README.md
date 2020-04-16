@@ -52,32 +52,33 @@ TrackIt was developed to make convoluted issue tracking a thing of the past. Tra
 
 #### Strategy
 
-Considering the UX requires understanding the needs of:
+Considering the UX requires understanding the needs of these stakeholders:
 
 **Submitters** want a quick and painless ticket submission process and feedback that their issue is being worked on through to resolution. Submitters want to focus on their core tasks.
 
-**Assignees** (Fixers) want issue detail, screenshots and other users' comments to resolve the ticket.
+**Assignees** want issue detail, screenshots and other user comments to resolve the ticket.
 
-**Managers** want quick, graphical access to the open and closed tickets. They also want to be able to contact any user to aide ticket resolution.
+**Managers** want quick, graphical snapshots to understand where to focus their efforts.
 
 #### Scope
 
 ##### Functional Specifications
 
-Existing issue trackers were researched (including GitHub Issues, Jira) to identify the key data fields and features users expect.
+Existing issue trackers were researched (including GitHub Issues, Jira) to identify the key features users expect.
 
 Broadly, the site should:
 
-- Allow logging, tracking of 'Bugs' and 'Feature Requests' through to resolution. 'Bugs' could represent 'Issues' in some organisations.
+- Allow logging, tracking of 'Bugs' and 'Feature Requests' through to resolution. 'Bugs' could represent 'Issues' in some organisations
 - Allow contributions/comments from other users
-- Feature a dashboard of all tickets.
+- Feature a dashboard of all tickets
 
 ##### Content Requirements
 
 - Data tables
 - Input boxes for ticket filtering
-- DC.js, D3.js and crossfilter for dashboard charts.
-- Dropdowns for selecting and editing fields.
+- DC.js, D3.js and crossfilter for dashboard charts
+- Dropdowns for selecting and editing fields
+- File Upload buttons
 
 #### Structure
 
@@ -85,7 +86,7 @@ Broadly, the site should:
 
 - Unobtrusive navigation bar, always accessible and fixed to top
 - On mobile and tablet devices, navigation links collapse into a menu button
-- All interactive elements provide feedback to the user to encourage interaction and confirm user actions.
+- All interactive elements provide feedback to the user to encourage interaction and confirm user actions
 - Each row in tickets table changes opacity on hover
 - Navigation and pagination links change opacity on hover
 - All buttons have border transition on hover
@@ -95,8 +96,8 @@ Broadly, the site should:
 
 ##### Information Architecture
 
-- A multipage archecture was used to break up the large amount of information presented in the site. For example, the Add Ticket and Edit Ticket pages require many fields and so require separate pages.
-- Pagination is employed in tickets table to reduce cognitive overload. User can select how many tickets to display per page via dropdown.
+- A multipage architecture was used to break up the large amount of information presented in the site. For example, the Add Ticket, Edit Ticket and Checkout pages require many fields and so require separate pages.
+- Pagination is employed in the tickets table to reduce cognitive overload. User can select how many tickets to display per page via dropdown.
 
 #### Skeleton
 
@@ -114,34 +115,34 @@ Colours: Intuitive ticket colours used consistently to represent Ticket Status -
 
 As a Guest User...
 
-- I want to quickly learn the key features of the site.
-- I want to know if sign up is free and which features are behind a paywall.
-- I want to see a visual preview of the features before having to sign up.
-- I want to know if this site is credible and used by well-known organisations.
-- I want to see some customer testimonials.
-- I want my initial questions to be answered.
-- I want to be able to contact the developer for further information.
+- I want to quickly learn the key features of the site
+- I want to know if sign up is free and which features are behind a paywall
+- I want to see a visual preview of the features before having to sign up
+- I want to know if this site is credible and used by well-known organisations
+- I want to see some customer testimonials
+- I want my initial questions to be answered
+- I want to be able to contact the developer for further information
 
 As a Registered User...
 
-- I want to submit a Feature Request that would improve my productivity.
-- I want to submit a Bug I am experiencing without being distracted from my core tasks.
-- I want to be able to check how many free tickets submissions I have remaining in the month on my Basic plan.
-- I want to see a list of all tickets I have raised.
-- I want the option to see all tickets in a KANBAN-style column view.
-- I want to contribute to the resolution of an open issue by leaving a comment under it.
-- I want to raise the profile of an existing ticket by upvoting it.
-- I want the ability to unlock PRO features via online credit card payment.
-- I want to control which personal information I share with other users.
-- I want to be able to upload a profile image so my colleagues can put a face to the name.
-- I want to access contact details of other users.
-- I want to be able to request Admin access.
+- I want to submit a Feature Request that would improve my productivity
+- I want to submit a Bug I am experiencing without being distracted from my core tasks
+- I want to be able to check how many free tickets submissions I have remaining in the month on my Basic plan
+- I want to see a list of all tickets I have raised
+- I want the option to see all tickets in a KANBAN-style column view
+- I want to contribute to the resolution of an open issue by leaving a comment under it
+- I want to raise the profile of an existing ticket by upvoting it
+- I want the ability to unlock PRO features via online credit card payment
+- I want to control which personal information I share with other users
+- I want to be able to upload a profile image so my colleagues can put a face to the name
+- I want to access contact details of other users
+- I want to be able to request Admin access
 
 As a Registered Admin User:
 
-- I want to easily contact a ticket's Assignee by launching a draft email from the ticket view.
-- I want to graphically identify which tickets require attention, ie. aged and high priority tickets.
-- I want to see which tickets have the most upvotes, to help inform work prioritisation.
+- I want to easily contact a ticket's Assignee by launching a draft email from the ticket view
+- I want to graphically identify which tickets require attention, ie. aged and high priority tickets
+- I want to see which tickets have the most upvotes, to help inform work prioritisation
 
 ## Features
 
@@ -181,6 +182,12 @@ Tickets are displayed in KANBAN columns by Status: New, In Progress, Resolved, C
 
 ![KANBAN Basic User](static/images/kanban-go-pro.png)
 
+#### Checkout
+
+The user can upgrade their account from Basic to PRO by online credit card payment, processed by Stripe. On successful payment:
+
+![Checkout](static/images/pro-successfully-paid.png)
+
 #### Team
 
 The Team page acts as an address book of users of the site, listing some key details. Users are split into Submitters and Staff.
@@ -200,19 +207,19 @@ The Account page is where users can view and edit their account information. Use
 - View list of other users and their details
 - Update their own details, including First Name, Last Name, Zoom Meeting ID
 - Upload a profile image
-- Explore tickets in Dashboard view.
-- Visualise tickets in KANBAN.
+- Explore tickets in Dashboard view
+- Visualise tickets in KANBAN
 - Pay to upgrade account to PRO, which allows unlimited ticket submissions per month, and KANBAN view
 
 ### Potential Future Features
 
-- Make tickets in KANBAN View draggable, so that ticket status can be changed via dragging into other column.
-- Add filters and searching to KANBAN View, including a toggle to show only My Tickets.
+- Make tickets in KANBAN View draggable, so that ticket status can be changed via dragging into other column
+- Add filters and searching to KANBAN View, including a toggle to show only My Tickets
 - Limit upvotes to 1 per user per ticket. Add tooltip to show which users who have upvoted - if more than 3 users, display eg. 'Joe and 4 others'.
-- Add phone number field to user profile with ability to click to call via 'callto:'.
-- Additional graphs in Dashboard view, including Age vs Priority bubble chart.
-- Allow the Assignee to set an Estimated Resolved Date for each ticket.
-- Dark Mode setting toggle in Account page.
+- Add phone number field to user profile with ability to click to call via 'callto:'
+- Additional graphs in Dashboard view, including Age vs Priority bubble chart
+- Allow the Assignee to set an Estimated Resolved Date for each ticket
+- Dark Mode setting toggle in Account page
 
 ## Databases
 
@@ -252,11 +259,11 @@ Ticket Model
 | screenshot    | ImageField                    | Image file related to ticket.                               |
 | history       | 'HistorialRecords' Django App | Django app to record field changes.                         |
 
-Note on API: Using the Django REST Framework, the Django data models are serialised to JSON via a serializers so that the data can be consumed from by dashboard.js to display the charts.
+Note on API: Using the Django REST Framework, the Django data models are serialised to JSON via a serializers so that the data can be consumed by dashboard.js to display the charts.
 
 Comment Model
 
-| Field        | Type               | Description                      |
+| Field        | Type               | Notes                            |
 | :----------- | :----------------- | :------------------------------- |
 | ticket       | ForeignKey(Ticket) | Linked to Ticket Model           |
 | user         | ForeignKey(User)   | Linked to User Model             |
@@ -314,34 +321,34 @@ Load json data into PostgreSQL:
 
 ## Technologies
 
-- [Autoprefixer CSS Online](https://autoprefixer.github.io/) : add vendor prefixes.
-- [Balsamiq](https://balsamiq.com/) : wireframes development.
-- [Bootstrap](https://bootstrap.com/) : responsive webpages on all devices.
-- [Chrome Developer Tools](https://developers.google.com/web/tools/chrome-devtools) : device responsiveness and audits.
-- [crossfilter](https://github.com/crossfilter/crossfilter) : enables filters to be applied to all graphs.
-- [CSS3](https://www.w3.org/Style/CSS/Overview.en.html) : styling language.
-- [d3js.org](https://d3.js) : Javascript charting library.
-- [DataTables.net](https://datatables.net) : pagination and filtering of tables.
-- [DBDiagram](https://dbdiagram.io/) : mapping database relationships.
-- [DBeaver](https://dbeaver.io) : database tool to confirm successful data migration from sqlite3.
-- [dc.js](https://dc.js) : charting Javascript library built on d3.js.
-- [Django](https://django.io/) : high-level Python Web framework.
-- [Django Crispy Forms](https://django-crispy-forms.readthedocs.io/) : Django form styling.
-- [Django REST Framework](https://www.django-rest-framework.org/) : API data source for dashboard charts.
-- [Django Simple History](https://django-simple-history.readthedocs.io) : tracking changes to model fields.
-- [Git](https://git-scm.com/) : version control.
-- [GitHub](https://github.com) : code repository and source branch used in deployment.
-- [Heroku](https://www.heroku.com) : deployment.
-- [jQuery](https://jquery.com/) : manipulate HTML elements.
-- [LazyLoad](https://github.com/verlok/lazyload) : lazy loading of images.
-- [Material Icons](https://material.io/) : icons and fonts.
-- [PEP8 Validator](http://pep8online.com/) : validation of Python code.
-- [Pillow](https://pillow.readthedocs.io) : processing images in database.
-- [PostgreSQL](https://www.postgresql.org/) : relational production database.
-- [Stripe](https://stripe.com/) : accept online payments.
-- [Travis](https://travis-ci.org) : continuous integration.
-- [VSCode](https://code.visualstudio.com) : preferred code editor.
-- [W3C Validator](https://jigsaw.w3.org) : validate HTML & CSS.
+- [Autoprefixer CSS Online](https://autoprefixer.github.io/) : add vendor prefixes
+- [Balsamiq](https://balsamiq.com/) : wireframes development
+- [Bootstrap](https://bootstrap.com/) : responsive webpages on all devices
+- [Chrome Developer Tools](https://developers.google.com/web/tools/chrome-devtools) : device responsiveness and audits
+- [crossfilter](https://github.com/crossfilter/crossfilter) : enables filters to be applied to all graphs
+- [CSS3](https://www.w3.org/Style/CSS/Overview.en.html) : styling language
+- [d3js.org](https://d3.js) : Javascript charting library
+- [DataTables.net](https://datatables.net) : pagination and filtering of tables
+- [DBDiagram](https://dbdiagram.io/) : mapping database relationships
+- [DBeaver](https://dbeaver.io) : database tool to confirm successful data migration from sqlite3
+- [dc.js](https://dc.js) : charting Javascript library built on d3.js
+- [Django](https://django.io/) : high-level Python Web framework
+- [Django Crispy Forms](https://django-crispy-forms.readthedocs.io/) : Django form styling
+- [Django REST Framework](https://www.django-rest-framework.org/) : API data source for dashboard charts
+- [Django Simple History](https://django-simple-history.readthedocs.io) : tracking changes to model fields
+- [Git](https://git-scm.com/) : version control
+- [GitHub](https://github.com) : code repository and source branch used in deployment
+- [Heroku](https://www.heroku.com) : deployment
+- [jQuery](https://jquery.com/) : manipulate HTML elements
+- [LazyLoad](https://github.com/verlok/lazyload) : lazy loading of images
+- [Material Icons](https://material.io/) : icons and fonts
+- [PEP8 Validator](http://pep8online.com/) : validation of Python code
+- [Pillow](https://pillow.readthedocs.io) : processing images in database
+- [PostgreSQL](https://www.postgresql.org/) : relational production database
+- [Stripe](https://stripe.com/) : accept online payments
+- [Travis](https://travis-ci.org) : continuous integration
+- [VSCode](https://code.visualstudio.com) : preferred code editor
+- [W3C Validator](https://jigsaw.w3.org) : validate HTML & CSS
 
 ## Testing
 
@@ -422,11 +429,12 @@ The following manual tests passed on Desktop, Tablet and Mobile (via Chrome DevT
 
 The following tests failed:
 
-| Issue No. | Test Name                                                             | Issue                                                                        | Resolved? | Action Taken                                                            |
-| :-------- | :-------------------------------------------------------------------- | :--------------------------------------------------------------------------- | :-------- | :---------------------------------------------------------------------- |
-| 1         | Content is not squeezed or overlapping (Mobile)                       | Tickets table overflowing horizontally.                                      | Yes       | Added Bootstrap class 'table-responsive' to enable horizontal scrolling |
-| 2         | Tickets page: All tooltips function on hover of Summary, Type, Status | On Tickets page tooltips on tickets beyond on the first are not initialized. | Yes       | Added callback function to reinitialise all toolips on redraw of table  |
-| 3         | View Ticket page: Image appropriately sized                           | Screenshot overflows modal                                                   | Yes       | Set screenshot image max-width: 96%                                     |
+| Issue No. | Test Name                                                              | Issue                                                                        | Resolved? | Action Taken                                                            |
+| :-------- | :--------------------------------------------------------------------- | :--------------------------------------------------------------------------- | :-------- | :---------------------------------------------------------------------- |
+| 1         | Content is not squeezed or overlapping (Mobile)                        | Tickets table overflowing horizontally.                                      | Yes       | Added Bootstrap class 'table-responsive' to enable horizontal scrolling |
+| 2         | Tickets page: All tooltips function on hover of Summary, Type, Status  | On Tickets page tooltips on tickets beyond on the first are not initialized. | Yes       | Added callback function to reinitialise all toolips on redraw of table  |
+| 3         | View Ticket page: Image appropriately sized                            | Screenshot overflows modal                                                   | Yes       | Set screenshot image max-width: 96%                                     |
+| 4         | Test Stripe payments function and can be confirmed on Stripe dashboard | Error: 'We cannot process with that card'                                    | Yes       | jQuery CDN must be loaded before stripe.js                              |
 
 ### Code Validation
 
@@ -532,6 +540,6 @@ YouTube Channels:
 - [Pretty Printed](https://www.youtube.com/channel/UC-QDfvrRIDB6F0bIO4I4HkQ)
 - [Max Goodridge](https://www.youtube.com/user/Max204204204/)
 
-Big thanks to my mentor, Brian M., friends and family for help with testing and feedback.
+Big thanks to my mentor, Brian M, friends and family for help with testing and feedback.
 
-###### <i>Disclaimer: Developed for Educational Purposes</i>
+###### <i>Educational Purposes Only</i>
