@@ -72,8 +72,8 @@ function drawStatusByMonthBarChart(ndx) {
 	// Stacked bar chart status by month
 	stackedBar = dc
 		.barChart('#statusByMonthBarChart')
-		.width(740)
-		.height(360)
+		.width(700)
+		.height(300)
 		.dimension(dateCreatedDim)
 		.group(statusGroup, 'New', (d) => d.value['New'])
 		.stack(statusGroup, 'In Progress', (d) => d.value['In Progress'])
@@ -95,7 +95,7 @@ function drawStatusByMonthBarChart(ndx) {
 			].join('\n');
 		})
 		.margins({ top: 30, left: 60, right: 20, bottom: 70 })
-		.x(d3.scaleTime().domain([new Date(2020, 01, 15), new Date(2020, 03, 03)]))
+		.x(d3.scaleTime().domain([new Date(2020, 01, 10), new Date(2020, 06, 01)]))
 		.elasticX(true)
 		.alwaysUseRounding(true)
 		.xUnits(d3.timeDays)
@@ -108,8 +108,8 @@ function drawTicketTypeRowChart(ndx) {
 	let ticketTypeGroup = ticketTypeDim.group();
 
 	dc.rowChart('#ticketTypeRowChart')
-		.width(500)
-		.height(250)
+		.width(440)
+		.height(160)
 		.gap(16)
 		.titleLabelOffsetX(413)
 		.label((d) => d.key + ': ' + d.value)
@@ -126,8 +126,8 @@ function drawPriorityPieChart(ndx) {
 
 	// Priority row Chart
 	dc.rowChart('#priorityRowChart')
-		.width(500)
-		.height(250)
+		.width(440)
+		.height(160)
 		.gap(6)
 		.titleLabelOffsetX(413)
 		.label((d) => d.key + ': ' + d.value)
@@ -155,12 +155,12 @@ function drawStatusRowChart(ndx) {
 
 	// Status Row Chart
 	dc.rowChart('#statusRowChart')
-		.width(500)
-		.height(200)
+		.width(440)
+		.height(160)
 		.gap(2)
 		.titleLabelOffsetX(413)
 		.label((d) => d.key + ': ' + d.value)
-		.ordinalColors(['green', 'orange', 'lightblue', 'grey'])
+		.ordinalColors(['green', 'grey', 'orange', 'lightblue'])
 		.useViewBoxResizing(true)
 		.dimension(statusDim)
 		.group(statusGroup);
@@ -171,7 +171,7 @@ function drawStatusRowChart(ndx) {
 		.dimension(openClosedDim)
 		.group(openClosedGroup)
 		.useViewBoxResizing(true)
-		.height(170)
+		.height(150)
 		.label((d) => d.key + ': ' + d.value);
 }
 
@@ -181,8 +181,8 @@ function drawUpvotesRowChart(ndx) {
 	let upvotesGroup = summaryDim.group().reduceSum((d) => +d.upvotes);
 
 	dc.rowChart('#upvotesRowChart')
-		.width(500)
-		.height(250)
+		.width(460)
+		.height(210)
 		.gap(2)
 		.label((d) => d.key + ': ' + d.value)
 		.rowsCap(8)
