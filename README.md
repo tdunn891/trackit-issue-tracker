@@ -6,7 +6,7 @@
 
 ## Purpose
 
-TrackIt was developed to make convoluted issue tracking a thing of the past. TrackIt affords organisations of all types an intuitive, lightweight way to log, track and resolve issues, without the unnecessary admin burden.
+TrackIt makes convoluted issue tracking a thing of the past. TrackIt affords organisations of all types an intuitive system to log, track and resolve issues without the administrative burden. In a live environment, an instance of this web app would be deployed within an organisation. As an example, an employee in a Fintech startup submits a 'Bug' to flag that Excel is crashing frequently. A technical staff member is assigned the Ticket and works to resolve. Say the same employee thinks a new feature in an existing internal application would greatly increase their productivity, they can submit a 'Feature Request' which can be tracked and edited until resolution. As proof of concept, the site itself was used track bugs and features during development.
 
 ## Contents
 
