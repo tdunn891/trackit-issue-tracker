@@ -33,7 +33,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    # 'livereload',
     'django.contrib.staticfiles',
     'django_forms_bootstrap',
     'accounts',
@@ -55,7 +54,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
-    # 'livereload.middleware.LiveReloadScript',
 ]
 
 ROOT_URLCONF = 'issue_tracker.urls'
