@@ -2,114 +2,115 @@
 
 # Milestone Project 4 - [TrackIt](https://django-issue-tracker-1.herokuapp.com/)
 
-# Contents
+![TrackIt Nav Bar](static/images/trackit-nav.png)
 
-1. [**Project Purpose**](#project-purpose)
+## Purpose
 
-2. [**UX**](#ux)
+TrackIt was developed to make convoluted issue tracking a thing of the past. TrackIt affords organisations of all types an intuitive, lightweight way to log, track and resolve issues, without the unnecessary admin burden.
+
+## Contents
+
+1. [**UX**](#ux)
 
    - [**5 Planes of UX**](#5-planes-of-ux)
    - [**User Stories**](#user-stories)
 
-3. [**Features**](#features)
+2. [**Features**](#features)
 
    - [**Existing Features**](#existing-features)
    - [**Potential Future Features**](#potential-future-features)
 
-4. [**Databases**](#databases)
+3. [**Databases**](#databases)
 
    - [**Data Models**](#data-models)
    - [**Data Migration**](#data-migration)
 
-5. [**Technologies**](#technologies)
+4. [**Technologies**](#technologies)
 
-6. [**Testing**](#testing)
+5. [**Testing**](#testing)
 
-   - [**Unit Testing**](#unit-testing)
+   - [**Automated Testing**](#unit-testing)
    - [**Manual Testing**](#manual-testing)
    - [**Code Validation**](#code-validation)
-   - [**Audit**](#audit)
+   - [**Audits**](#audits)
 
-7. [**Deployment**](#deployment)
+6. [**Deployment**](#deployment)
 
    - [**Heroku**](#heroku)
    - [**Local Deployment**](#local-deployment)
    - [**Development vs Production Versions**](#development-vs-production-versions)
 
-8. [**Credits**](#credits)
+7. [**Credits**](#credits)
 
    - [**Content**](#content)
    - [**Media**](#media)
    - [**Acknowledgements**](#acknowledgements)
 
-# Project Purpose
+## UX
 
-TrackIt was developed to allow simple, effective tracking of issues, split into Bugs and Feature Requests. The site was developed to be suitable for all organisation types and would be deployed
+### 5 Planes of UX
 
-# UX
+#### Strategy
 
-## 5 Planes of UX
+Considering the UX requires understanding the needs of:
 
-### Strategy
+**Submitters** want a quick and painless ticket submission process and feedback that their issue is being worked on through to resolution. Submitters want to focus on their core tasks.
 
-Site Objective: Provide platform to track tickets (Bugs and Feature Reqests).
+**Assignees** (Fixers) want issue detail, screenshots and other users' comments to resolve the ticket.
 
-User Needs: Intuitive way to raise and track their tickets through to completion.
+**Managers** want quick, graphical access to the open and closed tickets. They also want to be able to contact any user to aide ticket resolution.
 
-### Scope
+#### Scope
 
-#### Functional Specifications
+##### Functional Specifications
 
-In considering functional specifications, existing ticket and bug trackers were researched, including GitHub Issues, Jira. This helped to identify the key data fields and features users expect to see.
+Existing issue trackers were researched (including GitHub Issues, Jira) to identify the key data fields and features users expect.
 
-#### Content Requirements
+Broadly, the site should:
 
+- Allow logging, tracking of 'Bugs' and 'Feature Requests' through to resolution. 'Bugs' could represent 'Issues' in some organisations.
+- Allow contributions/comments from other users
+- Feature a dashboard of all tickets.
+
+##### Content Requirements
+
+- Data tables
 - Input boxes for ticket filtering
-- DC.js, D3.js and Crossfilter for charts on dashboard page.
-- Dropdowns for adding and editing ticket fields.
+- DC.js, D3.js and crossfilter for dashboard charts.
+- Dropdowns for selecting and editing fields.
 
-### Structure
+#### Structure
 
-#### Interaction Design
+##### Interaction Design
 
-Consistency & Predictability:
+- Unobtrusive navigation bar, always accessible and fixed to top
+- On mobile and tablet devices, navigation links collapse into a menu button
+- All interactive elements provide feedback to the user to encourage interaction and confirm user actions.
+- Each row in tickets table changes opacity on hover
+- Navigation and pagination links change opacity on hover
+- All buttons have border transition on hover
+- Tooltips on icons on hover
+- Form validation exists for relevant fields
+- Dropdown messages confirm: User Logged In , User Logged Out, Ticket Added, Ticket Edited, Ticket Upvoted, Comment Submitted, Payment Provided.
 
-- A consistent colour scheme and navigation bar is present throughout the site.
-- On smaller devices, navigation links collapse into 'burger' button
+##### Information Architecture
 
-Feedback:
+- A multipage archecture was used to break up the large amount of information presented in the site. For example, the Add Ticket and Edit Ticket pages require many fields and so require separate pages.
+- Pagination is employed in tickets table to reduce cognitive overload. User can select how many tickets to display per page via dropdown.
 
-All interactive elements provide feedback to the user to encourage interaction and provide confirmation when actions are taken.
+#### Skeleton
 
-- Sort by dropdown has border transition on hover.
-- Each record in tickets table changes colour opacity and cursor on hover.
-- 'Upvote' button changes colour on hover.
-- Navigation and pagination links change colour on hover.
-- All buttons have border transition on hover.
-- Form validation exists for relevant fields - field displays red 'Required' if invalid, green if valid.
-- Django Messages are briefly displayed just under navbar to confirm user actions (eg after Login, Logout, Add Ticket, Edit Ticket, Upvote, Comment, Payment).
-
-#### Information Architecture
-
-Pagination
-
-Sections are on separate pages for to aide...
-
-### Skeleton
-
-#### Wireframes
+##### Wireframes
 
 Two sets of wireframes were created in the early development stage to set out the structure and layout on different device sizes.
 
 [Desktop & Mobile Wireframes](https://github.com/tdunn891/milestone-4/tree/master/wireframes)
 
-### Surface
+#### Surface
 
-Colours: A minimal, subtle colour scheme was employed so as not to distract from the main content.
+Colours: Intuitive ticket colours used consistently to represent Ticket Status - Green: Resolved, Yellow: In Progress, Grey: Cancelled, Blue: New.
 
-Fonts: Easily readable font was a key consideration.
-
-## User Stories
+### User Stories
 
 As a Guest User...
 
@@ -142,178 +143,127 @@ As a Registered Admin User:
 - I want to graphically identify which tickets require attention, ie. aged and high priority tickets.
 - I want to see which tickets have the most upvotes, to help inform work prioritisation.
 
-#### User Group Permissions
+## Features
 
-| Permission                           | Submitter | Admin |
-| :----------------------------------- | :-------- | :---- |
-| Can raise a ticket                   | Yes       | Yes   |
-| Can edit own ticket                  | Yes       | Yes   |
-| Can edit any ticket                  | No        | Yes   |
-| Can reassign own ticket              | Yes       | Yes   |
-| Can reassign any ticket              | No        | Yes   |
-| Can edit ticket status of own ticket | Yes       | Yes   |
-| Can edit ticket status of any ticket | No        | Yes   |
-| Can be Assignee                      | Yes       | Yes   |
-| Can delete own ticket                | No        | Yes   |
-| Can delete any ticket                | No        | Yes   |
+### Pages
 
-# Features
+#### Home
 
-## Pages
+The Home page provides a quick introduction to the site, featuring minimal, easy to digest sections on Features, User Testimonials, Trusted By, Plans and Frequently Asked Questions. If the user is not signed in, the call to action buttons are to **Create Free Account**. If the user is already signed in, their username and profile picture will be displayed in the navigation bar and links to the Account page. If the user is signed in but not a Pro User, the call to action buttons are to **Go PRO**, The Go PRO buttons link to the Checkout page, where the user can pay to upgrade their account.
 
-### Home
+#### Tickets
 
-The Home page provides a quick introduction to the site, featuring minimal, easy to digest sections on Features, User Testimonials, Trusted By, Plans and Frequently Asked Questions.
+The Tickets page allows sorting and filtering of existing tickets, and a link to create a new ticket. The table shows key information for each ticket. Clicking on the row opens the **View Ticket** page for further details. Each field can be sorted both directions, and general and field-specific search input is available.
 
-If the user is not signed in, the call to action is to **Create Free Account**, with 3 large blue buttons located in the navigation bar, at the top of the page and in the Plans section. The Log In button for returning users uses an outline style, so as to not detract from the Call to Action.
+#### View Ticket
 
-If the user is already signed in, their username and profile picture (if any) will be displayed in the navigation bar and acts as a link to their Account page.
+The View Ticket page provides additional ticket information, including the Description, Tags, Days to Resolve (if Resolved), Age (if not Resolved) and Recent Activity. If the user is the Submitter or Staff, the **Edit Ticket** and **Status** buttons will be displayed and the user will have permission to change the Status via the dropdown, and to access the Edit Ticket page. The **Upvote** button displays how many upvotes the ticket has received, and increments on click. Profile pictures for Submitter and Assignee are displayed.
 
-If the user is signed in but not a Pro User, the call to action is to **Go PRO**, with 3 blue buttons located in the navigation bar, top of page and in Plans section. The Go PRO buttons link to the Checkout page, where the user can pay to upgrade their account.
+The **Change History** tab allows the user to see a timeline of what has changed, when, and by whom. The **Recent Activity** section shows this in a more intuitive way. The **Comments** section displayed below the ticket allows anyone to leave a comment, which helps to speed up resolution of the ticket.
 
-### Tickets
+#### Add Ticket
 
-The Tickets page allows sorting and filtering of existing tickets, and a link to create a new ticket.
-
-The table shows key information for each ticket. Clicking on the row opens the **View Ticket** page for further details. Each field can be sorted both directions on click, and both global and field-specific search is available via input boxes. A Reset filters button clears all filters. Pagination is implemented so the user can choose the number of tickets to be displayed per page.
-
-Type and Status fields use icons to eliminate cognitive overload. The Priority value (Low, Medium, High) is colour-coded intuitively. The row colour denotes ticket Status (green: Resolved, yellow: In Progress, blue: New, grey: Cancelled).
-
-The **Raise Ticket** button links to the **Add Ticket** page.
-
-### View Ticket
-
-The View Ticket page provides additional ticket information, including the Description, Tags, Days to Resolve (if Resolved), Age (if not Resolved) and Recent Activity.
-
-If the user is the Submitter or Staff, the **Edit Ticket** and **Status** buttons will be displayed and the user will have permission to change the Status via the dropdown, and to use access the Edit Ticket page.
-
-As with the Tickets view, ticket colour denotes ticket status.
-
-The **Upvote** button displays how many upvotes the ticket has received, and increments on click.
-
-Profile pictures for Submitter and Assignee (if any) are displayed next to their usernames.
-
-The **Change History** tab allows the user to see a timeline of what has changed, when, and by whom. The **Recent Activity** section shows this in a more intuitive way.
-
-The **Comments** section displayed below the ticket allows anyone to leave a comment, which helps to speed up resolution of the ticket.
-
-### Add Ticket
-
-Basic users can upload up to 10 tickets per month, with a message displaying how many remaining:
+Basic users can submit up to 10 tickets per month via the Add Ticket form. A message is displayed showing how many they have used in current month:
 
 ![Add Ticket Basic User](static/images/add-ticket-basic-user.png)
 
-### Edit Ticket
+#### Edit Ticket
 
-The Edit ticket form is accessible by the ticket's Submitter and Staff. Possible edits include reassigning the ticket, upgrading/downgrading its Priority, editing Description, Tags, Summary.
+The Edit ticket form is accessible by the ticket's Submitter and Staff. Possible edits include reassigning the ticket, upgrading/downgrading its Priority, editing Description, Tags, Summary, uploading a screenshot.
 
-### Dashboard
+#### Dashboard
 
-Dashboard page allows visual interaction with the tickets data across 6 interconnected charts. Clicking a segment on the row and pie charts or dragging to select a date range will filter all charts. Reset filters button will reset all charts.
+Dashboard page allows visual interaction with the tickets data across 6 interconnected charts. Clicking a segment on the row and pie charts or dragging to select a date range will filter all charts.
 
-### KANBAN
+#### KANBAN (PRO Feature)
 
-Tickets are displayed in KANBAN columns by Status: New, In Progress, Resolved, Cancelled. Given that Cancelled tickets may be unimportant to some users, the 'Hide Cancelled' checkbox.
-
-If Basic users click the KANBAN navigation link, they are redirected to Checkout page.
+Tickets are displayed in KANBAN columns by Status: New, In Progress, Resolved, Cancelled. Given that Cancelled tickets may be less important to some users, the 'Hide Cancelled' checkbox hides them. If Basic users click the KANBAN navigation link, they are redirected to Checkout page:
 
 ![KANBAN Basic User](static/images/kanban-go-pro.png)
 
-### Team
+#### Team
 
-The Team page acts as an address book of users of the site. Users are split into Submitters and Staff.
+The Team page acts as an address book of users of the site, listing some key details. Users are split into Submitters and Staff.
 
-### Account
+#### Account
 
-The Account page is where users can view and edit their account information. Users can upload a profile picture from their device, add First and Last Names, add personal Zoom Meeting IDs.
+The Account page is where users can view and edit their account information. Users can upload a profile picture from their device, add First and Last Names, add personal Zoom Meeting IDs. The user's account status (Basic or PRO) is displayed, including a 'Go PRO' button if basic user. Submitters can request Admin Access via a link.
 
-The user's account status (Basic or PRO) is displayed, including a 'Go PRO' button if basic user.
+### Existing Features
 
-Submitters can request Admin Access via a link.
-
-## Existing Features
-
-Users can:
-
-- Submit a ticket - up to 10 tickets/Month if Basic User, unlimited if PRO User.
-- Edit a ticket.
-- View, search and filter all tickets in table view.
-- View any ticket in further detail.
-- Upvote any ticket.
-- Leave a comment on any ticket.
-- View list of other users and their details.
+- Submit a ticket
+- Edit a ticket
+- View, search and filter tickets in table view
+- View any ticket in further detail
+- Upvote any ticket
+- Leave a comment on any ticket
+- View list of other users and their details
 - Update their own details, including First Name, Last Name, Zoom Meeting ID
-- Upload a profile image.
-- Derive ticket insights in interactive Dashboard view.
-- Visualise tickets in KANBAN View.
-- Pay to upgrade account to PRO, which allows unlimited ticket submissions per month, and KANBAN view.
+- Upload a profile image
+- Explore tickets in Dashboard view.
+- Visualise tickets in KANBAN.
+- Pay to upgrade account to PRO, which allows unlimited ticket submissions per month, and KANBAN view
 
-## Potential Future Features
+### Potential Future Features
 
+- Make tickets in KANBAN View draggable, so that ticket status can be changed via dragging into other column.
 - Add filters and searching to KANBAN View, including a toggle to show only My Tickets.
 - Limit upvotes to 1 per user per ticket. Add tooltip to show which users who have upvoted - if more than 3 users, display eg. 'Joe and 4 others'.
 - Add phone number field to user profile with ability to click to call via 'callto:'.
 - Additional graphs in Dashboard view, including Age vs Priority bubble chart.
-- Make tickets in KANBAN View draggable, so that ticket status can be changed via dragging into other column.
-- Dark Mode setting toggle in Account page.
 - Allow the Assignee to set an Estimated Resolved Date for each ticket.
+- Dark Mode setting toggle in Account page.
 
-# Databases
+## Databases
 
 Sqlite3 was used during development. For deployment, data tables and data was migrated to a PostgreSQL database.
 
-## Data Models
+### Data Models
 
-### Accounts App
+#### Accounts App
 
-User Model
-
-The standard Django User model was employed: django.contrib.auth.models
-
-In order to record additional user fields, a Profile model was used.
+In order to record additional user fields, a Profile model was created:
 
 Profile Model
 
-| Field               | Type          | Description                                          |
+| Field               | Type          | Notes                                                |
 | :------------------ | :------------ | :--------------------------------------------------- |
 | is_pro_user         | BooleanField  | If user has paid to upgrade to PRO account.          |
 | pro_user_since_date | DateTimeField | Records date user went PRO.                          |
 | image               | ImageField    | Profile image, which is referred to throughout site. |
-| zoom_id             | CharField     |                                                      |
+| zoom_id             | CharField     | Zoom Personal Meeting ID                             |
 
-### Tickets App
+#### Tickets App
 
 Ticket Model
 
-| Field         | Type                          | Description                                                 |
+| Field         | Type                          | Notes                                                       |
 | :------------ | :---------------------------- | :---------------------------------------------------------- |
-| ticket_type   | CharField                     | 'Bug','Feature'                                             |
+| ticket_type   | CharField                     | Choices: Bug or Feature                                     |
 | summary       | CharField                     | Short summary of ticket                                     |
-| created_date  | DateTimeField                 |                                                             |
+| created_date  | DateTimeField                 | Autoadds date and time of ticket creation                   |
 | resolved_date | DateTimeField                 | Date and time set recorded when ticket is set to 'Resolved' |
-| priority      | CharField                     | 'Low', 'Medium', 'High'                                     |
-| submitted_by  | ForeignKey(User)              | Linked to User instance                                     |
-| assigned_to   | ForeignKey(User)              | Linked to User instance                                     |
+| priority      | CharField                     | Choices: Low, Medium, High                                  |
+| submitted_by  | ForeignKey(User)              | Linked to User Model                                        |
+| assigned_to   | ForeignKey(User)              | Linked to User Model                                        |
 | description   | TextField                     |                                                             |
-| tags          | 'TaggableManager' Django App  | External app to save comma-separated tags.                  |
+| tags          | 'TaggableManager' Django App  | Django app to save comma-separated tags.                    |
 | upvotes       | IntegerField                  | Count of upvotes.                                           |
 | screenshot    | ImageField                    | Image file related to ticket.                               |
-| history       | 'HistorialRecords' Django App | External app to record field changes.                       |
+| history       | 'HistorialRecords' Django App | Django app to record field changes.                         |
+
+Note on API: Using the Django REST Framework, the Django data models are serialised to JSON via a serializers so that the data can be consumed from by dashboard.js to display the charts.
 
 Comment Model
 
 | Field        | Type               | Description                      |
 | :----------- | :----------------- | :------------------------------- |
-| ticket       | ForeignKey(Ticket) | Linked to Ticket instance        |
-| user         | ForeignKey(User)   | Linked to User instance          |
+| ticket       | ForeignKey(Ticket) | Linked to Ticket Model           |
+| user         | ForeignKey(User)   | Linked to User Model             |
 | comment_body | CharField          | Comment body text                |
 | date         | DateTimeField      | Date and time comment was posted |
 
-Django REST Framework
-
-An API was set up which is the data source of the dashboard graphs.
-
-### Checkout App
+#### Checkout App
 
 Order Model
 
@@ -337,7 +287,7 @@ OrderLineItem Model
 | product  | CharField         |
 | quantity | IntegerField      |
 
-## Data Migration
+### Data Migration
 
 To ensure a rich dataset for assessment purposes, testing data (including users, tickets) was migrated from sqlite3 to the PostgreSQL database using the following method:
 
@@ -362,7 +312,7 @@ Load json data into PostgreSQL:
 
 `python3 manage.py loaddata datadump.json`
 
-# Technologies
+## Technologies
 
 - [Autoprefixer CSS Online](https://autoprefixer.github.io/) : add vendor prefixes.
 - [Balsamiq](https://balsamiq.com/) : wireframes development.
@@ -393,27 +343,25 @@ Load json data into PostgreSQL:
 - [VSCode](https://code.visualstudio.com) : preferred code editor.
 - [W3C Validator](https://jigsaw.w3.org) : validate HTML & CSS.
 
-# Testing
+## Testing
 
 Extensive unit and manual testing was conducted to ensure the site functions and looks well on all major browsers (Chrome, Firefox, Safari, Edge) and device sizes.
 
-## Unit Testing
+### Automated Testing
 
-- Django testing framework was used. tests_xx.py files show the tests run.
+Django testing framework was used to conduct 34 tests. See tests_xx.py files for the tests run. Travis Continuous Integration is set up to confirm the build passes on each deployment.
 
-## Manual Testing
+### Manual Testing
 
-### Desktop Testing
+The following manual tests passed on Desktop, Tablet and Mobile (via Chrome DevTools):
 
-The following manual tests passed:
-
-#### Home
+##### Home
 
 - If no user is logged in, 3 'Create Free Account' buttons are displayed
 - If Basic user is logged in, 3 'Go PRO' buttons are displayed.
 - If Pro user is logged in, 3 'Go PRO' buttons are hidden.
 
-#### Tickets
+##### Tickets
 
 - Global search input filters in all fields.
 - Reset filters button reloads page.
@@ -424,26 +372,26 @@ The following manual tests passed:
 - Row colours represent status.
 - Raise Ticket button takes user to Add Ticket page.
 
-#### Dashboard
+##### Dashboard
 
 - All 6 charts display with adequate padding.
 - All 6 charts be filtered on click, or range selection.
 - Display updates to show how many tickets are filtered - eg. 12 of 25 Tickets.
 
-#### KANBAN
+##### KANBAN
 
 - If user is not PRO user, redirect to Checkout page.
 - 'Hide Cancelled' checkbox toggles Cancelled column.
 - Ticket count and counts for each column (ticket status) are correct.
 - Quick update dropdown updates status and success message displayed: 'Ticket status updated.'
 
-#### Add Ticket
+##### Add Ticket
 
 - If Basic user, message is displayed shows how many tickets have been submitted out of 10 in the current month. If limit has been reached, message is displayed and user is redirected to checkout page.
 - Form is valid and submits even if Tags and Screenshot is blank.
 - Success message is displayed: 'Ticket raised.'
 
-#### View Ticket
+##### View Ticket
 
 - Jumbotron colour correctly represents ticket status.
 - Submitter and Assignee pill badges show user profile pictures if any, and on click a drop-right menu with 'mailto:' links Zoom links functioning.
@@ -453,14 +401,14 @@ The following manual tests passed:
 - If screenshot exists, following link shows the screenshot in a modal. Download button downloads image.
 - Comments can be submitted and success message is displayed: 'Comment shared.'
 
-#### Edit Ticket
+##### Edit Ticket
 
 - Only submitter or staff can edit a ticket.
 - Fields are pre-filled with existing values.
 - Submitting form updates all fields.
 - On successful edit, success message is displayed: 'Ticket successfully updated'.
 
-#### Account
+##### Account
 
 - User Profile image can be changed via upload. Image is displayed with rounded border.
 - First Name, Last Name can be updated via edit button.
@@ -468,17 +416,9 @@ The following manual tests passed:
 - Member Since and PRO Since (if PRO) shows correct dates.
 - On click of Zoom Meeting ID, Zoom Personal Meeting Room is launched.
 
-#### Team
+##### Team
 
 - All email and zoom links function
-
-### Mobile and Tablet Testing
-
-The above Desktop Tests were repeated on mobile and tablet devices via Chrome Dev Tools. In addition, the following mobile and tablet-specific tests were run:
-
-Dashboard (Mobile)
-
-- All graphs on dashboard page are readable.
 
 The following tests failed:
 
@@ -488,22 +428,22 @@ The following tests failed:
 | 2         | Tickets page: All tooltips function on hover of Summary, Type, Status | On Tickets page tooltips on tickets beyond on the first are not initialized. | Yes       | Added callback function to reinitialise all toolips on redraw of table  |
 | 3         | View Ticket page: Image appropriately sized                           | Screenshot overflows modal                                                   | Yes       | Set screenshot image max-width: 96%                                     |
 
-## Code Validation
+### Code Validation
 
-| Code                                                        | Files validated                                                    | Result |
+| Code                                                        | Files Tested                                                       | Result |
 | :---------------------------------------------------------- | :----------------------------------------------------------------- | :----- |
 | CSS ([W3C](https://jigsaw.w3.org/css-validator/))           | style.css                                                          | PASS   |
 | HTML ([W3C](https://validator.w3.org/))                     | templates                                                          | PASS   |
-| Javascript: no major errors ([jshint](https://jshint.com/)) | dashboard.js,base.js                                               | PASS   |
+| Javascript: no major errors ([jshint](https://jshint.com/)) | dashboard.js, base.js                                              | PASS   |
 | Python ([PEP8](https://pep8online.com/))                    | views.py, models.py, forms.py, urls.py, settings.py, test\_\*\*.py | PASS   |
 
-## Audits
+### Audits
 
 All pages were audited using Chrome Developer Tools' Lighthouse to assess Performance, Accessibility, Best Practices and SEO. Key performance improvements included lazy loading images and optimising the loading of third-party libraries. After making these changes, the vast majority of page scores were Green (ie >90%).
 
-# Deployment
+## Deployment
 
-## Heroku
+### Heroku
 
 The application was deployed to Heroku, via the following steps:
 
@@ -530,7 +470,7 @@ The application was deployed to Heroku, via the following steps:
 9. Manual Deploy > Deploy Branch (master)
 10. Heroku Website > Open App
 
-## Local Deployment
+### Local Deployment
 
 1. 'Clone or download' repository from https://github.com/tdunn891/milestone-4, or from command line:
 
@@ -564,7 +504,7 @@ The application was deployed to Heroku, via the following steps:
 
    `http://localhost:8000/`
 
-## Development vs Production Versions
+### Development vs Production Versions
 
 |                                                            | Development       | Production                                                         |
 | :--------------------------------------------------------- | :---------------- | :----------------------------------------------------------------- |
@@ -575,17 +515,17 @@ The application was deployed to Heroku, via the following steps:
 | Static Files (CSS, Javascript, site images)                | Local             | [AWS S3](https://aws.amazon.com/s3/)                               |
 | Web Host                                                   | localhost         | [Heroku](https://dashboard.heroku.com/apps/django-issue-tracker-1) |
 
-# Credits
+## Credits
 
-## Content
+### Content
 
 All icons sourced from [Material Icons](https://material.io/resources/icons).
 
-## Media
+### Media
 
 'Trusted By' company logo images sourced from [Jira Atlassian](https://www.atlassian.com/software/jira)
 
-## Acknowledgements
+### Acknowledgements
 
 YouTube Channels:
 
@@ -594,4 +534,4 @@ YouTube Channels:
 
 Big thanks to my mentor, Brian M., friends and family for help with testing and feedback.
 
-###### <i>Disclaimer: Project created for educational purposes only</i>
+###### <i>Disclaimer: Developed for Educational Purposes</i>
