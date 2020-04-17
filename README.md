@@ -6,7 +6,7 @@
 
 ## Purpose
 
-TrackIt makes convoluted issue tracking a thing of the past. TrackIt affords organisations of all types an intuitive system to log, track and resolve issues without the administrative burden. In a live environment, an instance of this web app would be deployed within an organisation. As an example, an employee in a Fintech startup submits a 'Bug' to flag that Excel is crashing frequently. A technical staff member is assigned the Ticket and works to resolve. Say the same employee thinks a new feature in an existing internal application would greatly increase their productivity, they can submit a 'Feature Request' which can be tracked and edited until resolution. As proof of concept, the site itself was used track bugs and features during development.
+TrackIt was developed to provide organisations of all types an intuitive, lightweight system to log, track and resolve issues without the admin burden. In a live environment, this application would be deployed within an organisation. For example, a non-technical employee (Submitter) submits a 'Bug' to flag an internal software issue. A technical staff member (Assignee) is then assigned the Ticket and works to resolve. Or say an employee has a time-saving idea for a new software feature, they can submit a 'Feature Request' which is then assigned and tracked through to implementation. As proof of concept, the site itself was used track bugs and features during development.
 
 ## Contents
 
@@ -52,25 +52,33 @@ TrackIt makes convoluted issue tracking a thing of the past. TrackIt affords org
 
 #### Strategy
 
-Considering the UX requires understanding the needs of these stakeholders:
+Setting the UX strategy requires understanding the needs of the target users:
 
-**Submitters** want a quick and painless ticket submission process and feedback that their issue is being worked on through to resolution. Submitters want to focus on their core tasks.
+Ticket Submitters want:
 
-**Assignees** want issue detail, screenshots and other user comments to resolve the ticket.
+- a straightforward ticket submission process
+- feedback to be assured that their issue is being worked
+- to spend minimal time on the site so they can return to their core tasks
 
-**Managers** want quick, graphical snapshots to understand where to focus their efforts.
+Ticket Assignees want:
+
+- Lots of detail about the ticket, including screenshots
+- Input from other users who may be experiencing the same Bug or want the same Feature Request
+- Ability to reassign to another Assignee if required
+- Graphs to gain insights - for example High Priority or aging tickets that require attention
+
+Taking the above into account, the User Experience must be clean, fast, and intuitive.
 
 #### Scope
 
 ##### Functional Specifications
 
-Existing issue trackers were researched (including GitHub Issues, Jira) to identify the key features users expect.
+Existing issue trackers were researched (eg Jira, GitHub Issues) to identify key functionality users expect:
 
-Broadly, the site should:
-
-- Allow logging, tracking of 'Bugs' and 'Feature Requests' through to resolution. 'Bugs' could represent 'Issues' in some organisations
-- Allow contributions/comments from other users
-- Feature a dashboard of all tickets
+- Submitting and tracking of 'Bugs' and 'Feature Requests' through to resolution.
+- Contributions from other users to speed up resolution.
+- Dashboard View of all tickets
+- KANBAN View
 
 ##### Content Requirements
 
@@ -136,9 +144,9 @@ As a Registered User...
 - I want to control which personal information I share with other users
 - I want to be able to upload a profile image so my colleagues can put a face to the name
 - I want to access contact details of other users
-- I want to be able to request Admin access
+- I want to be able to request Staff access
 
-As a Registered Admin User:
+As a Registered Staff (Admin) User:
 
 - I want to easily contact a ticket's Assignee by launching a draft email from the ticket view
 - I want to graphically identify which tickets require attention, ie. aged and high priority tickets
@@ -182,6 +190,8 @@ Tickets are displayed in KANBAN columns by Status: New, In Progress, Resolved, C
 
 ![KANBAN Basic User](static/images/kanban-go-pro.png)
 
+###### CI Assessors: please be sure to Go PRO with a test Stripe payment to access KANBAN.
+
 #### Checkout
 
 The user can upgrade their account from Basic to PRO by online credit card payment, processed by Stripe. On successful payment:
@@ -219,6 +229,7 @@ The Account page is where users can view and edit their account information. Use
 - Add phone number field to user profile with ability to click to call via 'callto:'
 - Additional graphs in Dashboard view, including Age vs Priority bubble chart
 - Allow the Assignee to set an Estimated Resolved Date for each ticket
+- Reset Password function
 - Dark Mode setting toggle in Account page
 
 ## Databases
@@ -357,7 +368,7 @@ Extensive unit and manual testing was conducted to ensure the site functions and
 
 ### Automated Testing
 
-Django testing framework was used to conduct 34 tests. See tests_xx.py files for the tests run. Travis Continuous Integration is set up to confirm the build passes on each deployment.
+Django testing framework was used to conduct 34 tests. See test_xx.py files for the tests run. Travis Continuous Integration is set up to confirm the build passes on each deployment.
 
 ### Manual Testing
 
@@ -541,6 +552,6 @@ YouTube Channels:
 - [Pretty Printed](https://www.youtube.com/channel/UC-QDfvrRIDB6F0bIO4I4HkQ)
 - [Max Goodridge](https://www.youtube.com/user/Max204204204/)
 
-Big thanks to my mentor, Brian M, friends and family for help with testing and feedback.
+Big thanks to my mentor, Brian M, the Code Institute Slack channel, friends and family for help with testing and feedback.
 
 ###### <i>Educational Purposes Only</i>
