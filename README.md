@@ -164,6 +164,8 @@ The Home page provides a quick introduction to the site, featuring minimal, easy
 
 The Tickets page allows sorting and filtering of existing tickets, and a link to create a new ticket. The table shows key information for each ticket. Clicking on the row opens the **View Ticket** page for further details. Each field can be sorted both directions, and general and field-specific search input is available.
 
+![Tickets View](static/images/tickets-view.png)
+
 #### View Ticket
 
 The View Ticket page provides additional ticket information, including the Description, Tags, Days to Resolve (if Resolved), Age (if not Resolved) and Recent Activity. If the user is the Submitter or Staff, the **Edit Ticket** and **Status** buttons will be displayed and the user will have permission to change the Status via the dropdown, and to access the Edit Ticket page. The **Upvote** button displays how many upvotes the ticket has received, and increments on click. Profile pictures for Submitter and Assignee are displayed.
