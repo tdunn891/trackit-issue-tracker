@@ -172,6 +172,8 @@ The View Ticket page provides additional ticket information, including the Descr
 
 The **Change History** tab allows the user to see a timeline of what has changed, when, and by whom. The **Recent Activity** section shows this in a more intuitive way. The **Comments** section displayed below the ticket allows anyone to leave a comment, which helps to speed up resolution of the ticket.
 
+![View Ticket](static/images/view-ticket-view.png)
+
 #### Add Ticket
 
 Basic users can submit up to 10 tickets per month via the Add Ticket form. A message is displayed showing how many they have used in current month:
@@ -185,6 +187,8 @@ The Edit ticket form is accessible by the ticket's Submitter and Staff. Possible
 #### Dashboard
 
 Dashboard page allows visual interaction with the tickets data across 6 interconnected charts. Clicking a segment on the row and pie charts or dragging to select a date range will filter all charts.
+
+![Dashboard](static/images/dashboard-view.png)
 
 #### KANBAN (PRO Feature)
 
@@ -207,6 +211,8 @@ The Team page acts as an address book of users of the site, listing some key det
 #### Account
 
 The Account page is where users can view and edit their account information. Users can upload a profile picture from their device, add First and Last Names, add personal Zoom Meeting IDs. The user's account status (Basic or PRO) is displayed, including a 'Go PRO' button if basic user. Submitters can request Admin Access via a link.
+
+![Account](static/images/my-account.png)
 
 ### Existing Features
 
