@@ -160,6 +160,8 @@ As a Registered Staff (Admin) User:
 
 The Home page provides a quick introduction to the site, featuring minimal, easy to digest sections on Features, User Testimonials, Trusted By, Plans and Frequently Asked Questions. If the user is not signed in, the call to action buttons are to **Create Free Account**. If the user is already signed in, their username and profile picture will be displayed in the navigation bar and links to the Account page. If the user is signed in but not a Pro User, the call to action buttons are to **Go PRO**, The Go PRO buttons link to the Checkout page, where the user can pay to upgrade their account.
 
+![Home View](static/images/home-view.png)
+
 #### Tickets
 
 The Tickets page allows sorting and filtering of existing tickets, and a link to create a new ticket. The table shows key information for each ticket. Clicking on the row opens the **View Ticket** page for further details. Each field can be sorted both directions, and general and field-specific search input is available.
@@ -172,7 +174,7 @@ The View Ticket page provides additional ticket information, including the Descr
 
 The **Change History** tab allows the user to see a timeline of what has changed, when, and by whom. The **Recent Activity** section shows this in a more intuitive way. The **Comments** section displayed below the ticket allows anyone to leave a comment, which helps to speed up resolution of the ticket.
 
-![View Ticket](static/images/view-ticket-view.png)
+![View Ticket](static/images/view-ticket.png)
 
 #### Add Ticket
 
