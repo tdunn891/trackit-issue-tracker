@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/tdunn891/milestone-4.svg?branch=master)](https://travis-ci.org/tdunn891/milestone-4)
+[![Build Status](https://travis-ci.org/tdunn891/trackit-issue-tracker.svg?branch=master)](https://travis-ci.org/tdunn891/trackit-issue-tracker)
 
 # [TrackIt Issue Tracker](https://django-issue-tracker-1.herokuapp.com/)
 
