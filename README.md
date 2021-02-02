@@ -1,8 +1,10 @@
 [![Build Status](https://travis-ci.org/tdunn891/milestone-4.svg?branch=master)](https://travis-ci.org/tdunn891/milestone-4)
 
-# Milestone Project 4 - [TrackIt](https://django-issue-tracker-1.herokuapp.com/)
+# [TrackIt Issue Tracker](https://django-issue-tracker-1.herokuapp.com/)
 
-![TrackIt Nav Bar](static/images/trackit-nav.png)
+[1]: https://tdunn891.github.io/trackit-issue-tracker
+[2]: https://github.com/tdunn891/trackit-issue-tracker/blob/master/trackit.gif
+[![Trackit GIF][2]][1]
 
 ## Purpose
 
@@ -454,7 +456,7 @@ The following tests failed:
 | Issue No. | Test Name                                                              | Issue                                                                        | Resolved? | Action Taken                                                            |
 | :-------- | :--------------------------------------------------------------------- | :--------------------------------------------------------------------------- | :-------- | :---------------------------------------------------------------------- |
 | 1         | Content is not squeezed or overlapping (Mobile)                        | Tickets table overflowing horizontally.                                      | Yes       | Added Bootstrap class 'table-responsive' to enable horizontal scrolling |
-| 2         | Tickets page: All tooltips function on hover of Summary, Type, Status  | On Tickets page tooltips on tickets beyond on the first are not initialized. | Yes       | Added callback function to reinitialise all toolips on redraw of table  |
+| 2         | Tickets page: All tooltips function on hover of Summary, Type, Status  | On Tickets page tooltips on tickets beyond on the first are not initialized. | Yes       | Added callback function to reinitialise all tooltips on redraw of table  |
 | 3         | View Ticket page: Image appropriately sized                            | Screenshot overflows modal                                                   | Yes       | Set screenshot image max-width: 96%                                     |
 | 4         | Test Stripe payments function and can be confirmed on Stripe dashboard | Error: 'We were unable to process a payment with that card'                  | Yes       | jQuery CDN must be loaded before stripe.js                              |
 
@@ -516,7 +518,7 @@ The application was deployed to Heroku, via the following steps:
 
 4. Install dependencies in requirements.txt via 'pip':
 
-   `pip -r requirements.txt`
+   `pip install -r requirements.txt`
 
 5. Create local environment variables in project directory:
 
